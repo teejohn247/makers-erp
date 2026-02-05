@@ -1,0 +1,53 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <!-- <div class="hdr-title">
+                <div class="create-title">Create New Employee</div>
+
+                
+            </div> -->
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon profile">
+                        <div class="image bkg-standard">
+                            <img [src]="dialogData.modalInfo.profilePic" alt="">
+                        </div>
+                    </div>
+                    <div class="create-details">
+                        <div class="create-name">Payment Information</div>
+                        <p>{{dialogData.modalInfo.fullName}}</p>
+                    </div>
+                    <div (click)="closeDialog()" class="close-btn">&times;</div>
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+
+        <div class="form-wrap clearfix">
+            <div class="form-hld">
+
+                <form [formGroup]="paymentInfoForm" class="form-container" style="font-size: 0.8rem;">
+                    <ng-container class="d-flex" *ngFor="let field of paymentInfoFields">
+                        <ng-container [ngSwitch]="field.controlType">
+
+                            <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <input type="text" [readonly]="field.readonly" matInput [formControlName]="field.controlName">
+                                <mat-error *ngIf="paymentInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                        </ng-container>
+                    </ng-container>
+                </form>
+
+                <div class="btn-hld d-flex justify-content-end mt-lg-2" style="width: 100%">
+                    <div (click)="onSubmit()" class="cta primary-bkg mmd text-uppercase" style="min-width: 30%" type="submit">Submit</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

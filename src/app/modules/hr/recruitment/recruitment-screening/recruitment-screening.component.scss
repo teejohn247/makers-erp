@@ -1,0 +1,349 @@
+.cta {
+
+    &.filter-trigger {
+        border-radius: var(--radius-md);
+        margin-right: 1.2rem;
+        padding: 0.3rem 1rem;
+
+        i {
+            margin-right: 0.5rem;
+        }
+    }
+}
+
+.job-wrap {
+    margin-top: 0.5rem;
+    white-space: nowrap;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-track {
+        display: none;
+    }
+
+    .job-hld {
+        width: 27%;
+        cursor: pointer;
+        position: relative;
+        margin-bottom: 0.3rem;
+        display: inline-block;
+        border-radius: var(--radius-md);
+        background-color: white;
+        box-shadow: var(--card-shadow);
+        scroll-snap-align: start;
+
+        &:nth-child(n+2) {
+            margin-left: 2%;
+        }
+
+        .view {
+            top: 0.8rem;
+            right: 6%;
+            font-size: 0.745rem;
+            position: absolute;
+            z-index: 2;
+        }
+
+        .cont {
+            padding: 0.8rem 6%;
+            border-radius: var(--radius-md);
+            background-color: var(--primary-lightest);
+            border: 1px solid white;
+
+            &.selected {
+                border: 1px solid var(--approved-light);
+                background-color: var(--approved-lightest);
+            }
+
+            .det {
+                position: relative;
+
+                .title {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    letter-spacing: 0.03rem;
+                    color: var(--darker);
+                }
+
+                .date {
+                    margin-top: 0.2rem;
+
+                    span {
+                        font-size: 0.7rem;
+                        letter-spacing: 0.03rem;
+
+                        i {
+                            font-size: 0.75rem;
+                            color: var(--darker);
+                            margin-right: 0.3rem;
+                        }
+                    }
+                }
+
+                .count {
+                    font-size: 0.7rem;
+                    letter-spacing: 0.03rem;
+                    
+                    span {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: var(--black-tint);
+                        margin-right: 0.4rem;
+                    }
+                }
+
+                .dept {
+                    width: 60%;
+                    font-size: 0.7rem;
+                    //font-weight: 600;
+                    color: var(--darker);
+                    letter-spacing: 0.05rem;
+                    text-transform: uppercase;
+                    text-align: right;
+                }
+
+                &:last-child {
+                    display: flex;
+                    margin-top: 2rem;
+                    align-items: flex-end;
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+}
+
+.job-details-wrap {
+
+    .candidates-container {
+
+        .header {
+            display: flex;
+            gap: 2rem;
+
+            .hdr {
+                font-size: 1rem;
+                font-weight: 600;
+                letter-spacing: 0.04rem;
+                color: var(--primary);
+            }
+        }
+
+        .sort {
+            font-size: 0.8rem;
+            color: var(--black-tint);
+            letter-spacing: 0.03rem;
+            //margin-left: auto;
+
+            i {
+                font-size: 0.75rem;
+            }
+
+            span {
+
+                &:nth-child(2) {
+                    margin-left: 0.5rem;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .candidates-wrap {
+            margin-top: 1.5rem;
+
+            .candidate-hld {
+                display: flex;
+                align-items: center;
+
+                &:hover {
+                    cursor: pointer;
+                    
+                    .info {
+                        
+                        .name {
+                            color: var(--primary);
+                        }
+                    }
+                }
+
+                &:nth-child(n+2) {
+                    margin-top: 1.5rem;
+                }
+
+                .image {
+                    width: 3rem;
+                    height: 3rem;
+                    display: inline-flex;
+                    border-radius: 50%;
+                }
+
+                .info {
+                    width: 20%;
+                    letter-spacing: 0.03rem;
+                    margin-left: 3%;
+
+                    .name {
+                        color: var(--darker);
+                        text-transform: capitalize;
+                        transition: var(--tranisition-normal);
+                    }
+                    .email {
+                        font-size: 0.7rem;
+                        color: var(--black-tint);
+                    }
+                }
+
+                .progress-wrap {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    margin-left: auto;
+                    gap: 2rem;
+
+                    &::after {
+                        content: '';
+                        width: 90%;
+                        height: 3px;
+                        position: absolute;
+                        background-color: var(--border-grey);
+                        transform: translate(-50%, -50%);
+                        top: 50%;
+                        left: 50%;
+                        z-index: 1;
+                    }
+
+                    .progress-hld {
+                        position: relative;
+                        z-index: 2;
+
+                        &.completed {
+
+                            &::after {
+                                background-color: var(--approved);
+                            }
+
+                            span {
+                                border: 1px solid var(--approved);
+                                background-color: var(--approved);
+                                //background-color: #8fdcb0;
+                                color: white;
+                            }
+                        }
+
+                        &.awaiting {
+
+                            span {
+                                border: 1px solid var(--pending);
+                                background-color: var(--pending);
+                                //background-color: #8fdcb0;
+                                color: white;
+                            }
+                        }
+
+                        &.rejected {
+
+                            span {
+                                border: 1px solid var(--warning);
+                                //background-color: var(--pending);
+                                //background-color: #8fdcb0;
+                                color: var(--warning);
+                            }
+                        }
+
+                        &:first-child {
+
+                            &.missed {
+
+                                span {
+                                    border: 1px solid var(--pending);
+                                    color: var(--pending);
+                                }
+
+                                &::after {
+                                    width: 0;
+                                }
+                            }
+                        }
+
+                        &:last-child {
+
+                            &.completed {
+
+                                &::after {
+                                    width: 0;
+                                }
+                            }
+                        }
+
+                        &::after {
+                            content: '';
+                            width: 2rem;
+                            height: 3px;
+                            position: absolute;
+                            transform: translateY(-50%);
+                            top: 50%;
+                            right: -2rem;
+                            z-index: 1;
+                        }
+                        
+                        span {
+                            width: 2rem;
+                            height: 2rem;
+                            font-size: 0.95rem;
+                            border-radius: 50%;
+                            display: inline-flex;
+                            border: 1px solid var(--border-grey);
+                            background-color: white;
+                            justify-content: center;
+                            align-items: center;
+                            color: var(--black-tint-md);
+                        }
+                    }
+                }
+
+                .outcome {
+                    width: 15%;
+                    white-space: nowrap;
+                    justify-content: flex;
+                    align-items: flex-end;
+                    margin-left: auto;
+
+                    .btn-hld {
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 0.7rem;
+
+                        span {
+                            letter-spacing: 0.04rem;
+
+                            &:first-child {
+                                font-size: 0.75rem;
+                                color: var(--warning);
+                            }
+                        }
+                    }
+
+                    .status {
+                        font-size: 0.75rem;
+                        letter-spacing: 0.03rem;
+                        color: var(--black-tint);
+                        text-transform: capitalize;
+                        text-align: right;
+
+                        &.rejected {
+                            background-color: transparent;
+                            color: var(--warning);
+                        }
+
+                        &.hired {
+                            background-color: transparent;
+                            color: var(--warning);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

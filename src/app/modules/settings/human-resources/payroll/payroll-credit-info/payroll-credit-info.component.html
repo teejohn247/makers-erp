@@ -1,0 +1,60 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon">
+                        <span class="icon">
+                            <app-icon [iconName]="'cash'" [iconWidth]="50" [iconHeight]="50"></app-icon>
+                        </span>
+                        <!-- <img src="../../../../assets/images/illustrations/wallet.png" /> -->
+                    </div>
+                    <div class="create-details">
+                        <div *ngIf="!data.isExisting" class="create-name">Create Payroll Credit</div>
+                        <div *ngIf="data.isExisting" class="create-name">Edit Payroll Credit</div>
+                        <!-- <p>The first step is to complete your business information.</p> -->
+                    </div>
+                    <div (click)="dialogRef.close()" class="close-btn">&times;</div>
+                    <!-- <div *ngIf="isUpdateCustomer" class="create-details">
+                        <div class="create-name">{{firstName}} {{lastName}}</div>
+                        <div class="create-id">Customer ID: {{customerId}}</div>
+                    </div> -->
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+        <div class="form-wrap clearfix">
+            <div class="form-hld">
+
+                <form [formGroup]="payrollCreditForm" class="form-container px-3" style="font-size: 0.8rem;">
+
+                    <ng-container class="d-flex" *ngFor="let field of payrollFieldData">
+                        <ng-container [ngSwitch]="field.controlType">
+
+                            <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label class="text-capitalize">{{field.controlLabel}}</mat-label>
+                                <input matInput [formControlName]="field.controlName">
+                                <mat-error *ngIf="payrollCreditForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'textarea'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <textarea type="field.controlType" rows="2" matInput [formControlName]="field.controlName"></textarea>
+                            </mat-form-field>
+    
+                        </ng-container>
+                    </ng-container>
+
+                    <div class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="onSubmit()" class="cta primary-bkg mmd text-uppercase" style="min-width: 30%" type="submit">Submit <span *ngIf="apiLoading" class="loader ms-1"></span></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+.status-card-wrap {
+    display: flex;
+    margin-top: 0.5rem;
+    white-space: nowrap;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-track {
+        display: none;
+    }
+
+    .status-card-hld {
+        width: 27%;
+        position: relative;
+        margin-bottom: 0.3rem;
+        display: inline-block;
+        border-radius: var(--radius-md);
+        background-color: white;
+        box-shadow: var(--card-shadow);
+        scroll-snap-align: start;
+
+        &:nth-child(n+2) {
+            margin-left: 2%;
+        }
+
+        .cont {
+            padding: 0.8rem 6%;
+            border-radius: var(--radius-md);
+            background-color: var(--primary-lightest);
+            border: 1px solid white;
+
+            &.total {
+                background-color: var(--primary-lightest);
+            }
+
+            &.active {
+                background-color: var(--approved-lightest);
+            }
+
+            &.overstay {
+                background-color: var(--warning-lightest);
+            }
+
+            &.expected {
+                background-color: var(--pending-lightest);
+            }
+
+
+            .det {
+                position: relative;
+
+                .title {
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    letter-spacing: 0.03rem;
+                    color: var(--darker);
+                }
+
+                .date {
+                    margin-top: 0.2rem;
+
+                    span {
+                        font-size: 0.7rem;
+                        letter-spacing: 0.03rem;
+
+                        i {
+                            font-size: 0.75rem;
+                            color: var(--darker);
+                            margin-right: 0.3rem;
+                        }
+                    }
+                }
+
+                .count {
+                    font-size: 0.7rem;
+                    letter-spacing: 0.03rem;
+                    
+                    span {
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        color: var(--black-tint);
+                        margin-right: 0.4rem;
+                    }
+                }
+
+                .icon {
+                    width: 60%;
+                    font-size: 1.8rem;
+                    //font-weight: 600;
+                    //color: var(--darker);
+                    text-align: right;
+
+                    &.total {
+                        color: var(--primary);
+                    }
+
+                    &.active {
+                        color: var(--approved);
+                    }
+
+                    &.overstay {
+                        color: var(--warning);
+                    }
+
+                    &.expected {
+                        color: var(--pending);
+                    }
+                }
+
+                &:last-child {
+                    display: flex;
+                    margin-top: 2rem;
+                    align-items: flex-end;
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+}
+
+.dataTable {
+    
+    .table-img {
+        display: inline-block;
+        background-position: top;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+    }
+}

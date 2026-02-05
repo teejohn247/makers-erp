@@ -1,0 +1,73 @@
+<div class="content-wrap">
+    <div class="row-section d-flex flex-wrap justify-content-between align-items-center">
+        <div class="page-header"><span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span> Product</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <!-- <div class="cta primary-bkg icon md"><i class="bi bi-diagram-3-fill"></i>View Employee Ladder</div> -->
+        </div>
+
+        <div class="col-lg-12 mt-lg-4">
+            <div class="tab-wrap py-0 px-0">
+                <ul class="tab-list">
+                    <li *ngFor="let link of tabMenu">
+                        <a [routerLink]="[link.routeLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                            <span>{{link.label}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!productDetails" class="row-section w-100">
+        <app-loading-data [height]="'15rem'"></app-loading-data>
+    </div>
+
+    <div *ngIf="productDetails" class="row-section my-lg-4">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div *ngIf="currentRoute == 'details'" class="row-card card-xsm card-ymd">
+                <div class="cont side-cont rd-pd h-auto">
+                    <div class="info major">
+                        <div class="image bkg-standard" style="background-image: url('{{productDetails?.productImage}}'); background-size: 70%;"></div>
+                        <div class="det mt-lg-3">
+                            <div *ngIf="productDetails?.productName" class="name">{{productDetails?.productName}}</div>
+                            <!-- <div class="role text-capitalize">{{productDetails?.partNumber}}</div> -->
+
+                            <div class="contact">
+                                <div class="info">
+                                    <span>{{productDetails?.partNumber}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info minor mt-lg-3">
+                        <div class="listed-items">
+                            <div class="item">
+                                <span class="label">Product Type:</span>
+                                <span class="text">{{productDetails?.productType}}</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Product Category:</span>
+                                <span class="text">{{productDetails?.productCategory.name}}</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Price:</span>
+                                <span class="text">{{productDetails?.currency}} {{productDetails?.price}}</span>
+                            </div>
+                            <!-- <div class="item">
+                                <span class="label">Date Joined:</span>
+                                <span class="text">{{strToDate(employeeDetails?.employmentStartDate) | date : 'd MMMM, y'}}</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Contract Type:</span>
+                                <span class="text">{{employeeDetails?.employmentType}}</span>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div [class.w-100]="currentRoute != 'details'" class="row-card card-xlg card-ymd">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

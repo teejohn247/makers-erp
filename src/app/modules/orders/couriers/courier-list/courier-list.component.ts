@@ -1,0 +1,151 @@
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { OrdersService } from 'src/app/shared/services/orders/orders.service';
+import { NotificationService } from 'src/app/shared/services/utils/notification.service';
+import { CourierInfoComponent } from '../courier-info/courier-info.component';
+
+@Component({
+  selector: 'app-courier-list',
+  templateUrl: './courier-list.component.html',
+  styleUrls: ['./courier-list.component.scss']
+})
+export class CourierListComponent implements OnInit {
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
+  displayedColumns: any[];
+  dataSource: MatTableDataSource<any>;
+  selection = new SelectionModel<any>(true, []);
+
+  courierList: any[] = [];
+
+  //Supplier Table Column Names
+  tableColumns: any[] = [
+    {
+      key: "select",
+      label: "Select",
+      order: 1,
+      columnWidth: "3%",
+      cellStyle: "width: 100%",
+      sortable: false
+    },
+    {
+      key: "logo",
+      label: "Logo",
+      order: 2,
+      columnWidth: "5%",
+      cellStyle: "width: 100%",
+      sortable: false
+    },
+    {
+      key: "courierName",
+      label: "Courier Name",
+      order: 4,
+      columnWidth: "11%",
+      cellStyle: "width: 100%",
+      sortable: true
+    },
+    {
+      key: "email",
+      label: "Contact Email",
+      order: 6,
+      columnWidth: "12%",
+      cellStyle: "width: 100%",
+      sortable: true
+    },
+    {
+      key: "address",
+      label: "Location",
+      order: 7,
+      columnWidth: "12%",
+      cellStyle: "width: 100%",
+      sortable: true
+    },
+    {
+      key: "activeOrders",
+      label: "Active Orders",
+      order: 8,
+      columnWidth: "13%",
+      cellStyle: "width: 100%",
+      sortable: true
+    },
+    {
+      key: "fufilledOrders",
+      label: "Fufilled Orders",
+      order: 9,
+      columnWidth: "8%",
+      cellStyle: "width: 100%",
+      sortable: true
+    },
+    {
+      key: "actions",
+      label: "Actions",
+      order: 10,
+      columnWidth: "5%",
+      cellStyle: "width: 100%",
+      sortable: true
+    }  
+  ]
+
+  constructor(
+    public dialog: MatDialog,
+    private ordersService: OrdersService,
+    private notifyService: NotificationService,
+  ) { }
+
+  ngOnInit(): void {
+    this.displayedColumns = this.tableColumns.map(column => column.label);
+    this.getPageData();
+  }
+  
+  getPageData = async () => {
+    this.courierList = await this.ordersService.getCouriers().toPromise();
+    console.log(this.courierList)
+
+    this.dataSource = new MatTableDataSource(this.courierList['data']);
+    this.dataSource.sort = this.sort;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ? this.selection.clear() : this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+  
+  addNewCourier() {
+    let dialogRef = this.dialog.open(CourierInfoComponent, {
+      width: '40%',
+      height: 'auto',
+      data: {
+        isExisting: false
+      },
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.getPageData();
+    }); 
+  }
+
+  viewCourier(info) {
+
+  }
+  
+  deleteCourier(info) {
+
+  }
+
+  addBulkCouriers() {
+
+  }
+
+}

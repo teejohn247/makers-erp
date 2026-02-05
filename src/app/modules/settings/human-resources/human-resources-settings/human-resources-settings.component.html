@@ -1,0 +1,209 @@
+<div class="content-wrap h-auto">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">HR Settings</div>
+    </div>
+</div>
+
+<div class="tab-wrap">
+    <ul class="tab-list">
+        <li *ngFor="let link of tabMenu">
+            <a [routerLink]="[link.routeLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+                <!-- <i class="{{link.icon}}"></i> -->
+                <!-- <mat-icon class="material-icons-round">{{item.icon}}</mat-icon> -->
+                <span>{{link.label}}</span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="card-yxl">
+    <router-outlet></router-outlet>
+</div>
+
+<!-- <div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Human Resources Settings</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div class="cta primary-bkg icon md">
+                <span class="icon">
+                    <app-icon [iconName]="'save'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                Save Changes
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-4">
+        <div class="col-card card-ylg d-flex justify-content-between align-items-start">
+            <div class="row-card card-xxl d-flex justify-content-end">
+                <form class="settings-form card-xxl" [formGroup]="hrSettingsForm" novalidate autocomplete="off">
+
+                    <div class="form-wrap d-flex justify-content-between card-xxl">
+
+                        <ng-container>
+                            <div class="sec-hld d-flex gap-2 mb-lg-2" [style.width]="'48%'">
+                                <div style="flex: 1;" class="field w-100">
+                                    <mat-form-field class="mb-lg-2 w-100" appearance="outline">
+                                        <mat-label>Create Department</mat-label>
+                                        <input matInput formControlName="department">
+                                    </mat-form-field>
+                                </div>
+                                <div (click)="createDepartment()" class="cta btn-add"><i class="bi bi-plus"></i></div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container>
+                            <div class="sec-hld d-flex gap-2 mb-lg-2" [style.width]="'48%'">
+                                <div style="flex: 1;" class="field w-100">
+                                    <mat-form-field class="mb-lg-2 w-100" appearance="outline">
+                                        <mat-label>Create Designation</mat-label>
+                                        <input matInput formControlName="designation">
+                                    </mat-form-field>
+                                </div>
+                                <div (click)="createDesignation()" class="cta btn-add"><i class="bi bi-plus"></i></div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container>
+                            <div class="sec-hld d-flex gap-2 mb-lg-2" [style.width]="'48%'">
+                                <div style="flex: 1;" class="field w-100">
+                                    <mat-form-field class="mb-lg-2 w-100" appearance="outline">
+                                        <mat-label>Create Leave Type</mat-label>
+                                        <input matInput formControlName="leaveType">
+                                    </mat-form-field>
+                                </div>
+                                <div (click)="createLeaveType()" class="cta btn-add"><i class="bi bi-plus"></i></div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container>
+                            <div class="sec-hld d-flex gap-2 mb-lg-2" [style.width]="'48%'">
+                                <div style="flex: 1;" class="field w-100">
+                                    <mat-form-field class="mb-lg-2 w-100" appearance="outline">
+                                        <mat-label>Create Public Holiday</mat-label>
+                                        <input matInput formControlName="holidayName">
+                                    </mat-form-field>
+                                </div>
+                                <div (click)="createPublicHoliday()" class="cta btn-add"><i class="bi bi-plus"></i></div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container>
+                            <div class="sec-hld d-flex gap-2" [style.width]="'48%'">
+                                <div style="flex: 1;" class="field w-100">
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Create Expense Type</mat-label>
+                                        <input matInput formControlName="expenseType">
+                                    </mat-form-field>
+                                </div>
+                                <div (click)="createExpenseType()" class="cta btn-add"><i class="bi bi-plus"></i></div>
+                            </div>
+                        </ng-container>
+
+                    </div>
+
+                    <div class="form-wrap d-flex justify-content-between card-xxl pt-lg-5 mt-3">
+
+                        <ng-container>
+                            <div class="sec-hld d-flex gap-2" [style.width]="'48%'">
+                                <div style="flex: 1;" class="field w-100">
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Create Payroll Credit</mat-label>
+                                        <input matInput formControlName="payrollCredit">
+                                    </mat-form-field>
+                                </div>
+                                <div (click)="createPayrollCredit()" class="cta btn-add"><i class="bi bi-plus"></i></div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container>
+                            <div class="sec-hld d-flex gap-2" [style.width]="'48%'">
+                                <div style="flex: 1;" class="field w-100">
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Create Payroll Debit</mat-label>
+                                        <input matInput formControlName="payrollDebit">
+                                    </mat-form-field>
+                                </div>
+                                <div (click)="createPayrollDebit()" class="cta btn-add"><i class="bi bi-plus"></i></div>
+                            </div>
+                        </ng-container>
+
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="row-card card-xmmd ms-lg-4">
+                <div class="cont">
+                    <div class="card-title clr mb-lg-1">Company Entities</div>
+                    <mat-accordion>
+                        <mat-expansion-panel *ngFor="let item of accordionItems; let i = index" class="mat-elevation-z0">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>{{item.label}}</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="list-section">
+                                <div class="list-scroll">
+                                    <div *ngFor="let entity of item.list; let j = index" class="list-hld">
+                                        <div *ngIf="item.label == 'Departments' " class="name">{{entity.departmentName}}</div>
+                                        <div *ngIf="item.label == 'Designations' " class="name">{{entity.designationName}}</div>
+                                        <div *ngIf="item.label == 'Leave Types' " class="name">{{entity.leaveName}} Leave</div>
+                                        <div *ngIf="item.label == 'Holidays' " class="name">{{entity.holidayName}}</div>
+                                        <div *ngIf="item.label == 'Expense Types' " class="name">{{entity.expenseType}}</div>
+                                        <div *ngIf="item.label == 'Departments'" class="actions">
+                                            <i (click)="editDepartment(entity)" class="bi bi-pen-fill"></i>
+                                            <i (click)="deleteDept(entity)" class="bi bi-trash3-fill"></i>
+                                        </div>
+                                        <div *ngIf="item.label == 'Leave Types'" class="actions">
+                                            <i (click)="editLeaveType(entity)" class="bi bi-pen-fill"></i>
+                                            <i (click)="deleteLeaveType(entity)" class="bi bi-trash3-fill"></i>
+                                        </div>
+                                        <div *ngIf="item.label == 'Holidays'" class="actions">
+                                            <i (click)="editPublicHoliday(entity)" class="bi bi-pen-fill"></i>
+                                            <i (click)="deletePublicHoliday(entity)" class="bi bi-trash3-fill"></i>
+                                        </div>
+                                        <div *ngIf="item.label == 'Expense Types'" class="actions">
+                                            <i (click)="editExpenseType(entity)" class="bi bi-pen-fill"></i>
+                                            <i (click)="deleteExpenseType(entity)" class="bi bi-trash3-fill"></i>
+                                        </div>
+                                        <div *ngIf="item.label == 'Designations'" class="actions">
+                                            <i (click)="editDesignation(entity)" class="bi bi-pen-fill"></i>
+                                            <i (click)="deleteDesignation(entity)" class="bi bi-trash3-fill"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+
+                </div>
+
+                <div class="cont mt-lg-4">
+                    <div class="card-title clr mb-lg-1">Payroll Entities</div>
+                    <mat-accordion>
+                        <mat-expansion-panel *ngFor="let item of payrollAccordionItems; let i = index" class="mat-elevation-z0">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>{{item.label}}</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="list-section">
+                                <div class="list-scroll">
+                                    <div *ngFor="let entity of item.list; let j = index" class="list-hld">
+                                        <div class="name">{{entity.name}}</div>
+                                        <div *ngIf="item.label == 'Payroll Credits'" class="actions">
+                                            <i (click)="editPayrollCredit(entity)" class="bi bi-pen-fill"></i>
+                                            <i (click)="deletePayrollCredit(entity)" class="bi bi-trash3-fill"></i>
+                                        </div>
+                                        <div *ngIf="item.label == 'Payroll Debits'" class="actions">
+                                            <i (click)="editPayrollDebit(entity)" class="bi bi-pen-fill"></i>
+                                            <i (click)="deletePayrollDebit(entity)" class="bi bi-trash3-fill"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

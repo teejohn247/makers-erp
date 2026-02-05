@@ -1,0 +1,19 @@
+<div class="stepper-wrap">
+    <div 
+        (click)="goToStep(i)" 
+        *ngFor="let step of stepperItems; let i = index"
+        [ngClass]="{'done': currentStep >= i, 'active': i == currentStep+1}" 
+        role="button" 
+        class="step-hld"
+    >
+        <span class="icon">
+            <app-icon [iconName]="step.icon" [iconWidth]="step.iconSize" [iconHeight]="step.iconSize"></app-icon>
+        </span>
+        <span>{{step.stepName}}</span>
+    </div>
+
+    <div class="step-trail">
+        <div [style.width]="currentStep*stepCount + '%'" class="track"></div>
+        <div [style.width]="(currentStep+1)*stepCount + '%'" class="track-pending"></div>
+    </div>
+</div>

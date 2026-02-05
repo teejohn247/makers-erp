@@ -1,0 +1,185 @@
+<div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Expense Management</div>
+        <!-- <div class="main-actions d-flex justify-content-start align-items-center">
+            <div (click)="addNewPayrollFile()" class="cta primary-bkg icon md">New Payroll</div>
+        </div> -->
+    </div>
+
+    <div class="row-section mt-lg-4">
+        <div class="inner-row-hld d-flex justify-content-between">
+            
+            <div class="row-card card-xlg card-yxl">
+                <div class="cont">
+                    <div class="col-card card-xxl">
+                        <highcharts-chart
+                            [Highcharts]="AreaHighcharts"
+                            [options]="areaChartOptions"
+                            style="width: 100%; max-width: 100%; height: 280px; display: block;"
+                        >
+                        </highcharts-chart>
+                    </div>
+                    <!-- <div class="donut-chart">
+                        <div class="chart-title">
+                            <span>14</span>
+                            <span>Leave Balance <br> (Days)</span>
+                        </div>
+                        <highcharts-chart
+                            [Highcharts]="PieHighcharts"
+                            [options]="pieChartOptions"
+                            style="width: auto; max-width: 100%; height: 250px; display: flex; align-items: center; justify-content: center; background: transparent;"
+                        >
+                        </highcharts-chart>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="row-card card-xsm card-yxl">
+                <div class="cont">
+                    <div class="card-title clr">Expense Requests Approvals</div>
+                    <div class="listed-items mt-lg-3">
+                        <div *ngIf="approvedRequests?.length == 0" class="item">
+                            <div class="content">
+                                <app-no-data 
+                                    [height]="'15rem'"
+                                    [icon]="'wallet'"
+                                    [message]="'There are no approved expense requests at the moment'"
+                                >
+                                </app-no-data>
+                            </div>
+                        </div>
+
+                        <div *ngFor="let request of approvedRequests | slice:0:5;" class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major bd">{{request.employeeName}}</div>
+                                    <div class="minor">{{request.expenseTypeName}}</div>
+                                </div>
+                                <div class="det right">
+                                    <div class="major">NGN {{request.amount.toLocaleString()}}</div>
+                                    <!-- <div class="minor sm">Apr 20 -28</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3">
+        <div class="table-wrap">
+
+            <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                <div class="card-title">Reimbursement Request History</div>
+            </div>
+
+            <div class="inner-row">
+                <table 
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="dataTable mat-elevation-z0"
+                    matSort
+                >
+
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+
+                        <!-- <ng-container *ngIf="column.key == 'image'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td style="white-space: nowrap;" mat-cell 
+                                *matCellDef="let row">
+                                <span *ngIf="!row.image" class="initials">{{row.employeeName[0]}}</span>
+                                <span *ngIf="row.image" class="table-img bkg-standard" style="background-image: url('../../../../assets/images/illustrations/human-icon-clr.png');"></span>
+                            </td>
+                        </ng-container> -->
+
+                        <ng-container *ngIf="column.key == 'employeeName'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>Name</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <div class="major">{{row.employeeName}}</div>
+                                <!-- <div class="minor">{{row["Date Used"]}}</div> -->
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'expenseTypeName'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <div class="major">{{ row[column.key] }}</div>
+                                <!-- <div class="minor">{{row.expenseDate}}</div> -->
+                                <div class="minor">{{strToDate(row.expenseDate, 'dateRequested')}}</div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'attachment'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="icon adobe"><i class="bi bi-file-earmark-pdf"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'dateRequested'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell *matCellDef="let row">{{ strToDate(row[column.key], 'dateRequested') }}</td>
+                            <!-- <td mat-cell *matCellDef="let row">{{ row[column.key]}}</td> -->
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'approver'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <div class="major">{{ row[column.key] }}</div>
+                                <div class="minor">{{row["Decision Date"]}}</div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'status'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="status approved" *ngIf="row[column.key] == 'Approved'">{{ row[column.key] }}</span>
+                                <span class="status pending" *ngIf="row[column.key] == 'Pending'">{{ row[column.key] }}</span>
+                                <span class="status rejected" *ngIf="row[column.key] == 'Declined'">{{ row[column.key] }}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'actions'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let element">
+                                <span (click)="actionRequest(element)" class="table-icon edit"><i class="bi bi-pen-fill"></i></span>
+                                <span *ngIf="element['Status'] == 'Pending'" class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container>
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <div class="empty-data">
+                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                <div class="text">No expense request records exist.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>

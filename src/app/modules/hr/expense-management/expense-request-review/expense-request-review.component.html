@@ -1,0 +1,108 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <!-- <div class="hdr-title">
+                <div class="create-title">Create New Employee</div>
+
+                
+            </div> -->
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon">
+                        <span class="icon">
+                            <app-icon [iconName]="'cash'" [iconWidth]="50" [iconHeight]="50"></app-icon>
+                        </span>
+                        <!-- <img src="../../../../assets/images/illustrations/wallet.png" /> -->
+                    </div>
+                    <div class="create-details">
+                        <div *ngIf="!data.forApproval" class="create-name">Edit Expense Type</div>
+                        <div *ngIf="data.forApproval" class="create-name">{{data.modalInfo.employeeName}}</div>
+                        <!-- <p>The first step is to complete your business information.</p> -->
+                    </div>
+                    <div (click)="dialogRef.close()" class="close-btn">&times;</div>
+                    <!-- <div *ngIf="isUpdateCustomer" class="create-details">
+                        <div class="create-name">{{firstName}} {{lastName}}</div>
+                        <div class="create-id">Customer ID: {{customerId}}</div>
+                    </div> -->
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+        <div class="form-wrap clearfix">
+            <div class="form-hld">
+
+                <form [formGroup]="expenseForm" class="form-container px-3" style="font-size: 0.8rem;">
+
+                    <ng-container class="d-flex" *ngFor="let field of expenseRequestFields">
+                        <ng-container [ngSwitch]="field.controlType">
+
+                            <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label class="text-capitalize">{{field.controlLabel}}</mat-label>
+                                <input readonly="field.readonly" matInput [formControlName]="field.controlName">
+                                <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'textarea'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <textarea [readonly]="field.readonly" type="field.controlType" rows="1" matInput [formControlName]="field.controlName"></textarea>
+                                <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'file'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <input (click)="fileUpload.click()" matInput [formControlName]="field.controlName">
+                                <input 
+                                    type="file" 
+                                    class="file-upload"
+                                    style="display: none;"
+                                    (change)="attachmentUpload($event)" 
+                                    #fileUpload
+                                />
+                                <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">Required</mat-error>
+                            </mat-form-field>
+    
+                            <mat-form-field *ngSwitchCase="'select'" class="mb-lg-0" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <mat-select
+                                    class="selectField"
+                                    [disabled]="field.readonly"
+                                    disableOptionCentering
+                                    panelClass="matDropdown"
+                                    [formControlName]="field.controlName"
+                                >
+                                    <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'date'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <input readonly matInput [matDatepicker]="picker" [formControlName]="field.controlName">
+                                <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+                                <mat-datepicker-toggle [disabled]="field.readonly" matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('date')">{{field.controlLabel}} is invalid</mat-error>
+                            </mat-form-field>
+    
+                        </ng-container>
+                    </ng-container>
+
+                    <div *ngIf="!data.forApproval" class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="updateExpenseRequest()" class="cta primary-bkg sm text-uppercase" style="min-width: 32%">Update Request</div>
+                    </div>
+
+                    <div *ngIf="data.forApproval && data.modalInfo.status == 'Pending'" class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="onSubmit('decline')" class="cta warning-bkg sm text-uppercase me-lg-3 me-2" style="min-width: 30%">Decline</div>
+                        <div (click)="onSubmit('approve')" class="cta approved-bkg sm text-uppercase" style="min-width: 30%">Approve</div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

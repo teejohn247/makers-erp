@@ -1,0 +1,155 @@
+<div class="content-wrap d-block pb-5 mb-5">
+
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header md"><span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span> {{courseInView?.title}}</div>
+        <div class="main-actions d-flex justify-content-start align-items-center"> 
+            <div *ngIf="loggedInUser.isSuperAdmin" (click)="editCourse()" class="cta trans-bkg icon md me-3">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'graduation'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                </span>
+                Edit Course
+            </div>
+            <div *ngIf="videoProgress > 70 && !hasPassed" (click)="openAssessmentCheck()" class="cta primary-bkg icon md">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'medalStar'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                </span>
+                Take Assessment <span *ngIf="apiLoading" class="loader"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section mt-4" style="flex: unset;">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="row-card card-xlg ecard-ymd">
+                <div class="inner-row card-yxl d-flex justify-content-between align-items-center">
+                    <div class="cont video-wrap card-xxl card-yxl px-0 py-0">
+                        <video #videoPlayer controls controlsList="nodownload" (timeupdate)="updateProgress(videoPlayer)" [class.cover]="!isFullScreen">
+                            <source *ngIf="videoUrl" [src]="videoUrl" type="video/mp4">
+                            <!-- Your browser does not support the video tag. -->
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card card-xsm">
+                <div *ngIf="courseInView" class="cont course-details card-xxl ecard-ymd rd-pd">
+                    <div class="chip">{{courseInView?.title}}</div>
+                    <div class="param-wrap mt-4">
+                        <div class="info-hld">
+                            <span class="icon warning">
+                                <app-icon [iconName]="'clock'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                <span class="det ps-2">Duration</span>
+                            </span> 
+                            {{convertHrsMins(courseInView?.duration)}}
+                        </div>
+                        <div class="info-hld">
+                            <span class="icon primary">
+                                <app-icon [iconName]="'calendar'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                <span class="det ps-2">Updated</span>
+                            </span> 
+                            {{courseInView?.updatedAt | date: 'd MMM, YYY'}}
+                        </div>
+                        <div class="info-hld">
+                            <span class="icon considered">
+                                <app-icon [iconName]="'folderAi'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                <span class="det ps-2">Skill Level</span>
+                            </span> 
+                            {{courseInView?.level}}
+                        </div>
+                        <div class="info-hld">
+                            <span class="icon approved">
+                                <app-icon [iconName]="'users'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                <span class="det ps-2">Enrollments</span>
+                            </span> 
+                            {{courseInView?.enrollments}}
+                        </div>
+                        <div class="info-hld">
+                            <span class="icon pending">
+                                <app-icon [iconName]="'star'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                <span class="det ps-2">Rating</span>
+                            </span> 
+                            {{courseInView.rating}}
+                        </div>
+                    </div> 
+
+                    <div class="progress-wrap mt-4">
+                        <div class="info d-flex justify-content-between align-items-center">
+                            <span>Course Progress</span>
+                            <span>{{videoProgress}}%</span>
+                        </div>
+                        <div class="progress-bar mt-2">
+                            <div 
+                                class="bar-fill" 
+                                [ngStyle]="{'width.%': videoProgress, 'background': '#4285f4'}" 
+                            ></div>
+                        </div>
+                    </div>
+                    
+                    <div class="btn-hld mt-3">
+                        <button (click)="playVideo($event)" *ngIf="videoProgress == 0" class="cta primary-bkg lg w-100 border-0">Start Learning</button>
+                        <button (click)="playVideo($event)" *ngIf="videoProgress != 100 && videoProgress != 0 && !videoPlaying" class="cta trans-bkg lg w-100">Continue Learning</button>
+                        <button (click)="pauseVideo($event)" *ngIf="videoProgress != 100 && videoPlaying" class="cta trans-bkg lg w-100">Pause Learning</button>
+                        <button *ngIf="videoProgress == 100" (click)="openAssessmentCheck()" class="cta trans-bkg lg w-100">{{hasPassed ? 'View Grades' :'Take Assessment'}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section mt-4">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="row-card card-xlg card-yauto">
+                <div class="tab-wrap inner px-0 py-0">
+                    <ul class="tab-list">
+                        <li (click)="activeTab = 'about'" [class.active]="activeTab == 'about'" role="button">About this course</li>
+                        <li (click)="activeTab = 'quiz'" [class.active]="activeTab == 'quiz'" role="button">Assessment</li>
+                        <li (click)="activeTab = 'reviews'" [class.active]="activeTab == 'reviews'" role="button">Reviews</li>
+                    </ul>
+                </div>
+
+                <div class="tab-content mt-4">
+                    <section *ngIf="activeTab == 'about'" class="px-3">
+                        <div [innerHTML]="courseInView?.description"></div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="row-card card-xsm">
+                <div class="cont">
+                    <div class="card-title clr">Course Manager</div>
+                    <div class="listed-items mt-lg-3">
+                        <div class="item">
+                            <div class="image bkg-standard" style="background-image: url('{{courseInView?.courseManager.profilePic}}');"></div>
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">{{courseInView?.courseManager?.fullName}}</div>
+                                    <div class="minor">{{courseInView?.courseManager.email}}</div>
+                                </div>
+                                <div class="det">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section my-5 pb-5"></div>
+
+</div>
+
+
+<div [class.opened]="previewModalOpened" class="sidenav-container"> 
+    <div (click)="closePreviewModal()" class="sidenav-bkg"></div> 
+    <div [class.opened]="previewModalOpened" class="sidenav-content">
+        <app-assessment-page
+            [assessmentId]="assessmentDetails?._id"
+            [assessmentTitle]="this.assessmentDetails?.title"
+            [assessmentInfo$]="assessmentInView$"
+            [assessmentDuration$]="timeLimit$"
+            (triggerModalClosure)="closePreviewModal()"
+        >
+        </app-assessment-page>
+    </div>
+</div>

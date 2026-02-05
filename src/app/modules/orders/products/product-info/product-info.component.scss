@@ -1,0 +1,57 @@
+
+.upload-wrap {
+    width: 100%;
+    height: auto;
+    display: flex;
+    padding: 1rem 0;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-black-lightest);
+    cursor: pointer;
+    gap: 0.3rem;
+
+    input {
+        display: none;
+    }
+
+    .icon {
+        font-size: 1.8rem;
+        color: var(--primary);
+    }
+
+    .info {
+        font-size: 0.9rem;
+        letter-spacing: 0.03rem;
+        color: var(--black-tint);
+    }
+
+    .file-name {
+        font-size: 0.8rem;
+        letter-spacing: 0.03rem;
+    }
+
+    .logo {
+        width: auto;
+        height: 2.7rem;
+    }
+}
+
+.select-add {
+    width: 2.8rem;
+    height: 2.9rem;
+    font-size: 1.8rem;
+    margin-top: 0.2rem;
+    outline: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    background-color: var(--primary-dark);
+    color: white;
+
+    &.disabled {
+        cursor: default;
+        color: rgba(white, 0.8);
+        background-color: rgba(black, 0.15);
+    }
+}

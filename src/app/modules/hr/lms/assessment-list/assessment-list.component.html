@@ -1,0 +1,89 @@
+<div class="content-wrap d-block pb-5 mb-5">
+
+    <div class="row-section" style="flex: unset;">
+        <div class="inner-row-hld d-flex justify-content-between align-items-start">
+            <div class="row-card card-xsm ecard-yauto pe-lg-2">
+                <div class="cont rd-pd">
+                    <div class="card-title clr">Filter by Course Categories</div>
+                    <div *ngIf="courseCategories" class="info minor mt-lg-3">
+                        <form [formGroup]="filterForm" class="categories-wrap mt-3 d-flex flex-wrap">
+                            <div class="form-check events cursor-pointer">
+                                <label class="form-check-label">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="checkbox"
+                                        formControlName="selectAll"
+                                        (change)="filterItems()"
+                                    >
+                                    <div class="check-wrap">
+                                        <span class="icon" style="color: var(--primary);">
+                                            <app-icon [iconName]="'graduation'" [iconWidth]="25" [iconHeight]="25"></app-icon>
+                                        </span>
+                                        <span>All Courses</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div 
+                                class="form-check"
+                                formArrayName="itemFilters"
+                                *ngFor="let item of filterForm.controls['itemFilters']['controls']; let i = index"
+                            >
+                                <label class="form-check-label">
+                                    <input (change)="filterItems()" class="form-check-input" type="checkbox" [formControlName]="i">
+                                    <div class="check-wrap">
+                                        <span>{{itemFilters[i].name}}</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </form>
+                        <!-- <div class="listed-items">
+                            <div class="item">
+                                <span class="label">Department:</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Designation:</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Date Joined:</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Contract Type:</span>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card card-xlg card-ymd">
+                <div class="inner-row d-flex justify-content-between align-items-center">
+                    <div class="input-wrap flex-grow-1">
+                        <input 
+                            type="text"
+                            [(ngModel)]="searchFilter"
+                            class="form-control form-control-md w-100" 
+                            id="course" 
+                            placeholder="Search for an assessment"
+                        />
+                        <span class="search-icon">
+                            <i class="bi bi-search"></i>
+                        </span>
+                    </div>
+                    <div *ngIf="loggedInUser.isSuperAdmin" (click)="addNewAssessment()" class="cta primary-bkg icon lg ms-lg-3">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'graduation'" [iconWidth]="22" [iconHeight]="22"></app-icon>
+                        </span>
+                        Add New Assessment
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap assessments-wrap mt-4">
+                    <div *ngFor="let item of assessments; let i = index" role="button" class="assessment-hld ecard-xmd">
+                        <app-assessment-card (click)="viewDetails(item)" [cardInfo]="item" [isSuperAdmin]="loggedInUser.isSuperAdmin" (triggerDelete)="deleteAssessment($event)"></app-assessment-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section my-5 pb-5"></div>
+
+</div>

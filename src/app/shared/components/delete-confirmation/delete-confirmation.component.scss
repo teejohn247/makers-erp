@@ -1,0 +1,73 @@
+
+.remove-card {
+    width: 75%;
+    height: auto;
+    margin: auto;
+    padding: 4vh 5%;
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+    //border: 1px solid #dadee2;
+    //box-shadow: 0 0 4px 4px rgb(224 224 224 / 30%);
+    background: var(--darker);
+  
+    .card-title {
+        font-size: 1rem;
+        color: var(--warning);
+        font-weight: 600;
+        margin-bottom: 2vh;
+        padding-bottom: 2vh;
+        letter-spacing: 0.04rem;
+        border-bottom: 1px solid #e8edf2;
+    }
+  
+    .card-details {
+        margin: 2vh 0 4vh;
+        color: white;
+  
+        p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            letter-spacing: 0.04rem;
+        }
+    }
+  
+    .btn-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+  
+    //   .wht-bkg {
+    //     button {
+    //       background-color: #fff;
+    //       color: #5a5b5c;
+    //     }
+    //   }
+  
+    //   .clr-bkg {
+    //     button {
+    //       background-color: va;
+    //       color: #fff;
+    //     }
+    //   }
+  
+    //   button {
+    //     border-radius: 5px;
+    //     border: 1px solid #dadee2;
+    //     padding: 7px 12px;
+    //     outline: none;
+  
+    //     &:hover {
+    //       cursor: pointer;
+    //     }
+    //   }
+    }
+}
+
+
+::ng-deep .mat-dialog-container {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+
+  

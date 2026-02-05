@@ -1,0 +1,299 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "@angular/material/prebuilt-themes/indigo-pink";
+@import './assets/styles/base/base-dir';
+@import './assets/styles/components/components-dir';
+@import '../node_modules/angular-calendar/css/angular-calendar.css';
+
+html, 
+body { 
+    height: 100%; 
+}
+
+body { margin: 0; font-family: var(--font-regular), "Helvetica Neue", sans-serif; }
+
+.mat-form-field {
+    font-family: 'AR';
+}
+
+// Mat select disable underline
+.mat-form-field-appearance-fill .mat-form-field-underline::before {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/******************* CALENDAR STYLINGS ***********************/
+
+.cal-curr-month {
+    font-size: 1rem !important;
+    font-family: var(--font-bold) !important;
+    margin: 0 !important;
+}
+
+.cal-week-view {
+    overflow: hidden;
+    border-radius: 0.4rem;
+    box-shadow: var(--card-shadow);
+
+    .cal-day-headers {
+        background: var(--primary-light);
+
+        .cal-header {
+
+            b {
+                font-size: 0.85rem !important;
+                font-family: var(--font-regular) !important;
+                letter-spacing: 0.02rem;
+            }
+    
+            span {
+                font-size: 0.7rem !important;
+                font-family: var(--font-regular);
+                letter-spacing: 0.02rem;
+            }
+        }
+    }
+}
+
+.cal-month-view {
+    overflow: hidden;
+    border-radius: 0.4rem;
+    box-shadow: var(--card-shadow);
+    font-family: var(--font-regular);
+
+    .cal-header {
+        background: var(--primary-light);
+    
+        &:hover {
+            background: var(--primary-light);
+        }
+
+        .cal-cell {
+            font-weight: 400;
+            letter-spacing: 0.02rem;
+            padding: 10px 0;
+        }
+    }
+
+    .cal-days {
+        border: none;
+
+        .ng-star-inserted {
+
+            &:last-child {
+
+                .cal-cell-row {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+
+    .cal-day-cell {
+        min-height: 30px;
+    }
+
+    .cal-day-number {
+        font-size: 0.85rem;
+    }
+
+    .cal-day-cell.cal-today .cal-day-number {
+        font-size: 1.1rem;
+        font-family: var(--font-medium);
+    }
+
+    .cal-open-day-events {
+        //background: var(--black-tint-md);
+
+        .cal-event-actions {
+
+            a {
+                &:first-child {
+                    color: var(--primary);
+                }
+                &:last-child {
+                    color: var(--warning);
+                }
+            }
+        }
+    }
+
+    .cal-events {
+        margin: 5px 7px;
+    }
+
+    .cal-day-badge {
+        background: var(--primary);
+        //color: var(--darker);
+    }
+}
+
+.btn-group.cal-btns {
+    font-family: var(--font-regular);
+    border: 1px solid var(--primary-light);
+    background: transparent;
+    padding: 0.3rem;
+    //border: none;
+
+    .prev, .next {
+        color: var(--darker);
+        border: none;
+        background: var(--primary-light);
+        //border-radius: 50%;
+    }
+
+    .current {
+        font-size: 0.85rem;
+        border: none;
+        margin: 0;
+        background: var(--primary-light);
+        color: var(--darker);
+
+        &:hover {
+            background: var(--primary-light);
+        }
+    }
+
+    .month-btn,
+    .week-btn, 
+    .day-btn {
+        font-size: 0.85rem;
+        font-family: var(--font-regular);
+        color: var(--darker);
+        border: none;
+        background: white;
+
+        &.active {
+            color: var(--darker);
+            border: 1px solid var(--primary-lightest);
+            background: var(--primary-light);
+        }
+    } 
+}
+
+/******************* TIME PICKER STYLINGS ***********************/
+
+.timepicker {
+    overflow: hidden !important;
+    border-radius: 0.4rem !important;
+}
+
+.timepicker-backdrop-overlay,
+.timepicker-overlay {
+    z-index: 1005 !important;
+}
+
+.timepicker-button {
+    color: var(--primary) !important;
+}   
+.timepicker__header,
+.clock-face__number > span.active,
+.clock-face__clock-hand {
+    background-color: var(--primary) !important;
+}
+.clock-face__clock-hand_minute {
+    border-color: var(--primary) !important;
+}
+
+/******************* GRAPH STYLINGS ***********************/
+
+.highcharts-axis-labels.highcharts-xaxis-labels text, 
+.highcharts-axis-labels.highcharts-yaxis-labels text {
+    font-family: var(--font-regular);
+}
+
+ngx-charts-chart {
+    font-family: var(--font-regular);
+}
+
+.guage-chart {
+
+    .reading-block {
+        overflow: visible;
+        font-family: var(--font-bold);
+    }
+
+    .reading-label {
+        font-family: var(--font-medium);
+        letter-spacing: 0.03rem;
+    }
+}
+
+
+
+//Quill Editor
+.ql-editor p {
+    letter-spacing: 0.03rem;
+    // font-family: var(--font-regular);
+    color: var(--black-tint);
+}
+.ql-editor::placeholder {
+    color: white;
+}
+
+.ql-toolbar.ql-snow {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.ql-container.ql-snow {
+    border-bottom-right-radius: var(--radius-md);
+    border-bottom-left-radius: var(--radius-md);
+}
+
+::ng-deep {
+
+    app-quill-editor {
+
+        .ql-editor.ql-blank::before {
+            color: white !important;
+        }
+    
+        .ql-container.ql-snow {
+            border-radius: var(--radius-md) !important;
+        }
+    }
+}
+
+.mat-paginator {
+    background: var(--primary-light);
+}
+
+.mat-paginator-container {
+    letter-spacing: 0.03rem;
+    padding: 0 1.2rem !important;
+    justify-content: space-between !important;
+    font-family: var(--font-regular) !important;
+
+    .mat-icon-button {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0.4rem;
+        border-radius: 0.3rem;
+        background: white;
+        box-shadow: var(--card-shadow);
+    }
+
+    .mat-form-field-appearance-legacy .mat-form-field-underline {
+        height: 0 !important;
+    }
+
+    .mat-form-field {
+
+        .mat-select-value-text {
+            font-family: var(--font-regular);
+        }
+
+        .mat-option- {
+            font-family: var(--font-regular);
+        }
+    }
+}
+
+
+.mat-chip-list-wrapper input.mat-input-element, .mat-chip-list-wrapper .mat-standard-chip {
+    font-size: 0.7rem;
+    letter-spacing: 0.03rem;
+    font-family: var(--font-regular);
+}

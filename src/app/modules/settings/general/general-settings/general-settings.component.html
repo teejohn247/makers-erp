@@ -1,0 +1,114 @@
+<div class="content-wrap">
+
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Account Information</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div class="cta primary-bkg icon md">
+                <span class="icon pe-1">
+                    <app-icon [iconName]="'save'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                Save Changes
+            </div>
+            <!-- <div class="cta trans-bkg icon md ms-lg-3"><i class="bi bi-box-arrow-down"></i> Import</div>
+            <div class="cta trans-bkg icon md ms-lg-3"><i class="bi bi-box-arrow-up"></i> Export</div> -->
+        </div>
+    </div>
+
+
+    <div class="row-section mt-lg-4">
+
+        <div class="col-card card-ylg d-flex justify-content-between align-items-start">
+
+            <div class="row-card card-xxl d-flex justify-content-end">
+                <form class="settings-form card-xxl" [formGroup]="generalInfoForm" novalidate autocomplete="off">
+
+                    <div class="form-wrap d-flex justify-content-between card-xxl">
+                        <mat-form-field class="mb-lg-2" [style.width]="'48%'" appearance="outline">
+                            <mat-label>Company Name</mat-label>
+                            <input matInput formControlName="companyName">
+                        </mat-form-field>
+                        <!-- <div class="sec-hld mb-lg-2" style="width: 48%">
+                            <label class="mb-lg-2">Company Name</label>
+                            <input type="text" disabled formControlName="companyName" class="form-control form-control-md muted" id="companyName" placeholder="Enter company name">
+                        </div> -->
+
+                        <mat-form-field class="mb-lg-2" [style.width]="'48%'" appearance="outline">
+                            <mat-label>Company Address</mat-label>
+                            <input matInput formControlName="companyAddress">
+                        </mat-form-field>
+
+                        <!-- <div class="sec-hld mb-lg-2" style="width: 48%">
+                            <label class="mb-lg-2">Company Address</label>
+                            <input type="text" formControlName="companyAddress" class="form-control form-control-md" id="companyName" placeholder="Enter company address">
+                        </div> -->
+
+                        <mat-form-field class="mb-lg-2" [style.width]="'48%'" appearance="outline">
+                            <mat-label>Super Admin Email</mat-label>
+                            <input matInput formControlName="superAdminEmail">
+                        </mat-form-field>
+
+                        <!-- <div class="sec-hld mt-lg-3" style="width: 48%">
+                            <label class="mb-lg-2">Super Admin Email</label>
+                            <input type="email" disabled formControlName="superAdminEmail" class="form-control form-control-md muted" id="superAdminEmail">
+                        </div> -->
+
+                        <!-- <div class="sec-hld d-flex align-items-end" style="width: 48%">
+                            <div class="form-hld w-100" style="flex: 1;">
+                                <mat-form-field class="mb-lg-2" [style.width]="'100%'" appearance="outline">
+                                    <mat-label>Reset Password</mat-label>
+                                    <input matInput formControlName="superAdminPassword">
+                                </mat-form-field>
+                            </div>
+                            <div style="position: relative; bottom: 2rem;" class="cta primary-bkg xs ms-lg-2">Reset</div>
+                        </div> -->
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="row-card card-xmmd ms-lg-4">
+                <div class="cont ecard-ymd" style="height: 40rem">
+                    <div class="card-title clr mb-lg-1">Account Info</div>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+
+<div [ngClass]="{'active': !companyCreated}" class="page-overlay">
+    <div class="outer"></div>
+    <div class="content">
+        <div class="top-card">
+            <div class="inner-wrap">
+                <div class="hdr-details">
+                    <div class="inner-wrap">
+                        <div class="create-icon">
+                            <span class="icon">
+                                <app-icon [iconName]="'sheath'" [iconWidth]="55" [iconHeight]="55"></app-icon>
+                            </span>
+                        </div>
+                        <div class="create-details">
+                            <div class="create-name">Enter Company Name</div>
+                            <!-- <p>The first step is to complete your business information.</p> -->
+                        </div>
+                    </div>
+                    <div class="hdr-overlay"></div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="bottom-card">
+            <mat-form-field color="primary" class="mb-lg-2" [style.width]="'100%'" appearance="outline">
+                <mat-label>Company Name</mat-label>
+                <input matInput required [(ngModel)]="companyName">
+            </mat-form-field>
+
+            <div (click)="createCompany()" class="cta primary-bkg w-100 icon lg"><i class="bi bi-people-fill"></i>SUBMIT</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Visitor's Log</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div (click)="addNewVisitor()" class="cta primary-bkg icon md"><i class="bi bi-person-fill-add"></i>New Visitor</div>
+            <!-- <div class="cta trans-bkg icon md ms-lg-3"><i class="bi bi-box-arrow-down"></i> Import</div> -->
+            <div class="cta trans-bkg icon md ms-lg-3"><i class="bi bi-box-arrow-up"></i> Export</div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3" style="flex: unset;">
+        <div class="inner-col card-xxl" style="overflow-x: hidden;">
+            <div class="status-card-wrap">
+                <div *ngFor="let item of visitorSummary" class="status-card-hld">
+                    <div class="cont {{item.status}}">
+                        <div class="det">
+                            <div class="title">{{item.visitorType}}</div>
+                            <div class="date">
+                                <span><i class="bi bi-calendar2-week"></i></span>
+                                <span>{{item.referenceDate}}</span>
+                            </div>
+                        </div>
+                        <div class="det">
+                            <div class="count"><span>{{item.visitorCount}}</span> Visitors</div>
+                            <div class="icon {{item.status}}"><i class="{{item.icon}}"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+    <div class="row-section mt-lg-4">
+        <div class="table-wrap">
+            <div class="inner-row d-flex justify-content-start align-items-center">
+                <div class="search-bar">
+                    <span class="icon"><i class="bi bi-search"></i></span>
+                    <input type="text" placeholder="Search for a visitor">
+                </div>
+
+                <div class="filter-options">
+                    <div class="filter-trigger"><i class="bi bi-filter"></i> Filter</div>
+                </div>
+
+                <div class="bulk-actions d-flex justify-content-between align-items-center">
+                    <div class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div>
+                    <div class="cta primary-bkg sm ms-lg-2">Apply</div>
+                </div>
+            </div>
+
+            <div class="inner-row">
+                <table 
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="dataTable lg mat-elevation-z0"
+                    matSort
+                >
+
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+                        <ng-container *ngIf="column.key == 'select'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox 
+                                    (change)="$event ? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </th>
+                    
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox 
+                                    (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'image'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="table-img bkg-standard" style="background-image: url('../../../../assets/images/illustrations/{{row[column.label]}}');"></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'checkin'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>Check In
+                            </th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell 
+                                *matCellDef="let row">
+                                <div *ngIf="row['Status'] == 'Active'" class="active-status"></div>
+                                <div *ngIf="row['Status'] == 'Overstay'" class="active-status closed"></div>
+                                <span *ngIf="row['Status'] == 'Active' || 'Inactive'" class="ps-2">{{ row[column.label] }}</span>
+                                <span *ngIf="row['Status'] == 'Expected'" class="cta approved-bkg xs">Checkin</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'checkout'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>Check Out
+                            </th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell 
+                                *matCellDef="let row">
+                                <span *ngIf="row['Status'] == 'Inactive'" class="ps-2">{{ row[column.label] }}</span>
+                                <span *ngIf="row['Status'] == 'Active'" class="cta warning-bkg xs">Checkout</span>
+                                <span *ngIf="row['Status'] == 'Overstay'" class="cta warning-bkg xs">Checkout</span>
+                            </td>
+                        </ng-container>                        
+
+                        <ng-container *ngIf="column.key == 'actions'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let element">
+                                <span class="table-icon edit"><i class="bi bi-pen-fill"></i></span>
+                                <span  class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container>
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[column.label] }}</td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+                    
+                </table>
+            </div>
+        </div>
+        
+    </div>
+
+</div>

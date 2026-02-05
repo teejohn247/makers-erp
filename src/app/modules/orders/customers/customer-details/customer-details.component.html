@@ -1,0 +1,51 @@
+<div class="content-wrap details-list">
+
+    <div class="row-section">
+        <div class="row-card w-100 card-xlg card-yxl">
+            <div class="inner-row w-100 d-flex justify-content-between align-items-center">
+                <div class="card-title md">Customer Information</div>
+                <button *ngIf="customerDetails" (click)="editCustomerInfo()" class="edit cta quick trans-bkg md">Edit Info</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="info-wrap mt-lg-4">
+                <div class="info-list space">
+                    <!-- <div class="info tri">
+                        <span class="label">Birthday:</span>
+                        <span *ngIf="!employeeDetails?.dateOfBirth">-</span>
+                        <span *ngIf="employeeDetails?.dateOfBirth" class="text">{{strToDate(employeeDetails?.dateOfBirth) | date: 'd MMMM, y'}}</span>
+                    </div> -->
+
+                    <div class="info tri">
+                        <span class="label">Phone Number:</span>
+                        <span class="text">{{customerDetails?.phone ? customerDetails?.phone : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">City:</span>
+                        <span class="text">{{customerDetails?.shippingAddress.city ? customerDetails?.shippingAddress.city : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Country:</span>
+                        <span class="text">{{customerDetails?.shippingAddress.country ? customerDetails?.shippingAddress.country : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Zip Code:</span>
+                        <span class="text">{{customerDetails?.shippingAddress.zipCode ? customerDetails?.shippingAddress.zipCode : '-'}}</span>
+                    </div>
+
+                    <div class="info duo">
+                        <span class="label">Shipping Address:</span>
+                        <span class="text">{{customerDetails?.shippingAddress.street}}, {{customerDetails?.shippingAddress.city}}, {{customerDetails?.shippingAddress.country}}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

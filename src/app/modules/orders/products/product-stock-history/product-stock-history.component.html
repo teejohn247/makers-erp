@@ -1,0 +1,137 @@
+<div class="content-wrap py-0 ps-0 pe-0">
+    <!-- <div class="row-section">
+        <div class="row-card w-100 card-xlg card-yxl">
+            <div class="inner-row w-100 d-flex justify-content-between align-items-center">
+                <div class="card-title md">Stock History</div>
+                <div (click)="addStock()" class="cta primary-bkg icon md">
+                    <span class="icon pe-lg-1 pe-1">
+                        <app-icon [iconName]="'box'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                    </span>
+                    Add Stock
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <div class="row-section my-lg-2">
+        <div class="table-wrap">
+
+            <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                <div class="card-title">Stock History</div>
+                <div class="bulk-actions d-flex justify-content-between align-items-center">
+                    <div (click)="addStock()" class="cta primary-bkg icon md">
+                        <span class="icon pe-lg-1 pe-1">
+                            <app-icon [iconName]="'box'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                        </span>
+                        Add Stock
+                    </div>
+                </div>
+            </div>
+
+            <div class="inner-row">
+                <table 
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="dataTable lg mat-elevation-z0"
+                    matSort
+                >
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns; let row" [matColumnDef]="column.label">
+                        <ng-container *ngIf="column.key == 'select'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox 
+                                    color="primary"
+                                    (change)="$event ? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </th>
+                    
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox
+                                    color="primary" 
+                                    (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'createdAt'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                            <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <div class="major text-capitalize">{{ row.createdAt | date :'d MMM, y' }}</div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'supplierName'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                            <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <div class="major text-capitalize">{{ row.supplier?.supplierName }}</div>
+                            </td>
+                        </ng-container>
+
+
+                        <!-- <ng-container *ngIf="column.key == 'productName'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                            <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <div *ngIf="row.customerType != 'Individual'" class="major text-capitalize text-ellipsis">{{ row.productName }}</div>
+                            </td>
+                        </ng-container> -->
+
+                        <ng-container *ngIf="column.key == 'unitCostPrice' || column.key == 'unitSellingPrice'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                            <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <div class="major text-capitalize">{{column.key == 'unitCostPrice' ? row.costPriceCurrency : row.sellingPriceCurrency}} {{ row[column.key].toLocaleString() }}</div>
+                            </td>
+                        </ng-container>
+
+                        <!-- <ng-container *ngIf="column.key == 'actions'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef></th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <span (click)="viewProduct(row)" class="table-icon edit"><i class="bi bi-eye-fill"></i></span>
+                                <span (click)="deleteProduct(row)" class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                                <span [matMenuTriggerFor]="moreOptions" class="table-icon more ms-lg-2"><i class="bi bi-three-dots-vertical"></i></span>
+                                <mat-menu #moreOptions="matMenu" class="more">
+                                </mat-menu>
+                            </td>
+                        </ng-container> -->
+
+                        <ng-container>
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <app-loading-data *ngIf="!stockHistory" [height]="'15rem'"></app-loading-data>
+                            <app-no-data
+                                *ngIf="stockHistory && !apiLoading" 
+                                [height]="'15rem'"
+                                [icon]="'users'"
+                                [message]="'No stock records were found'"
+                            >
+                            </app-no-data>
+                        </td>
+                    </tr>
+                    <!-- <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <div class="empty-data">
+                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                <div class="text">No stock records were found.</div>
+                            </div>
+                        </td>
+                    </tr> -->
+
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>

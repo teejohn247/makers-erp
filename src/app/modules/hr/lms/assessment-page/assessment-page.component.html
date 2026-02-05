@@ -1,0 +1,114 @@
+<div class="assessment-wrap">
+
+    <div (click)="confirmSubmission()" class="close-btn">&times;</div>
+
+    <div class="content-wrap d-block py-4">
+        <div class="row-section page-strip-hdr d-flex flex-column justify-content-between align-items-center">
+            <div class="page-header md">{{assessmentTitle}}</div>
+            <div class="main-actions d-flex justify-content-between align-items-center mt-3">
+                <div class="app-switch">
+                    <input type="checkbox" [(ngModel)]="showQuestionsPreview">
+                    <span>Show Questions Preview</span>
+                </div>
+                
+                <div 
+                    [ngClass]="{
+                        'normal': (timeLeft.hours*60)+timeLeft.minutes > 10,
+                        'pending': (timeLeft.hours*60)+timeLeft.minutes < 10,
+                        'warning': timeLeft.hours == 0 && timeLeft.minutes == 0 && timeLeft.seconds <= 10
+                    }" 
+                    *ngIf="timeLeft" 
+                    class="timer ms-auto me-2"
+                >
+                    <span class="icon pe-lg-1 pe-1">
+                        <app-icon [iconName]="'clock'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                    </span>
+                    <span *ngIf="timeLeft.hours > 0" class="pe-2">{{timeLeft.hours}} {{timeLeft.hours > 1 ? 'hrs' : 'hr'}}</span>
+                    <span *ngIf="timeLeft.minutes > 0" class="pe-2">{{timeLeft.minutes}} mins</span>
+                    <span *ngIf="timeLeft.seconds > 0">{{timeLeft.seconds}} secs</span>
+                </div>
+                <div *ngIf="timeLeft" (click)="confirmSubmission()" class="cta primary-bkg icon md">
+                    <span class="icon pe-lg-1 pe-1">
+                        <app-icon [iconName]="'medalStar'" [iconWidth]="15" [iconHeight]="15"></app-icon>
+                    </span>
+                    Submit Assessment <span *ngIf="apiLoading" class="loader"></span>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row-section d-block my-lg-5">
+            <form [formGroup]="assessmentInfoForm" class="inner-row-hld d-flex flex-nowrap justify-content-center gap-5">
+                <div [class.hide]="!showQuestionsPreview" style="width: 32%" class="row-card flex-grow-0">
+                    <div class="cont h-auto">
+                        <div class="hdr d-flex justify-content-between align-items-center">
+                            <div class="card-title clr">Questions</div>
+                        </div>
+                        <div class="side-wrap mt-3">
+                            <div *ngFor="let item of questionDetails.controls; let idx = index" [class.active]="questionInViewIndex == idx + 1" class="question-hld">
+                                <span class="quest" role="button" (click)="questionInViewIndex = idx+1">Question {{idx+1}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="row-card card-yxl" style="width: 60%">
+                    <div class="form-wrap">
+    
+                        <div class="questions-cont w-100">
+                            <ng-container formArrayName="questions">
+                                <div class="question-wrap d-flex justify-content-center">
+                                    <div *ngFor="let _ of questionDetails.controls; index as i" class="question-hld d-flex flex-wrap justify-content-between">
+                                        <ng-container *ngIf="questionInViewIndex == i+1" [formGroupName]="i">
+                                            <div class="quill-wrap mb-lg-2" [style.width]="'100%'" appearance="fill">
+                                                <label class="card-title md mb-4">Question {{i+1}}</label>
+                                                <div [innerHTML]="questionDetails.controls[i].value.questionTitle" class="question-text"></div>
+                                            </div>
+    
+                                            <div formArrayName="options" class="option-fields-wrap w-100 mb-lg-3 mb-3">
+                                                <div *ngFor="let _ of questionOptions(i).controls; let j = index" class="item w-100 d-flex flex-wrap justify-content-between mb-1">
+                                                    <ng-container [formGroupName]="j">
+                                                        
+                                                        <div class="selection w-100 d-flex justify-content-between align-items-center gap-2 mb-0">
+                                                            <div class="form-check events cursor-pointer flex-grow-1">
+                                                                <label class="form-check-label">
+                                                                    <input 
+                                                                        class="form-check-input" 
+                                                                        type="checkbox"
+                                                                        formControlName="selected"
+                                                                    >
+                                                                    <div [class.correct]="questionOptions(i).controls[j].value.selected" class="check-wrap">
+                                                                        <div class="option-check"></div>
+                                                                        <span class="option-text">{{questionOptions(i).controls[j].value.option}}</span>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+        
+                                                        </div>
+                                                        
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+        
+                                            <!-- <span *ngIf="i > 0" (click)="removeOrderItem(i)" class="remove"><i class="bi bi-trash3-fill"></i></span> -->
+                                        </ng-container>
+                                    </div>
+                                </div>
+                        
+                            </ng-container>
+
+                            <div class="main-actions d-flex justify-content-between align-items-center mt-5">
+                                <button [disabled]="questionInViewIndex == 1" (click)="questionInViewIndex = questionInViewIndex - 1" class="cta trans-bkg md">Previous</button>
+                                <button [disabled]="questionInViewIndex == questionDetails.controls.length" (click)="questionInViewIndex = questionInViewIndex + 1" class="cta primary-bkg md border-0">Next</button>
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+    
+            </form>
+        </div>
+    
+        <div class="row-section my-5 py-5"></div>
+    </div>
+    
+</div>

@@ -1,0 +1,386 @@
+<div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header"><span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span> New Purchase Order</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <!-- <div (click)="addStock()" class="cta primary-bkg icon md">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'box'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                Add Stock
+            </div> -->
+        </div>
+    </div>
+
+    <div class="row-section my-lg-4">
+        <form [formGroup]="orderInfoForm" class="inner-row-hld d-flex justify-content-between">
+            <div style="width: 60%" class="row-card card-yxl">
+                <div class="form-wrap">
+                    <div class="form-container" style="font-size: 0.8rem; font-family: 'AR';">
+                        <section class="fields-wrap d-flex justify-content-between flex-wrap">
+                            <mat-form-field class="mb-lg-2" [style.width]="'48%'" appearance="outline">
+                                <mat-label>Internal Order Ref No</mat-label>
+                                <input matInput formControlName="internalOrderRefNo">
+                                <mat-error *ngIf="orderInfoForm.get('internalOrderRefNo')?.hasError('required')">Internal Order Ref No is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="mb-lg-2 w-48" appearance="outline">
+                                <mat-label>Order Type</mat-label>
+                                <mat-select
+                                    class="selectField"
+                                    disableOptionCentering
+                                    panelClass="matDropdown"
+                                    formControlName="orderType"
+                                >
+                                    <mat-option *ngFor="let option of orderTypeOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="mb-lg-1 w-48" appearance="outline">
+                                <mat-label>Date Requested</mat-label>
+                                <input matInput [matDatepicker]="picker" readonly formControlName="dateRequested">
+                                <mat-hint>DD/MM/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                <mat-error *ngIf="orderInfoForm.get('dateRequested')?.hasError('required')">Date requested is required</mat-error>
+                                <mat-error *ngIf="orderInfoForm.get('dateRequested')?.hasError('date')">Date value is invalid</mat-error>
+                            </mat-form-field>
+
+                            <ng-container>
+                                <div class="field-wrap d-flex gap-2" [style.width]="'48%'">
+                                    <div style="flex: 1;" class="field w-100">
+                                        <mat-form-field class="mb-lg-2 w-100" appearance="outline">
+                                            <mat-label>Customer</mat-label>
+                                            <mat-select
+                                                class="selectField"
+                                                disableOptionCentering
+                                                panelClass="matDropdown"
+                                                formControlName="customerId"
+                                            >
+                                                <!-- <mat-option ></mat-option> -->
+                                                <mat-option *ngFor="let option of customerListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="orderInfoForm.get('customerId')?.hasError('required')">Customer is required</mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div (click)="addNewCustomer()" [class.disabled]="!addCustomer" class="cta select-add"><i class="bi bi-plus"></i></div>
+                                </div>
+                            </ng-container>
+
+                            <mat-form-field class="mb-lg-1 w-48" appearance="outline">
+                                <mat-label>Due Date</mat-label>
+                                <input matInput [matDatepicker]="dueDatePicker" readonly formControlName="dueDate">
+                                <mat-hint>DD/MM/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #dueDatePicker color="accent" disabled="false"></mat-datepicker>
+                                <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('required')">Due date is required</mat-error>
+                                <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('date')">Due date is invalid</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="mb-lg-1 w-48" appearance="outline">
+                                <mat-label>Reference Purchase Orders</mat-label>
+                                <mat-select formControlName="refPurchaseOrders" multiple>
+                                    <mat-select-trigger>
+                                        <mat-chip-list>
+                                            <mat-chip *ngFor="let chip of orderInfoForm.value['refPurchaseOrders']"
+                                                [removable]="true" (removed)="removeRefOrder(chip)">
+                                                {{ refOrdersOptions[chip] }}
+                                                <mat-icon matChipRemove>cancel</mat-icon>
+                                            </mat-chip>
+                                        </mat-chip-list>
+                                    </mat-select-trigger>
+                              
+                                    <mat-option *ngFor="let option of refOrdersOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                    <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option> -->
+                              
+                                </mat-select>
+                            </mat-form-field>
+
+                        </section>
+
+                        <section formArrayName="productDetails" class="mt-lg-4 mt-3">
+                            <div class="sec-hdr d-flex justify-content-between align-items-center">
+                                <span>Products</span>
+                                <div (click)="addProduct()" class="cta trans-bkg icon md">Add Product</div>
+                            </div>
+
+                            <div class="accordion accordion-flush">
+                                <div *ngFor="let _ of productDetails.controls; let i = index" class="accordion-item">
+                                    <div class="accordion-header" id="{{'flush-heading-product'+i}}">
+                                        <button (click)="toggleProductInfo(i)" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+'flush-product'+i" aria-expanded="false" [attr.aria-controls]="'flush-product'+i">
+                                            <div class="name">Product {{i+1}}</div>
+                                            <div class="actions">
+                                                <span *ngIf="i > 0" (click)="removeProduct(i)" class="icon delete"><i class="bi bi-trash3-fill"></i></span>
+                                            </div>
+                                            <!-- <div class="app-switch">
+                                                <input type="checkbox">
+                                            </div> -->
+                                        </button>
+                                    </div>
+                                    <div [class.show]="activeProductTab == i" id="{{'flush-product'+i}}" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading-product'+i" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body pb-lg-4">
+                                            <div [formGroupName]="i" class="fields-wrap d-flex justify-content-start flex-wrap gap-2">
+                                                <mat-form-field class="mb-lg-2 w-32" appearance="outline">
+                                                    <mat-label>Product</mat-label>
+                                                    <mat-select
+                                                        class="selectField"
+                                                        disableOptionCentering
+                                                        panelClass="matDropdown"
+                                                        formControlName="product"
+                                                    >
+                                                        <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-2 w-32" appearance="outline">
+                                                    <mat-label class="text-capitalize">Quantity</mat-label>
+                                                    <input type="number" min="0" matInput formControlName="quantity">
+                                                    <!-- <mat-error *ngIf="stockInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-2 w-32" appearance="outline">
+                                                    <mat-label>Stock</mat-label>
+                                                    <mat-select
+                                                        class="selectField"
+                                                        disableOptionCentering
+                                                        panelClass="matDropdown"
+                                                        formControlName="stock"
+                                                    >
+                                                        <!-- <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option> -->
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-32" appearance="outline">
+                                                    <mat-label class="text-capitalize">Unit Price</mat-label>
+                                                    <input type="number" min="0" matInput formControlName="unitPrice">
+                                                    <!-- <mat-error *ngIf="stockInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="w-32" appearance="outline">
+                                                    <mat-label class="text-capitalize">Tax</mat-label>
+                                                    <input type="number" min="0" matInput formControlName="tax">
+                                                    <!-- <mat-error *ngIf="stockInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error> -->
+                                                </mat-form-field>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </section>
+
+                        <section formArrayName="supplierDetails" class="mt-lg-5 mt-3">
+                            <div class="sec-hdr d-flex justify-content-between align-items-center">
+                                <span>Suppliers</span>
+                                <div (click)="addSupplier()" class="cta trans-bkg icon md">Add Supplier</div>
+                            </div>
+
+                            <div class="accordion accordion-flush">
+                                <div *ngFor="let _ of supplierDetails.controls; let i = index" class="accordion-item">
+                                    <div class="accordion-header" id="{{'flush-heading-supplier'+i}}">
+                                        <button (click)="toggleSupplierInfo(i)" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+'flush-supplier'+i" aria-expanded="false" [attr.aria-controls]="'flush-supplier'+i">
+                                            <div class="name">Supplier {{i+1}}</div>
+                                            <div class="actions">
+                                                <span *ngIf="i > 0" (click)="removeSupplier(i)" class="icon delete"><i class="bi bi-trash3-fill"></i></span>
+                                            </div>
+                                            <!-- <div class="app-switch">
+                                                <input type="checkbox">
+                                            </div> -->
+                                        </button>
+                                    </div>
+                                    <div [class.show]="activeSupplierTab == i" id="{{'flush-supplier'+i}}" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading-supplier'+i" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body pb-lg-4">
+                                            <div [formGroupName]="i" class="fields-wrap d-flex justify-content-start flex-wrap gap-2">
+                                                <mat-form-field class="mb-lg-2 w-48" appearance="outline">
+                                                    <mat-label>Supplier</mat-label>
+                                                    <mat-select
+                                                        class="selectField"
+                                                        disableOptionCentering
+                                                        panelClass="matDropdown"
+                                                        formControlName="supplier"
+                                                    >
+                                                        <!-- <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option> -->
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-2 w-48" appearance="outline">
+                                                    <mat-label>Product</mat-label>
+                                                    <mat-select
+                                                        class="selectField"
+                                                        disableOptionCentering
+                                                        panelClass="matDropdown"
+                                                        formControlName="product"
+                                                    >
+                                                        <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-1 w-48" appearance="outline">
+                                                    <mat-label>Supplier Order Date</mat-label>
+                                                    <input matInput [matDatepicker]="supplierOrderDatePicker" readonly formControlName="supplierOrderDate">
+                                                    <mat-hint>DD/MM/YYYY</mat-hint>
+                                                    <mat-datepicker-toggle matSuffix [for]="supplierOrderDatePicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #supplierOrderDatePicker color="accent" disabled="false"></mat-datepicker>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('required')">Due date is required</mat-error>
+                                                    <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('date')">Due date is invalid</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-1 w-48" appearance="outline">
+                                                    <mat-label>Supplier Delivery Date</mat-label>
+                                                    <input matInput [matDatepicker]="supplierDeliveryDatePicker" readonly formControlName="supplierDeliveryDate">
+                                                    <mat-hint>DD/MM/YYYY</mat-hint>
+                                                    <mat-datepicker-toggle matSuffix [for]="supplierDeliveryDatePicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #supplierDeliveryDatePicker color="accent" disabled="false"></mat-datepicker>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('required')">Due date is required</mat-error>
+                                                    <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('date')">Due date is invalid</mat-error> -->
+                                                </mat-form-field>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </section>
+
+                        <section formArrayName="courierDetails" class="mt-lg-5 mt-3">
+                            <div class="sec-hdr d-flex justify-content-between align-items-center">
+                                <span>Couriers</span>
+                                <div (click)="addCourier()" class="cta trans-bkg icon md">Add Courier</div>
+                            </div>
+
+                            <div class="accordion accordion-flush">
+                                <div *ngFor="let _ of courierDetails.controls; let i = index" class="accordion-item">
+                                    <div class="accordion-header" id="{{'flush-heading-courier'+i}}">
+                                        <button (click)="toggleCourierInfo(i)" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+'flush-courier'+i" aria-expanded="false" [attr.aria-controls]="'flush-courier'+i">
+                                            <div class="name">Courier {{i+1}}</div>
+                                            <div class="actions">
+                                                <span *ngIf="i > 0" (click)="removeCourier(i)" class="icon delete"><i class="bi bi-trash3-fill"></i></span>
+                                            </div>
+                                            <!-- <div class="app-switch">
+                                                <input type="checkbox">
+                                            </div> -->
+                                        </button>
+                                    </div>
+                                    <div [class.show]="activeCourierTab == i" id="{{'flush-courier'+i}}" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading-courier'+i" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body pb-lg-4">
+                                            <div [formGroupName]="i" class="fields-wrap d-flex justify-content-between flex-wrap">
+                                                <mat-form-field class="mb-lg-2 w-32" appearance="outline">
+                                                    <mat-label>Courier</mat-label>
+                                                    <mat-select
+                                                        class="selectField"
+                                                        disableOptionCentering
+                                                        panelClass="matDropdown"
+                                                        formControlName="courier"
+                                                    >
+                                                        <!-- <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option> -->
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-2 w-32" appearance="outline">
+                                                    <mat-label class="text-capitalize">Package Weight</mat-label>
+                                                    <input type="number" min="0" matInput formControlName="packageWeight">
+                                                    <!-- <mat-error *ngIf="stockInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-2 w-32" appearance="outline">
+                                                    <mat-label>Weight Unit</mat-label>
+                                                    <mat-select
+                                                        class="selectField"
+                                                        disableOptionCentering
+                                                        panelClass="matDropdown"
+                                                        formControlName="packageWeightUnit"
+                                                    >
+                                                        <!-- <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option> -->
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-1 w-100" appearance="outline">
+                                                    <mat-label>Products</mat-label>
+                                                    <mat-select formControlName="products" multiple>
+                                                        <mat-select-trigger>
+                                                            <mat-chip-list>
+                                                                <mat-chip *ngFor="let chip of courierDetails.controls[i].value['products']"
+                                                                    [removable]="true" (removed)="removeCourierProduct(chip, i)">
+                                                                    {{ productListOptions[chip] }}
+                                                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                                                </mat-chip>
+                                                            </mat-chip-list>
+                                                        </mat-select-trigger>
+                                                  
+                                                        <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                                        <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option> -->
+                                                  
+                                                    </mat-select>
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-2 w-48" appearance="outline">
+                                                    <mat-label class="text-capitalize">Courier Cost</mat-label>
+                                                    <input type="number" min="0" matInput formControlName="courierCost">
+                                                    <!-- <mat-error *ngIf="stockInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-2 w-48" appearance="outline">
+                                                    <mat-label>Cost Currency</mat-label>
+                                                    <mat-select
+                                                        class="selectField"
+                                                        disableOptionCentering
+                                                        panelClass="matDropdown"
+                                                        formControlName="courierCostCurrency"
+                                                    >
+                                                        <!-- <mat-option *ngFor="let option of productListOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option> -->
+                                                    </mat-select>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('orderType')?.hasError('required')">Order type is required</mat-error> -->
+                                                </mat-form-field>
+
+
+                                                <mat-form-field class="mb-lg-1 w-48" appearance="outline">
+                                                    <mat-label>Courier Order Date</mat-label>
+                                                    <input matInput [matDatepicker]="courierOrderDatePicker" readonly formControlName="courierOrderDate">
+                                                    <mat-hint>DD/MM/YYYY</mat-hint>
+                                                    <mat-datepicker-toggle matSuffix [for]="courierOrderDatePicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #courierOrderDatePicker color="accent" disabled="false"></mat-datepicker>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('required')">Due date is required</mat-error>
+                                                    <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('date')">Due date is invalid</mat-error> -->
+                                                </mat-form-field>
+
+                                                <mat-form-field class="mb-lg-1 w-48" appearance="outline">
+                                                    <mat-label>Courier Delivery Date</mat-label>
+                                                    <input matInput [matDatepicker]="courierDeliveryDatePicker" readonly formControlName="courierDeliveryDate">
+                                                    <mat-hint>DD/MM/YYYY</mat-hint>
+                                                    <mat-datepicker-toggle matSuffix [for]="courierDeliveryDatePicker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #courierDeliveryDatePicker color="accent" disabled="false"></mat-datepicker>
+                                                    <!-- <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('required')">Due date is required</mat-error>
+                                                    <mat-error *ngIf="orderInfoForm.get('dueDate')?.hasError('date')">Due date is invalid</mat-error> -->
+                                                </mat-form-field>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </section>
+                        
+                        <div class="btn-hld d-flex justify-content-end mt-lg-5" style="width: 100%">
+                            <div class="cta primary-bkg lg text-uppercase" style="min-width: 30%" type="submit">Submit <span *ngIf="apiLoading" class="loader"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width: 35%" class="row-card card-yxl">
+                <section>
+                    <div class="cont"></div>
+                </section>
+            </div>
+        </form>
+    </div>
+</div>

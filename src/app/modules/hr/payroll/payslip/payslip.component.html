@@ -1,0 +1,66 @@
+<div class="payslip-wrap">
+
+    <div id="payslip" class="payslip-hld">
+
+        <div class="hdr-section">
+            <div class="logo-container flex-center">
+                <img src="https://greenpegltd.com/wp-content/uploads/2022/07/SVG.svg" alt="silo-logo">
+                <div class="info-title">
+                    <span>{{dialogData.modalInfo[0].payrollPeriodName}} Payslip</span>
+                </div>
+            </div>
+            <div class="hdr-details">
+                <div class="info-wrap">
+                    <div class="info-list mt-lg-3">
+                        <div class="info duo">
+                            <span class="label">Employee:</span>
+                            <span class="text">{{dialogData.modalInfo[0].payrollPeriodData[0].fullName}}</span>
+                        </div>
+                        <div class="info duo">
+                            <span class="label">Designation:</span>
+                            <span class="text">{{dialogData.modalInfo[0].payrollPeriodData[0].designation}}</span>
+                        </div>
+                        <div class="info duo">
+                            <span class="label">Start Date:</span>
+                            <span class="text">{{strToDate(dialogData.modalInfo[0].startDate)}}</span>
+                        </div>
+                        <div class="info duo">
+                            <span class="label">End Date:</span>
+                            <span class="text">{{strToDate(dialogData.modalInfo[0].endDate)}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="body-section">
+            <div class="row-sec">
+                <div class="hdr">Gross Earnings <span>£ {{dialogData.modalInfo[0].payrollPeriodData[0].totalEarnings}}</span></div>
+                <div class="sec-list">
+                    <div *ngFor="let item of dialogData.payrollCredits" class="row-content">
+                        <div class="label">{{item.name}}</div>
+                        <div class="amount">£ {{dialogData.modalInfo[0].payrollPeriodData[0].dynamicFields[toCamelCase(item.name)]}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-sec">
+                <div class="hdr">Deductions <span>£ {{dialogData.modalInfo[0].payrollPeriodData[0].deductions}}</span></div>
+                <div class="sec-list">
+                    <div *ngFor="let item of dialogData.payrollDebits" class="row-content">
+                        <div class="label">{{item.name}}</div>
+                        <div class="amount">£ {{dialogData.modalInfo[0].payrollPeriodData[0].dynamicFields[toCamelCase(item.name)]}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-sec">
+                <div class="hdr">Net Earnings <span>£ {{dialogData.modalInfo[0].payrollPeriodData[0].netEarnings}}</span></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="actions d-flex justify-content-center">
+        <div (click)="generatePdf()" class="cta w-100 lg primary-bkg full my-lg-2">Download Payslip</div>
+    </div>
+
+</div>

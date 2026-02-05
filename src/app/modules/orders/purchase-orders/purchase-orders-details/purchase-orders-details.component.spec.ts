@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { PurchaseOrdersDetailsComponent } from './purchase-orders-details.component';
+
+describe('PurchaseOrdersDetailsComponent', () => {
+  let component: PurchaseOrdersDetailsComponent;
+  let fixture: ComponentFixture<PurchaseOrdersDetailsComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ PurchaseOrdersDetailsComponent ]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(PurchaseOrdersDetailsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -1,0 +1,63 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon">
+                        <span class="icon">
+                            <app-icon [iconName]="'userCheck'" [iconWidth]="45" [iconHeight]="45"></app-icon>
+                        </span>
+                        <!-- <img src="../../../../assets/images/illustrations/user.png" /> -->
+                    </div>
+                    <div class="create-details">
+                        <div *ngIf="data.assignmentType != 'Manager'" class="create-name">Assign Approver</div>
+                        <div *ngIf="data.assignmentType == 'Manager'" class="create-name">Assign Manager</div>
+                    </div>
+                    <div (click)="dialogRef.close()" class="close-btn">&times;</div>
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+
+        <ul class="chip-wrap">
+            <li *ngFor="let employee of data.selections">{{employee.fullName}}</li>
+        </ul>
+
+        <div class="form-wrap clearfix">
+            <div class="form-hld">
+
+                <form [formGroup]="assignmentForm" class="form-container" style="font-size: 0.8rem;">
+
+                    <ng-container class="d-flex" *ngFor="let field of assignmentFieldData">
+                        <ng-container [ngSwitch]="field.controlType">
+    
+                            <mat-form-field *ngSwitchCase="'select'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <mat-select
+                                    class="selectField"
+                                    [disabled]="field.readonly"
+                                    disableOptionCentering
+                                    panelClass="matDropdown"
+                                    [formControlName]="field.controlName"
+                                >
+                                    <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="assignmentForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                        </ng-container>
+                    </ng-container>
+
+                    <div class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="assignmentAction()" class="cta primary-bkg mmd text-uppercase" style="min-width: 30%" type="submit">Submit</div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

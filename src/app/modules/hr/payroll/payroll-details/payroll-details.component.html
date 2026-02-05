@@ -1,0 +1,190 @@
+<div class="content-wrap">
+
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header"><span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span> Payroll Details</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <!-- <div (click)="openPayrollModal()" class="cta primary-bkg icon md">
+                <span class="icon pe-1">
+                    <app-icon [iconName]="'calendar'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                Create New Period
+            </div> -->
+            <div class="custom-dropdown" [matMenuTriggerFor]="periodMenu"> Select Payroll Period <i class="bi bi-chevron-down"></i> </div>
+            <mat-menu #periodMenu="matMenu">
+                <div 
+                    *ngFor="let item of payrollPeriods['data']" 
+                    (click)="setPayrollData(item)" 
+                    class="menu-item" 
+                    [class.active]="periodInView && periodInView.payrollPeriodName == item.payrollPeriodName"  
+                    mat-menu-item
+                >
+                    {{item.payrollPeriodName}}
+                </div>
+            </mat-menu>
+            <!-- <div (click)="openEditModal()" class="cta trans-bkg md rd edit ms-lg-3"><i class="bi bi-pen-fill"></i></div>
+            <div (click)="deletePayrollPeriod()" class="cta trans-bkg md rd delete ms-lg-3"><i class="bi bi-trash3-fill"></i></div> -->
+        </div>
+    </div>
+
+    <div class="row-hdr-section my-lg-5">
+        <div class="stepper-container">
+            <app-progress-stepper
+                (triggerStepChange)="switchStep($event)"
+                [stepperItems]="payrollRunSteps"
+                [currentStep]="payrollCurrentStep - 1"
+                [stepCount]="25"
+            >
+            </app-progress-stepper>
+        </div>
+    </div>
+
+    <div class="row-section my-lg-4">
+
+        <div *ngIf="payrollCurrentStep == 0" class="row d-flex justify-content-center align-items-center">
+            <div class="col-lg-7">
+                <app-payroll-period-details
+                    [data]="payrollPeriodData"
+                ></app-payroll-period-details>
+            </div>
+        </div>
+
+        <div *ngIf="payrollCurrentStep > 0 && payrollCurrentStep < payrollRunSteps.length - 1" class="table-wrap">
+            <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                <div class="card-title">{{payrollPeriodName}}</div>
+                <div class="bulk-actions d-flex justify-content-between align-items-center">
+                    <!-- <div class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div> -->
+                    
+                    <div *ngIf="payrollCurrentStep == 1" (click)="payrollBulkImport()" class="cta trans-bkg icon sm ms-lg-3">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'download'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                        </span> Import Payroll
+                    </div>
+                    <div class="cta trans-bkg icon sm ms-lg-3">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'export'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                        </span> 
+                        Export Payroll
+                    </div>
+                    <div *ngIf="payrollCurrentStep == 1" class="cta primary-bkg icon sm ms-lg-3">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'userCheck'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                        </span>
+                        Send for Approval
+                    </div>
+                    <div *ngIf="payrollCurrentStep == 2" class="cta approved-bkg icon sm ms-lg-3">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'userCheck'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                        </span>
+                        Approve
+                    </div>
+                    <div *ngIf="payrollCurrentStep == 3" class="cta primary-bkg icon sm ms-lg-3">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'wallet'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                        </span>
+                        Make Payment
+                    </div>
+                </div>
+            </div>
+
+            <div class="inner-row overflow-x-scroll">
+                <table mat-table [dataSource]="dataSource" class="dataTable xl mat-elevation-z0">
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns; let row" [matColumnDef]="column.label" [sticky]="column.isSticky">
+                        <ng-container *ngIf="column.key == 'select'">
+                            <th [style.width.rem]="6" mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox 
+                                    (change)="$event ? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </th>
+                    
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox 
+                                    (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'image'">
+                            <th [style.width.rem]="4.5" mat-header-cell *matHeaderCellDef></th>
+                            <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <!-- <span *ngIf="!row.profilePic" class="initials">{{row.firstName[0] + row.lastName[0]}}</span> -->
+                                <span *ngIf="row.profilePic" class="table-img bkg-standard" style="background-image: url('{{row.profilePic}}');"></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'name'">
+                            <th [style.width.rem]="10" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                            <td (click)="openPayrollCalculator(row)" style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <div class="major">{{ row.fullName }}</div>
+                                <div class="minor mt-1">{{ row.designation }}</div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'status'">
+                            <th [style.width.rem]="12" class="text-center" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                            <td style="white-space: nowrap;" class="text-center" mat-cell *matCellDef="let row">
+                                <span class="status approved" *ngIf="row[column.key] == 'Completed'">{{row[column.key]}}</span>
+                                <span class="status pending" *ngIf="row[column.key] == 'Pending'">{{row[column.key]}}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'netEarnings'">
+                            <th [style.width.rem]="10" class="text-center" mat-header-cell *matHeaderCellDef>Net Pay (₦)</th>
+                            <td style="white-space: nowrap;" class="text-center" mat-cell *matCellDef="let row">
+                                <span>{{row[column.key].toLocaleString()}}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'actions'">
+                            <th [style.width.rem]="4" mat-header-cell *matHeaderCellDef></th>
+                            <td style="width:1%; white-space: nowrap; justify-content: flex-end;" mat-cell *matCellDef="let row">
+                                <span *ngIf="payrollCurrentStep == 1" (click)="openPayrollCalculator(row)"  class="table-icon edit" style="font-size: 1rem; color: var(--primary);">
+                                    <app-icon [iconName]="'edit'" [iconWidth]="15" [iconHeight]="15"></app-icon>
+                                </span>
+                                <span *ngIf="payrollCurrentStep == 3" class="table-icon edit" style="font-size: 1rem; color: var(--primary);">
+                                    <app-icon [iconName]="'wallet'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                </span>
+                                <!-- <span class="table-icon delete ms-lg-2"><i class="bi bi-trash3-fill"></i></span> -->
+                            </td>
+                        </ng-container>
+
+                        <ng-container>
+                            <th [style.width.rem]="column.columnWidth" class="text-center" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td (click)="openPayrollCalculator(row)" role="button" [style.color]="column['cellStyle']" class="text-center" mat-cell *matCellDef="let row">
+                                <span *ngIf="!column.sortable" >{{row[column.key]}}</span>
+                                <span *ngIf="column.sortable">{{row['dynamicFields'][column.key].toLocaleString()}}</span>
+                            </td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <div class="empty-data">
+                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                <div class="text">No records were found.</div>
+                                <div (click)="openPayrollModal()" class="cta primary-bkg icon lg my-lg-2">
+                                    <!-- <span class="icon pe-1">
+                                        <app-icon [iconName]="'calendar'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                                    </span> -->
+                                    Create New Period
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        
+    </div>
+
+</div>

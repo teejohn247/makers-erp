@@ -1,0 +1,200 @@
+<div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Calendar</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div (click)="createNewMeeting()" class="cta primary-bkg icon md ms-lg-3">
+                <span class="icon pe-1">
+                    <app-icon [iconName]="'calendar'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                New Meeting
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section my-lg-4">
+
+        <div class="events-container card-yxl">
+    
+            <div class="col-card card-ylg d-flex justify-content-between align-items-start">
+
+                <div class="row-card card-xxl matrix-container d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center text-center">
+                        <div class="action">
+                            <div class="btn-group cal-btns">
+                                <div
+                                    class="btn btn-primary prev"
+                                    mwlCalendarPreviousView
+                                    [view]="view"
+                                    [(viewDate)]="viewDate"
+                                    (viewDateChange)="closeOpenMonthViewDay()"
+                                >
+                                    <i class="bi bi-chevron-left"></i>  
+                                </div>
+                                <div
+                                    class="btn btn-outline-secondary current text-center"
+                                    mwlCalendarToday
+                                    [(viewDate)]="viewDate"
+                                >
+                                    Today
+                                </div>
+                                <div
+                                    class="btn btn-primary next"
+                                    mwlCalendarNextView
+                                    [view]="view"
+                                    [(viewDate)]="viewDate"
+                                    (viewDateChange)="closeOpenMonthViewDay()"
+                                >
+                                    <i class="bi bi-chevron-right"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action">
+                            <h3 class="cal-curr-month">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+                        </div>
+
+                        <div class="action">
+                            <div class="btn-group cal-btns">
+                                <div
+                                    class="btn btn-primary month-btn"
+                                    (click)="setView(CalendarView.Month)"
+                                    [class.active]="view === CalendarView.Month"
+                                >
+                                    Month
+                                </div>
+                                <div
+                                    class="btn btn-primary week-btn"
+                                    (click)="setView(CalendarView.Week)"
+                                    [class.active]="view === CalendarView.Week"
+                                >
+                                    Week
+                                </div>
+                                <div
+                                    class="btn btn-primary day-btn"
+                                    (click)="setView(CalendarView.Day)"
+                                    [class.active]="view === CalendarView.Day"
+                                >
+                                    Day
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div [ngSwitch]="view">
+                        <mwl-calendar-month-view
+                            *ngSwitchCase="CalendarView.Month"
+                            [viewDate]="viewDate"
+                            [events]="events"
+                            [refresh]="refresh"
+                            [activeDayIsOpen]="activeDayIsOpen"
+                            (dayClicked)="dayClicked($event.day)"
+                            (eventClicked)="handleEvent('Clicked', $event.event)"
+                            (eventTimesChanged)="eventTimesChanged($event)"
+                        >
+                        </mwl-calendar-month-view>
+                        <mwl-calendar-week-view
+                            *ngSwitchCase="CalendarView.Week"
+                            [viewDate]="viewDate"
+                            [events]="events"
+                            [refresh]="refresh"
+                            (eventClicked)="handleEvent('Clicked', $event.event)"
+                            (eventTimesChanged)="eventTimesChanged($event)"
+                        >
+                        </mwl-calendar-week-view>
+                        <mwl-calendar-day-view
+                            *ngSwitchCase="CalendarView.Day"
+                            [viewDate]="viewDate"
+                            [events]="events"
+                            [refresh]="refresh"
+                            (eventClicked)="handleEvent('Clicked', $event.event)"
+                            (eventTimesChanged)="eventTimesChanged($event)"
+                        >
+                        </mwl-calendar-day-view>
+                    </div>
+                </div>
+
+                <div class="row-card card-xmmd card-ylg h-auto ms-lg-4">
+                    <div class="cont bg-transparent border-0">
+                        <div class="card-title">Calendar Event Categories</div>
+                        <form [formGroup]="filterForm" class="categories-wrap mt-3 d-flex flex-wrap">
+                            <div class="form-check events cursor-pointer">
+                                <label class="form-check-label">
+                                    <input 
+                                        class="form-check-input" 
+                                        type="checkbox"
+                                        formControlName="selectAll"
+                                        (change)="filterEvents()"
+                                    >
+                                    <div class="check-wrap">
+                                        <span class="icon">
+                                            <app-icon [iconName]="'calendar'" [iconWidth]="25" [iconHeight]="25"></app-icon>
+                                        </span>
+                                        <span>All Events</span>
+                                    </div>
+                                </label>
+                            </div>
+                            <div 
+                                class="form-check"
+                                formArrayName="eventFilters"
+                                *ngFor="let item of filterForm.controls['eventFilters']['controls']; let i = index"
+                                [ngClass]="eventFilters[i].class"
+                            >
+                                <label class="form-check-label">
+                                    <input (change)="filterEvents()" class="form-check-input" type="checkbox" [formControlName]="i">
+                                    <div class="check-wrap">
+                                        <span class="icon">
+                                            <app-icon [iconName]="eventFilters[i].icon" [iconWidth]="25" [iconHeight]="25"></app-icon>
+                                        </span>
+                                        <span>{{eventFilters[i].name}}</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="cont mt-lg-2">
+                        <div class="card-title mb-lg-1">Upcoming Events</div>
+                        <div class="listed-items mt-lg-3">
+                            <app-no-data 
+                                [height]="'15rem'"
+                                [icon]="'calendar'"
+                                [iconSize]="50"
+                                [messageFontSize]="'0.9rem'"
+                                [message]="'You currently have no upcoming events'"
+                            >
+                            </app-no-data>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modalContent let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Event action occurred</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        Action:
+        <pre>{{ modalData?.action }}</pre>
+      </div>
+      <div>
+        Event:
+        <pre>{{ modalData?.event | json }}</pre>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+    </div>
+</ng-template>

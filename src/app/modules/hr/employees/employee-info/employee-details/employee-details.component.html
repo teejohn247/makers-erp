@@ -1,0 +1,293 @@
+<div class="content-wrap details-list">
+
+    <div class="row-section">
+        <div class="row-card w-100 card-xlg card-yxl">
+            <div class="inner-row w-100 d-flex justify-content-between align-items-center">
+                <div class="card-title md">Personal Information</div>
+                <button *ngIf="employeeDetails" (click)="editEmployeeInfo()" class="edit cta quick trans-bkg md">Edit Info</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="info-wrap mt-lg-4">
+                <div class="info-list space">
+                    <div class="info tri">
+                        <span class="label">Birthday:</span>
+                        <span *ngIf="!employeeDetails?.dateOfBirth">-</span>
+                        <span *ngIf="employeeDetails?.dateOfBirth" class="text">{{strToDate(employeeDetails?.dateOfBirth) | date: 'd MMMM, y'}}</span>
+                    </div>
+                    
+                    <div class="info duo">
+                        <span class="label">Address:</span>
+                        <span class="text">{{employeeDetails?.address ? employeeDetails?.address : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">City:</span>
+                        <span class="text">{{employeeDetails?.city ? employeeDetails?.city : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Country:</span>
+                        <span class="text">{{employeeDetails?.country ? employeeDetails?.country : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Nationality:</span>
+                        <span class="text">{{employeeDetails?.nationality ? employeeDetails?.nationality : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Gender:</span>
+                        <span class="text">{{employeeDetails?.gender ? employeeDetails?.gender : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Next of Kin:</span>
+                        <span class="text">{{employeeDetails?.nextOfKinFullName ? employeeDetails?.nextOfKinFullName : '-'}}</span>
+                    </div>
+
+                    <div class="info">
+                        <span class="label">Next of Kin Phone:</span>
+                        <span class="text">{{employeeDetails?.nextOfKinPhoneNumber ? employeeDetails?.nextOfKinPhoneNumber : '-'}}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row-section my-lg-4">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="row-card card-xlg card-ymd">
+                <div class="cont lg">
+                    <div class="details">
+                        <div class="image bkg-standard" style="background-image: url('{{employeeDetails?.profilePic}}');"></div>
+                        <div class="info-wrap">
+                            <div class="info-title">
+                                <span>{{employeeDetails?.fullName}}</span>
+                                <span class="text-capitalize">{{employeeDetails?.companyRole}}</span>
+                            </div>
+                            <div class="info-list mt-lg-3">
+                                <div class="info duo">
+                                    <span class="label">Department:</span>
+                                    <span class="text">{{employeeDetails?.department}}</span>
+                                </div>
+                                <div class="info duo">
+                                    <span class="label">Date Joined:</span>
+                                    <span class="text">{{employeeDetails?.employmentStartDate | date : 'd MMMM, y'}}</span>
+                                </div>
+                                <div class="info duo">
+                                    <span class="label">Designation:</span>
+                                    <span class="text">{{employeeDetails?.designation}}</span>
+                                </div>
+                                <div class="info duo">
+                                    <span class="label">Contract Type:</span>
+                                    <span class="text">{{employeeDetails?.employmentType}}</span>
+                                </div>
+                                <div class="info duo">
+                                    <span class="label">Email:</span>
+                                    <span class="text">{{employeeDetails?.email}}</span>
+                                </div>
+                                <div class="info duo">
+                                    <span class="label">Phone:</span>
+                                    <span class="text">{{employeeDetails?.phoneNumber}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div (click)="editEmployeeInfo()" class="edit cta quick primary-bkg xs">Edit Info</div>
+                    </div>
+                    <div class="details">
+                        <div class="info-wrap">
+                            <div class="info-list space">
+                                <div class="info tri">
+                                    <span class="label">Birthday:</span>
+                                    <span class="text">{{employeeDetails?.dateOfBirth | date: 'd MMMM, y'}}</span>
+                                </div>
+                                
+                                <div class="info duo">
+                                    <span class="label">Address:</span>
+                                    <span class="text">{{employeeDetails?.address}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">City:</span>
+                                    <span class="text">{{employeeDetails?.city}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Country:</span>
+                                    <span class="text">{{employeeDetails?.country}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Nationality:</span>
+                                    <span class="text">{{employeeDetails?.nationality}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Gender:</span>
+                                    <span class="text">{{employeeDetails?.gender}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Next of Kin:</span>
+                                    <span class="text">{{employeeDetails?.nextOfKinFullName}}</span>
+                                </div>
+
+                                <div class="info">
+                                    <span class="label">Next of Kin Phone:</span>
+                                    <span class="text">{{employeeDetails?.nextOfKinPhoneNumber}}</span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-card card-xsm card-ymd">
+                <div class="cont">
+                    <div class="card-title">Reporting Manager</div>
+                    <div class="listed-items mt-lg-3">
+                        <div class="item">
+                            <div class="image bkg-standard" style="background-image: url('../../../../../assets/images/illustrations/staff3.jpg');"></div>
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">{{employeeDetails?.managerName}}</div>
+                                    <div class="minor">Marketing Manager</div>
+                                </div>
+                                <div class="det">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stacked-items mt-lg-3">
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill">Amazon Web Services</div>
+                        <div class="skill">Azure</div>
+                        <div class="skill">Product Design</div>
+                        <div class="skill">Business Development</div>
+                        <div class="skill">Software Development</div>
+                        <div class="skill">UX Research</div>
+                        <div class="skill">Product Marketers</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row-card card-xmd card-ymd">
+                <div class="cont">
+                    <div class="card-title">Payment Information</div>
+                    <div class="listed-items mt-lg-3">
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Bank Name:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails?.paymentInformation.bankName}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Account Name:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails?.paymentInformation.accountName}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Account Number:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails?.paymentInformation.accountNumber}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Bank Address:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails?.paymentInformation.bankAddress}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Sort Code:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails?.paymentInformation.sortCode}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Tax Identification No:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails?.paymentInformation.taxIdentificationNumber}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-card card-xmd card-ymd">
+                <div class="cont">
+                    <div class="donut-chart">
+                        <div class="chart-title">
+                            <span>{{totalLeaveDays}}</span>
+                            <span>Leave Balance <br> (Days)</span>
+                        </div>
+                        <highcharts-chart
+                            [Highcharts]="Highcharts"
+                            [options]="chartOptions"
+                            style="width: auto; max-width: 100%; height: 170px; display: flex; align-items: center; justify-content: center;"
+                        >
+                        </highcharts-chart>
+                    </div>
+
+                    <div class="leave-wrap mt-lg-3">
+                        
+                        <div *ngFor="let item of leaveBreakdown" class="leave-hld" [ngStyle]="{'border-color': item.colorDark}">
+                            <div class="icon"><i class="{{item.icon}}"></i></div>
+                            <div class="title">{{item.name}}</div>
+                            <div class="count"><span>{{item.daysUsed}}</span>/{{item.totalDays}} days</div>
+                        </div>                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row-card card-xsm card-ymd">
+                <div class="cont card-ymd">
+                    <div class="card-title">Attached Documents</div>
+                    <div class="listed-items mt-lg-3">
+                        <app-no-data
+                            [height]="'15rem'"
+                            [message]="'No attached documents exist'"
+                        >
+                        </app-no-data>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div> -->
+</div>

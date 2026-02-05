@@ -1,0 +1,38 @@
+<div class="header">
+    <div class="modules">
+        <button [routerLink]="'human-resources'" [class.active]="activeModule == 'human-resources'">
+            <span class="icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.users)" class=""></svg>
+            </span>
+            <span>HR Module</span>
+        </button>
+        <button [disabled]="false" [routerLink]="'orders'" [class.active]="activeModule == 'orders'">
+            <span class="icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.layer)" class=""></svg>
+            </span>
+            <span>Orders Module</span>
+        </button>
+        <!-- <button (click)="activeModule = 'acs'" [class.active]="activeModule == 'acs'">
+            <span class="icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.faceId)" class=""></svg>
+            </span>
+            <span>Checkviz Module</span>
+        </button> -->
+    </div>
+
+    <div class="user-actions">
+        <span class="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.bell)" class=""></svg>
+        </span>
+        <span class="icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.settings)" class=""></svg>
+        </span>
+        <div class="user">
+            <div class="info">
+                <span>{{userName}}</span>
+                <span class="text">{{userRole}}</span>
+            </div>
+            <div class="photo bkg-standard" style="background-image: url('{{profilePhoto}}');"></div>
+        </div>
+    </div>
+</div>

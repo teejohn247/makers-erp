@@ -1,0 +1,168 @@
+.row-card {
+
+    .hdr {
+        .card-title {
+            font-size: 0.95rem;
+            letter-spacing: 0.03rem;
+
+            &.lg {
+                font-size: 1.2rem;
+            }
+        }
+        .preamble {
+            font-size: 0.8rem;
+            font-family: var(--font-regular);
+            letter-spacing: 0.04rem;
+            color: var(--text-grey);
+            margin-top: 0.2rem;
+        }
+    }
+
+    .pg-cover {
+        overflow: hidden;
+        position: relative;
+        border: 1px solid var(--primary-light);
+        box-shadow: var(--card-shadow);
+        background: var(--primary-light);
+
+        .caption-wrap {
+            width: 60%;
+            position: absolute;
+            padding-left: 1rem;
+            transform: translateY(-50%);
+            top: 50%;
+        }
+
+        .hdr {
+
+            .card-title {
+                font-size: 1.5rem;
+
+                &.xl {
+                    font-size: 2.7rem;
+                    font-family: var(--font-bold);
+                    line-height: 1.2;
+                }
+            }
+
+            .preamble {
+                color: var(--black-tint);
+                letter-spacing: 0.03rem;
+            }
+        }
+
+        .image {
+            width: auto;
+            height: auto;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+
+            img {
+                width: auto;
+                height: 22rem;
+            }
+        }
+    }
+}
+
+.category-wrap {
+
+    .card-title {
+        font-size: 0.9rem;
+        letter-spacing: 0.03rem;
+        font-family: var(--font-medium);
+        margin-left: 0;
+    }
+
+    .card-info {
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+
+        .info-hld {
+            font-size: 0.85rem;
+            letter-spacing: 0.03rem;
+            font-family: var(--font-regular);
+        }
+    }
+}
+
+.courses-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1.5rem 1.33%;
+
+    .course-hld {
+        width: 24%;
+        overflow: hidden;
+        position: relative;
+        //background: white;
+        scroll-snap-align: start;
+        border-radius: var(--radius-sm);
+        //border: 1px solid var(--black-tint-sm);
+        //box-shadow: var(--card-shadow);
+
+        // &.ml {
+        //     margin-left: 1.5rem;
+        // }
+    }
+}
+
+.scroll-wrap {
+    width: auto;
+    display: flex;
+    overflow-x: scroll;
+    align-items: start;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-track {
+        display: none;
+    }
+
+    .cont {
+        width: 16.5rem;
+        background-color: white;
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--primary-light);
+        border-radius: var(--radius-md);
+        scroll-snap-align: start;
+
+        &.ml {
+            margin-left: 1rem;
+        }
+    }
+}
+
+.guage-chart {
+    margin-top: 2rem;
+    position: relative;
+    font-family: var(--font-medium);
+
+    .nav-actions {
+        position: absolute;
+        bottom: 1rem;
+
+        .action {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.03rem;
+
+            i {
+                cursor: pointer;
+            }
+        }
+
+        .info {
+            font-size: 0.85rem;
+            letter-spacing: 0.03rem;
+            color: var(--text-grey);
+            margin-top: 0.5rem;
+        }
+    }
+
+}

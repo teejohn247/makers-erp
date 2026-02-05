@@ -1,0 +1,259 @@
+<div class="content-wrap pb-5 mb-5">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Orders Management Dashboard</div>
+    </div>
+
+    <div class="row-section my-lg-4 pb-3">
+        <div class="inner-row-hld d-flex align-items-start justify-content-between pb-5">
+            <div class="row-card w-100 d-flex justify-content-between align-items-start status-summary">
+                <div class="col-card card-xmmd-col4 card-yxl d-flex justify-content-between">
+                    <div class="cont status-card card-xmmd card-yxl d-flex flex-column justify-content-between">
+                        <div class="card-det d-flex align-items-center">
+                            <div class="symbol">
+                                <span class="icon">
+                                    <app-icon [iconName]="'box'" [iconWidth]="40" [iconHeight]="40"></app-icon>
+                                </span>
+                            </div>
+                            <div class="card-title reg">Recent Orders</div>
+                        </div>
+                        <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                            <span class="value">50</span>
+                            <span class="arrow increase"><i class="bi bi-arrow-up-right"></i>5%</span>  
+                        </div>
+                    </div>
+
+                    <div class="cont status-card card-xmmd card-yxl d-flex flex-column justify-content-between">
+                        <div class="card-det d-flex align-items-center">
+                            <div class="symbol">
+                                <span class="icon">
+                                    <app-icon [iconName]="'exclamation'" [iconWidth]="40" [iconHeight]="40"></app-icon>
+                                </span>
+                            </div>
+                            <div class="card-title reg">Pending Orders</div>
+                        </div>
+                        <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                            <span class="value">20</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-card card-xmmd-col4 card-yxl d-flex justify-content-between">
+                    <div class="cont status-card card-xmmd card-yxl d-flex flex-column justify-content-between">
+                        <div class="card-det d-flex align-items-center">
+                            <div class="symbol">
+                                <span class="icon">
+                                    <app-icon [iconName]="'users'" [iconWidth]="40" [iconHeight]="40"></app-icon>
+                                </span>
+                            </div>
+                            <div class="card-title reg">Customers</div>
+                        </div>
+                        <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                            <span class="value">40</span>
+                            <span class="arrow decrease"><i class="bi bi-arrow-down-right"></i>5%</span> 
+                        </div>
+                    </div>
+
+                    <div class="cont status-card card-xmmd card-yxl d-flex flex-column justify-content-between">
+                        <div class="card-det d-flex align-items-center">
+                            <div class="symbol">
+                                <span class="icon">
+                                    <app-icon [iconName]="'wallet'" [iconWidth]="40" [iconHeight]="40"></app-icon>
+                                </span>
+                            </div>
+                            <div class="card-title reg">Sales Revenue</div>
+                        </div>
+                        <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                            <span class="value">₦10,000,000</span>
+                            <span class="arrow increase"><i class="bi bi-arrow-up-right"></i>5%</span>                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card w-100 ecard-ymd d-flex justify-content-between align-items-start">
+                <div class="cont card-xmd">
+                    <div class="card-title clr">Recent Orders</div>
+                    <div class="listed-items mt-lg-3">
+                        <app-no-data 
+                            [height]="'15rem'"
+                            [icon]="'box'"
+                            [message]="'There are no recent orders'"
+                        >
+                        </app-no-data>
+                        <!-- <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major bd">Senior Frontend Engineer</div>
+                                    <div class="minor">Ibrahim Babatunde</div>
+                                </div>
+                                <div class="det right">
+                                    <div class="major">Apr 20</div>
+                                    <div class="minor sm">12:30pm - 12:45pm</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major bd">Marketing Manager</div>
+                                    <div class="minor">Remi Olubode</div>
+                                </div>
+                                <div class="det right">
+                                    <div class="major">May 21</div>
+                                    <div class="minor sm">1:10pm - 2:45pm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major bd">Finance Analyst</div>
+                                    <div class="minor">Matt Greg</div>
+                                </div>
+                                <div class="det right">
+                                    <div class="major">May 26</div>
+                                    <div class="minor sm">4:10pm - 4:25pm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major bd">Technology Consultant</div>
+                                    <div class="minor">Rita Mreace</div>
+                                </div>
+                                <div class="det right">
+                                    <div class="major">May 30</div>
+                                    <div class="minor sm">9:30am - 10:45am</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major bd">HR Consultant</div>
+                                    <div class="minor">Spence Holderyne</div>
+                                </div>
+                                <div class="det right">
+                                    <div class="major">Jun 4</div>
+                                    <div class="minor sm">10:30am - 10:45am</div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="cont card-xmlg">
+                    <div class="hdr d-flex justify-content-between align-items-center mt-lg-1 mb-lg-3">
+                        <div class="title">
+                            <div class="card-title clr">Orders Revenue</div>
+                            <!-- <div class="preamble">Values throughout the year</div> -->
+                            <div class="preamble">Similar graph when data is available</div>
+                        </div>
+    
+                        <!-- <div class="bulk-actions d-flex justify-content-between align-items-center">
+                            <div [matMenuTriggerFor]="bulkOptions" class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div>
+                            <mat-menu #bulkOptions="matMenu" class="more">
+                                <div *ngFor="let year of payrollYears" class="menu-item" mat-menu-item>{{year}}</div>
+                            </mat-menu>
+                            <div class="cta primary-bkg sm ms-lg-2">Apply</div>
+                        </div> -->
+    
+                        <div class="actions-info mat-menu-select">
+                            <div [matMenuTriggerFor]="periodSelect" class="dropdown-trigger"> {{currentGraphPeriod ? currentGraphPeriod : 'Select Period'}} <i class="bi bi-chevron-down"></i></div>
+                            <mat-menu #periodSelect="matMenu" class="more">
+                                <div *ngFor="let period of revenueGraphPeriods" class="menu-item" mat-menu-item (click)="changeRevenueGraphPeriod(period)">{{period}}</div>
+                            </mat-menu>
+                        </div>
+                    </div>
+                    <div class="col-card card-xxl">
+                        <highcharts-chart
+                            [Highcharts]="AreaHighcharts"
+                            [options]="areaChartOptions"
+                            style="width: 100%; max-width: 100%; height: 250px; display: block;"
+                        >
+                        </highcharts-chart>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row-card w-100 ecard-ymd d-flex justify-content-between align-items-start">
+                <div class="cont card-xmd card-yxl">
+                    <div class="hdr d-flex justify-content-between align-items-center mt-lg-1 mb-lg-2">
+                        <div class="title">
+                            <div class="card-title clr">Delivery Rate</div>
+                            <div class="preamble">Similar graph when enough data is available</div>
+                        </div>
+                    </div>
+                    <div class="w-100 guage-chart d-flex flex-column justify-content-center align-items-center">
+                        <ngx-gauge 
+                            size="280" 
+                            type="semi" 
+                            thick="15" 
+                            value="68.2" 
+                            cap="round" 
+                            append="%" 
+                            foregroundColor="#00a4ef"
+                            backgroundColor="#ecf0f1"
+                        >
+                        </ngx-gauge>
+                        <div class="nav-actions">
+                            <div class="action d-flex align-items justify-content-center gap-3 text-center">
+                                <span><i class="bi bi-chevron-left"></i></span>
+                                <span>March 2025</span>
+                                <span><i class="bi bi-chevron-right"></i></span>
+                            </div>
+                            <div class="info">Navigate previous and next periods</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cont card-xmd">
+                    <div class="hdr d-flex justify-content-between align-items-center mt-lg-1 mb-lg-2">
+                        <div class="title">
+                            <div class="card-title clr">Order Channels</div>
+                            <div class="preamble">Similar graph when enough data is available</div>
+                            <ul class="legend general d-flex mt-2">
+                                <li [class]="item.status" *ngFor="let item of orderChannelsData">{{item.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-card card-xxl d-flex justify-content-center align-items-center">
+                        <!-- <app-no-data 
+                            [height]="'20.5rem'"
+                            [icon]="'wallet'"
+                            [message]="'There are no expense requests yet'"
+                        >
+                        </app-no-data> -->
+                        <ngx-charts-pie-chart
+                            [view]="[260, 260]"
+                            [scheme]="pieChartColorScheme"
+                            [results]="orderChannelsData"
+                            [legend]="false"
+                            [explodeSlices]="false"
+                            [labels]="false"
+                            [doughnut]="true"
+                            [gradient]="true"
+                        >
+                        </ngx-charts-pie-chart>
+                    </div>
+                </div>
+
+                <div class="cont card-xsm">
+                    <div class="card-title clr">Recent Messages</div>
+                    <app-no-data
+                        [height]="'20.5rem'"
+                        [icon]="'mail'"
+                        [message]="'No messages are available'"
+                    >
+                    </app-no-data>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

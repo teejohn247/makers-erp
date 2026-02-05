@@ -1,0 +1,61 @@
+<div class="content-wrap details-list">
+
+    <div class="row-section">
+        <div class="row-card w-100 card-xlg card-yxl">
+            <div class="inner-row w-100 d-flex justify-content-between align-items-center">
+                <div class="card-title md">Product Information</div>
+                <button *ngIf="productDetails" (click)="editProductInfo()" class="edit cta quick trans-bkg md">Edit Info</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="info-wrap mt-lg-4">
+                <div class="info-list space">
+                    <!-- <div class="info tri">
+                        <span class="label">Birthday:</span>
+                        <span *ngIf="!employeeDetails?.dateOfBirth">-</span>
+                        <span *ngIf="employeeDetails?.dateOfBirth" class="text">{{strToDate(employeeDetails?.dateOfBirth) | date: 'd MMMM, y'}}</span>
+                    </div> -->
+
+                    <div *ngIf="productDetails?.productDescription" class="info w-100">
+                        <span class="label">Product Description:</span>
+                        <span class="text">{{productDetails?.productDescription}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Product SKU:</span>
+                        <span class="text">{{productDetails?.sku ? productDetails?.sku : '-'}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Primary Supplier:</span>
+                        <span class="text">{{productDetails?.supplier?.supplierName}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Stock:</span>
+                        <span class="text">{{productDetails?.stock}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Weight:</span>
+                        <span class="text">{{productDetails?.productWeight}} {{productDetails?.productWeightUnit}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Width:</span>
+                        <span class="text">{{productDetails?.productLength}} {{productDetails?.productLengthUnit}}</span>
+                    </div>
+
+                    <div class="info tri">
+                        <span class="label">Height:</span>
+                        <span class="text">{{productDetails?.productHeight}} {{productDetails?.productHeightUnit}}</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

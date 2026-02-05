@@ -1,0 +1,229 @@
+<div class="content-wrap">
+    <div class="row-section mt-lg-2">
+        <div class="inner-row-hld d-flex align-items-start justify-content-between">
+
+            <div class="row-card card-xsm card-yxl" style="margin-bottom: 10rem;">
+
+                <div class="table-wrap">
+                    <div class="inner-row hdr d-flex justify-content-start align-items-center px-3">
+                        <div class="card-title">Payroll Credits</div>
+                        <div class="bulk-actions d-flex justify-content-between align-items-center">
+                            <div (click)="createPayrollCredit()" class="cta primary-bkg sm ms-lg-2">
+                                <span class="icon me-1">
+                                    <app-icon [iconName]="'wallet'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                </span>
+                                Create Credit
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="inner-row">
+                        <table 
+                            mat-table
+                            [dataSource]="dataSourcePayrollCredits"
+                            class="dataTable mat-elevation-z0"
+                            matSort
+                        >
+    
+                            <!-- Table Columns -->
+                            <ng-container *ngFor="let column of tableColumnsPayrollCredits" [matColumnDef]="column.label">
+
+                                <ng-container *ngIf="column.key == 'name'">
+                                    <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                                    <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                        <div class="major">{{ row[column.key] }}</div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container *ngIf="column.key == 'description'">
+                                    <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                                    <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                        <div class=""><span class="text-ellipsis">{{ row[column.key] }}</span></div>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container *ngIf="column.key == 'actions'">
+                                    <th style="width:5%" mat-header-cell *matHeaderCellDef></th>
+                                    <td style="width:1%; white-space: nowrap; align-items: center;" mat-cell *matCellDef="let element">
+                                        <span (click)="editPayrollCredit(element)" class="table-icon edit" style="font-size: 1rem; color: var(--primary);">
+                                            <app-icon [iconName]="'edit'" [iconWidth]="15" [iconHeight]="15"></app-icon>
+                                        </span>
+                                        <span (click)="deletePayrollCredit(element)" class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container>
+                                    <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                                    <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                                </ng-container>
+                                
+                            </ng-container>
+    
+    
+                            <tr mat-header-row *matHeaderRowDef="displayedPayrollCreditColumns"></tr>
+                            <tr mat-row *matRowDef="let emprow; columns: displayedPayrollCreditColumns"></tr>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedPayrollCreditColumns.length">
+                                    <app-no-data 
+                                        [height]="'12rem'"
+                                        [icon]="'wallet'"
+                                        [message]="'You currently have no payroll credits created'"
+                                    >
+                                    </app-no-data>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+
+
+
+                <div class="table-wrap mt-lg-4">
+                    <div class="inner-row hdr d-flex justify-content-start align-items-center px-3">
+                        <div class="card-title">Payroll Debits</div>
+                        <div class="bulk-actions d-flex justify-content-between align-items-center">
+                            <div (click)="createPayrollDebit()" class="cta primary-bkg sm ms-lg-2">
+                                <span class="icon me-1">
+                                    <app-icon [iconName]="'wallet'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                </span>
+                                Create Debit
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="inner-row">
+                        <table 
+                            mat-table
+                            [dataSource]="dataSourcePayrollDebits"
+                            class="dataTable mat-elevation-z0"
+                            matSort
+                        >
+                            <!-- Table Columns -->
+                            <ng-container *ngFor="let column of tableColumnsPayrollDebits" [matColumnDef]="column.label">
+
+                                <ng-container *ngIf="column.key == 'name'">
+                                    <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                                    <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                        <div class="major">{{ row[column.key] }}</div>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container *ngIf="column.key == 'description'">
+                                    <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                                    <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                        <div class=""><span class="text-ellipsis">{{ row[column.key] }}</span></div>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container *ngIf="column.key == 'actions'">
+                                    <th style="width:5%" mat-header-cell *matHeaderCellDef></th>
+                                    <td style="width:1%; white-space: nowrap; align-items: center;" mat-cell *matCellDef="let element">
+                                        <span (click)="editPayrollDebit(element)" class="table-icon edit" style="font-size: 1rem; color: var(--primary);">
+                                            <app-icon [iconName]="'edit'" [iconWidth]="15" [iconHeight]="15"></app-icon>
+                                        </span>
+                                        <span (click)="deletePayrollDebit(element)" class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                                    </td>
+                                </ng-container>
+    
+                                <ng-container>
+                                    <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                                    <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                                </ng-container>
+                                
+                            </ng-container>
+    
+    
+                            <tr mat-header-row *matHeaderRowDef="displayedPayrollDebitColumns"></tr>
+                            <tr mat-row *matRowDef="let emprow; columns: displayedPayrollDebitColumns"></tr>
+                            <tr class="mat-row" *matNoDataRow>
+                                <td class="mat-cell" [attr.colspan]="displayedPayrollDebitColumns.length">
+                                    <app-no-data 
+                                        [height]="'12rem'"
+                                        [icon]="'wallet'"
+                                        [message]="'You currently have no payroll debits created'"
+                                    >
+                                    </app-no-data>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card card-xlg card-yxl ps-lg-5">
+                <div class="inner-row d-flex justify-content-between align-items-center mt-lg-2">
+                    <div class="card-title md">Salary Scales</div>
+                    <div class="bulk-actions d-flex justify-content-between align-items-center">
+                        <div (click)="createSalaryScale()" class="cta primary-bkg sm ms-lg-2">
+                            <span class="icon me-1">
+                                <app-icon [iconName]="'layer'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                            </span>
+                            Add Salary Scale
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inner-row">
+                    <div *ngIf="!salaryScalesLoading && salaryScales.length == 0" class="cont mt-lg-3 mt-4">
+                        <app-no-data 
+                            [height]="'10.5rem'"
+                            [icon]="'wallet'"
+                            [message]="'No salary scales created yet'"
+                        >
+                        </app-no-data>
+                    </div>
+
+                    <!-- <div *ngIf="salaryScalesLoading" class="cont mt-lg-3 mt-4 d-flex justify-content-center align-items-center">
+                        <span class="loader ms-1"></span>
+                    </div> -->
+
+                    <div class="accordion accordion-flush mt-lg-3 mt-3">
+                        <div *ngFor="let scale of salaryScales; let i = index" class="accordion-item">
+                            <div class="accordion-header" id="{{'flush-heading-scale'+i}}">
+                                <button (click)="toggleAccordionInfo(i)" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+'flush-scale'+i" aria-expanded="false" [attr.aria-controls]="'flush-scale'+i">
+                                    <div class="name">{{scale.name}}</div>
+                                    <div class="range">NGN {{scale?.minAmount?.toLocaleString()}} - NGN {{scale?.maxAmount?.toLocaleString()}}</div>
+                                    <div class="actions">
+                                        <span (click)="editSalaryScale(scale)" class="table-icon edit" style="font-size: 1rem; color: var(--primary);">
+                                            <app-icon [iconName]="'edit'" [iconWidth]="15" [iconHeight]="15"></app-icon>
+                                        </span>
+                                        <span (click)="deleteSalaryScale(scale)" class="icon delete ms-lg-3 ms-2"><i class="bi bi-trash3-fill"></i></span>
+                                    </div>
+                                    <!-- <div class="app-switch">
+                                        <input type="checkbox">
+                                    </div> -->
+                                </button>
+                            </div>
+                            <div [class.show]="activeTab == i" id="{{'flush-level'+i}}" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading-scale'+i" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body pb-lg-4">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div [class.opened]="sideModalOpened" class="sidenav-container"> 
+    <div (click)="closeSideModal()" class="sidenav-bkg"></div> 
+    <div [class.opened]="sideModalOpened" class="sidenav-content">
+        <app-salary-scale-info
+            *ngIf="payrollCreditList.length > 0 && payrollDebitList.length > 0"
+            [payrollCredits]="payrollCreditList "
+            [payrollDebits]="payrollDebitList"
+            [salaryScaleInfo$]="salaryScaleInView$"
+            [editMode]="editMode"
+            (triggerModalClosure)="closeSideModal()"
+        >
+        </app-salary-scale-info>
+    </div>
+</div>

@@ -1,0 +1,229 @@
+<div class="content-wrap d-block">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header md">{{periodInView ? periodInView && periodInView[0].appraisalPeriodName :'Appraisal Summary'}}</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div class="custom-dropdown" [matMenuTriggerFor]="periodMenu"> Select Appraisal Period <i class="bi bi-chevron-down"></i> </div>
+            <mat-menu #periodMenu="matMenu">
+                <div 
+                    *ngFor="let item of appraisalPeriods" 
+                    (click)="setAppraisalData(item)" 
+                    class="menu-item d-flex justify-content-between"
+                    [class.active]="periodInView && periodInView[0].appraisalPeriodName == item.appraisalPeriodName"  
+                    mat-menu-item
+                >
+                    {{item.appraisalPeriodName}}
+                    <span *ngIf="loggedInUser.isSuperAdmin" class="actions">
+                        <i (click)="deleteAppraisalPeriod(item)" class="bi bi-trash3-fill delete"></i>
+                    </span>
+                </div>
+            </mat-menu>
+            <div *ngIf="loggedInUser.isSuperAdmin" (click)="addAppraisalPeriod()" class="cta primary-bkg icon md ms-lg-3">
+                <span class="icon pe-1">
+                    <app-icon [iconName]="'calendar'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                New Appraisal Period
+            </div>
+            <!-- <div *ngIf="loggedInUser.isSuperAdmin" (click)="openEditModal()" class="cta trans-bkg md rd edit ms-lg-3"><i class="bi bi-pen-fill"></i></div>
+            <div *ngIf="loggedInUser.isSuperAdmin" (click)="deleteAppraisalPeriod(periodInView[0])" class="cta trans-bkg md rd delete ms-lg-3"><i class="bi bi-trash3-fill"></i></div> -->
+        </div>
+    </div>
+
+    <div *ngIf="!periodInView" class="row-section w-100">
+        <app-loading-data [height]="'15rem'"></app-loading-data>
+    </div>
+
+    <div *ngIf="appraisalPeriods && appraisalPeriods.length == 0" class="row-section w-100 my-lg-5">
+        <div class="cont">
+            <app-no-data 
+                [height]="'15rem'"
+                [icon]="'calendar'"
+                [message]="'No appraisal periods have been created'"
+            >
+            </app-no-data>
+        </div>
+    </div>
+
+    <div *ngIf="appraisalPeriods && periodInView && appraisalPeriods.length > 0" class="row-hdr-section my-lg-5">
+        <div class="stepper-container">
+            <app-progress-stepper
+                (triggerStepChange)="switchStep($event)"
+                [stepperItems]="stepperSteps"
+                [currentStep]="stepperCurrentStep - 1"
+                [stepCount]="24"
+            >
+            </app-progress-stepper>
+        </div>
+    </div>
+
+    <!-- <div class="legend d-flex justify-content-start align-items-center mt-lg-4">
+        <span class="desc">Department :</span>
+        <div class="status-hld">
+            <span class="status approved light">Technology</span>
+            <span class="status started light">Human Resources</span>
+            <span class="status started light">Marketing</span>
+            <span class="status started light">Operations</span>
+        </div>
+        
+    </div> -->
+
+    
+
+    <div *ngIf="appraisalPeriods && periodInView && appraisalPeriods.length > 0" class="row-section my-lg-4 d-block">
+
+        <div class="appraisal-container card-yxl">
+    
+            <div class="col-card card-ylg d-flex justify-content-between align-items-start">
+
+                <div class="row-card card-xmmd card-ylg h-auto me-lg-5">
+                    <div class="cont">
+                        <div class="card-title clr">Appraisal Requests</div>
+
+                        <div *ngIf="appraisalRequests" class="request-wrap mt-3">
+                            <div *ngFor="let employee of appraisalRequests; let i = index" class="request-hld">
+                                <div class="view"><i class="bi bi-arrow-up-right-circle-fill"></i></div>
+                                <div 
+                                    (click)="viewAppraisalInfo(employee)" 
+                                    class="inner"
+                                    [ngClass]="{
+                                        'pending': employee.status == 'Pending',
+                                        'inReview': employee.status == 'Awaiting Manager Review',
+                                        'reviewed': employee.status == 'Manager reviewed'
+                                    }"
+                                >
+                                    <div class="det d-flex align-items-center gap-2">
+                                        <div class="image rd bkg-standard" style="background-image: url('{{employee.profilePic}}');"></div>
+                                        <div class="info">
+                                            <div class="title">{{employee.fullName}}</div>
+                                            <div class="date">
+                                                <span>{{employee.designation}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="det">
+                                        <div class="count">
+                                            <span class="pe-1">Updated:</span>
+                                            <span>{{employee.updatedAt | date: 'dd MMM, yyyy'}}</span>
+                                            <!-- <span class="rating-icon pe-lg-1" *ngFor="let f of [].constructor(5)"><i class="bi bi-star-fill"></i></span> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="cont mt-lg-4">
+                        <div class="card-title clr mb-lg-1">Rating Scale</div>
+                        <div *ngIf="loggedInUser.isSuperAdmin" (click)="addRating()" class="cta quick primary-bkg xs">Add Rating</div>
+                        <mat-accordion>
+                            <mat-expansion-panel hideToggle *ngFor="let item of ratingAccordionItems['data']; let i = index" class="mat-elevation-z0">
+                                <mat-expansion-panel-header style="max-height: 40px;">
+                                    <mat-panel-title>
+                                        <div class="info-section w-100 pt-1 d-flex justify-content-between">
+                                            <div class="name">
+                                                <span class="rating-icon pe-lg-1" *ngFor="let f of [].constructor(convertToNum(item.value))"><i class="bi bi-star-fill"></i></span>
+                                                <span class="ps-lg-1">{{item.ratingName}}</span>
+                                            </div>
+                                            <div *ngIf="loggedInUser.isSuperAdmin" class="actions">
+                                                <i (click)="updateKpiRating(item)" class="bi bi-pen-fill"></i>
+                                                <i (click)="deleteKpiRating(item)" class="bi bi-trash3-fill"></i>
+                                            </div>
+                                        </div>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="info-body">{{item.description}}</div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+    
+                    </div> -->
+                </div>
+
+                <div class="row-card card-xxl matrix-container d-flex flex-column justify-content-between">
+                    <div class="card-cont">
+                        <!-- <div class="inner-col card-xxl" style="overflow-x: hidden;">
+                            <div *ngIf="periodInView" class="request-wrap" style="width: 42rem;">
+                                <div *ngFor="let employee of periodInView[0]?.appraisalData; let i = index" class="request-hld">
+                                    <div class="view"><i class="bi bi-arrow-up-right-circle-fill"></i></div>
+                                    <div 
+                                        (click)="viewAppraisalInfo(employee)" 
+                                        class="cont"
+                                        [ngClass]="{
+                                            'pending': employee.status == 'Pending',
+                                            'inReview': employee.status == 'Awaiting Manager Review',
+                                            'reviewed': employee.status == 'Manager reviewed'
+                                        }"
+                                    >
+                                        <div class="det d-flex align-items-center gap-2">
+                                            <div class="image rd bkg-standard" style="background-image: url('{{employee.profilePic}}');"></div>
+                                            <div class="info">
+                                                <div class="title">{{employee.fullName}}</div>
+                                                <div class="date">
+                                                    <span>{{employee.designation}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="det">
+                                            <div class="count">
+                                                <span class="rating-icon pe-lg-1" *ngFor="let f of [].constructor(5)"><i class="bi bi-star-fill"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <!-- <div class="card-cont mb-lg-4">
+                        <div class="appraisal-hdr">
+                            <div class="detail">
+                                <span>Appraisal Matrix for {{periodInView && periodInView[0].appraisalPeriodName}}</span>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="card-cont d-flex justify-content-end">
+                        <div class="arrow vertical">
+                            <div class="line"><span>Potential</span></div>
+                            <div class="point"></div>
+                        </div>
+                        <div class="arrow horizontal">
+                            <div class="line"><span>Performance</span></div>
+                            <div class="point"></div>
+                        </div>
+                        <div class="rating horizontal">
+                            <div class="name">Low</div>
+                            <div class="name">Moderate</div>
+                            <div class="name">High</div>
+                        </div>
+                        <div class="rating vertical">
+                            <div class="name">Low</div>
+                            <div class="name">Moderate</div>
+                            <div class="name">High</div>
+                        </div>
+                        <div class="matrix-wrap">
+                            <div *ngFor="let item of matrixItems" class="cont matrix-hld" style="height: 15.2vh;">
+                                <div class="stacked-items lg">
+                                    <div class="stack fill">
+                                        <span (click)="viewAppraisalInfo(staff)" *ngFor="let staff of item.staff" style="background-image: url('{{staff.profilePic}}');"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section my-5 py-5"></div>
+</div>
+
+
+<div [ngClass]="{opened: sideModalOpened}" class="sidenav-container"> 
+    <div (click)="sideModalOpened = !sideModalOpened" class="sidenav-bkg"></div> 
+    <div [ngClass]="{opened: sideModalOpened}" class="sidenav-content">
+        <!-- <app-appraisal-form></app-appraisal-form> -->
+    </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="content-wrap d-block pb-5 mb-5">
+
+    <div class="row-section" style="flex: unset;">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="row-card w-100 ecard-ymd d-flex justify-content-between align-items-start">
+                <div class="cont card-xmlg pg-cover">
+                    <div class="caption-wrap">
+                        <div class="hdr">
+                            <div class="card-title xl">Elevate Your Professional Skills</div>
+                            <div class="preamble mt-3">Courses are selected to enable you achieve greater efficiency in your daily routine with a variety of courses from management to leadership to health and safety and many more.</div>
+                            <div class="main-actions mt-4">
+                                <div [routerLink]="'../courses'" class="cta trans-bkg bg-white icon md">
+                                    <span style="color: var(--primary);" class="icon pe-1">
+                                        <app-icon [iconName]="'graduation'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                    </span> 
+                                    View All Courses
+                                </div>
+                                <div *ngIf="loggedInUser.isSuperAdmin" (click)="addNewCourse()" class="cta primary-bkg icon md ms-lg-3">
+                                    <span class="icon pe-1">
+                                        <app-icon [iconName]="'layerPlus'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                    </span>
+                                    Add New Course
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image">
+                        <img class="" src="assets/images/illustrations/lms.png" alt="">
+                    </div>
+                </div>
+
+                <div class="cont card-xmd card-yxl">
+                    <div class="hdr d-flex justify-content-between align-items-center mt-lg-1 mb-lg-2">
+                        <div class="title">
+                            <div class="card-title clr">Learning Rate</div>
+                            <div class="preamble">Similar graph when enough data is available</div>
+                        </div>
+                    </div>
+                    <div class="w-100 guage-chart d-flex flex-column justify-content-center align-items-center">
+                        <ngx-gauge 
+                            size="280" 
+                            type="semi" 
+                            thick="15" 
+                            [value]="courses[currentGraphIndex]?.enrollments*100/8" 
+                            cap="round" 
+                            append="%" 
+                            foregroundColor="#00a4ef"
+                            backgroundColor="#ecf0f1"
+                        >
+                        </ngx-gauge>
+                        <div class="nav-actions">
+                            <div class="action d-flex align-items justify-content-center gap-3 text-center">
+                                <span role="button" (click)="currentGraphIndex = currentGraphIndex == 0 ? 0 : currentGraphIndex - 1"><i class="bi bi-chevron-left"></i></span>
+                                <span>{{courses[currentGraphIndex]?.title}}</span>
+                                <span role="button" (click)="currentGraphIndex = currentGraphIndex == courses.length ? courses.length : currentGraphIndex + 1"><i class="bi bi-chevron-right"></i></span>
+                            </div>
+                            <div class="info text-center">Navigate previous and next courses</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-5" style="flex: unset;">
+        <div class="w-100 inner-row-hld d-flex justify-content-between overflow-x-hidden">
+            <div class="scroll-wrap ecard-yxs category-wrap">
+                <div *ngFor="let item of courseCategories| slice:0:4; let i = index" [class.ml]="i > 0" class="cont ecard-xmd status-card d-inline-block px-3 py-3">
+                    <div class="card-det d-flex flex-column flex-wrap">
+                        <div class="card-title">{{item.name}}</div>
+                        <div class="card-info d-flex">
+                            <div class="info-hld">
+                                <span class="icon pe-1">
+                                    <app-icon [iconName]="'graduation'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                </span> 
+                                {{item.totalCourses}} Courses
+                            </div>
+                            <div class="info-hld">
+                                <span class="icon pe-1">
+                                    <app-icon [iconName]="'clock'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                </span> 
+                                {{item.totalDuration ? convertHrsMins(item.totalDuration) : ''}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section">
+        <div class="w-100 inner-row-hld row-card justify-content-between overflow-x-hidden">
+            <div class="hdr w-100 d-flex justify-content-between align-items-center">
+                <div class="card-title lg">Popular Courses</div>
+                <div *ngIf="loggedInUser.isSuperAdmin" (click)="addNewCourse()" class="cta primary-bkg icon md">
+                    <span class="icon pe-1 approved">
+                        <app-icon [iconName]="'graduation'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                    </span> 
+                    Add New Course
+                </div>
+            </div>
+            <div class="courses-wrap mt-3">
+                <div *ngFor="let item of courses | slice:0:8; let i = index" [class.ml]="i > 0" class="course-hld ecard-xmd d-inline-block">
+                    <app-course-card (click)="viewDetails(item)" role="button" [courseInfo]="item"></app-course-card>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section my-5 pb-5"></div>
+
+</div>

@@ -1,0 +1,184 @@
+<div class="scroll-cont">
+    <div class="content-wrap">
+        <div class="row-section d-flex justify-content-between align-items-center">
+            <div class="page-header">Payroll</div>
+            <div class="main-actions d-flex justify-content-start align-items-center">
+                <div (click)="addNewPayrollFile()" class="cta primary-bkg icon md">
+                    <span class="icon pe-1">
+                        <app-icon [iconName]="'wallet'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                    </span>
+                    New Payroll
+                </div>
+            </div>
+        </div>
+
+        <div class="row-section h-auto mt-lg-4" style="flex: unset">
+            <div class="inner-row-hld ecard-yxs d-flex justify-content-between">
+                
+                <div class="row-card h-auto w-100 d-flex justify-content-between align-items-start status-summary">
+                    <div class="col-card card-xmmd-col4 card-yxl d-flex justify-content-between">
+                        <div class="cont status-card d-flex flex-column justify-content-between card-xmmd card-yxl">
+                            <div class="card-det d-flex align-items-center">
+                                <div class="symbol">
+                                    <span class="icon">
+                                        <app-icon [iconName]="'users'" [iconWidth]="48" [iconHeight]="48"></app-icon>
+                                    </span>
+                                </div>
+                                <div class="card-title reg">Employees</div>
+                            </div>
+                            <div class="card-det d-flex justify-content-between align-items-center mt-lg-1">
+                                <span class="value">{{employees?.length}}</span> 
+                                <div class="stacked-items w-auto">
+                                    <div *ngIf="employees.length > 0" class="stack">
+                                        <span *ngFor="let staff of employees.slice(0, 5)" style="background-image: url('{{staff.profilePic}}');"></span>
+                                    </div>
+                                </div>                           
+                            </div>
+                        </div>
+    
+                        <div class="cont status-card card-xmmd card-yxl d-flex flex-column justify-content-between">
+                            <div class="card-det d-flex align-items-center">
+                                <div class="symbol">
+                                    <span class="icon">
+                                        <app-icon [iconName]="'layer'" [iconWidth]="40" [iconHeight]="40"></app-icon>
+                                    </span>
+                                </div>
+                                <div class="card-title reg">Gross Earnings</div>
+                            </div>
+                            <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                                <span class="value">₦10,000,000</span>
+                                <span class="arrow increase"><i class="bi bi-arrow-down-right"></i>5%</span> 
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-card card-xmmd-col4 card-yxl d-flex justify-content-between">
+                        <div class="cont status-card card-xmmd card-yxl d-flex flex-column justify-content-between">
+                            <div class="card-det d-flex align-items-center">
+                                <div class="symbol">
+                                    <span class="icon">
+                                        <app-icon [iconName]="'wallet'" [iconWidth]="40" [iconHeight]="40"></app-icon>
+                                    </span>
+                                </div>
+                                <div class="card-title reg">Net Pay</div>
+                            </div>
+                            <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                                <span class="value">₦8,000,000</span>
+                                <span class="arrow increase"><i class="bi bi-arrow-down-right"></i>5%</span> 
+                            </div>
+                        </div>
+    
+                        <div class="cont status-card card-xmmd card-yxl d-flex flex-column justify-content-between">
+                            <div class="card-det d-flex align-items-center">
+                                <div class="symbol">
+                                    <span class="icon">
+                                        <app-icon [iconName]="'exclamation'" [iconWidth]="40" [iconHeight]="40"></app-icon>
+                                    </span>
+                                </div>
+                                <div class="card-title reg">Pending</div>
+                            </div>
+                            <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                                <span class="value">₦100,000</span>
+                                <!-- <span class="arrow decrease"><i class="bi bi-arrow-up-right"></i>5%</span>                           -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row-card card-xsm card-yxl">
+                    <div class="col-card card-yxl d-flex flex-column justify-content-between align-items-center">
+                        <div *ngFor="let item of payrollSummary" class="cont status-card d-flex flex-column justify-content-between card-xxl card-ymmd px-lg-4">
+                            <div class="card-det d-flex align-items-center">
+                                <div class="symbol" [ngStyle]="{'color': item.colorDark}">
+                                    <span class="icon">
+                                        <app-icon [iconName]="item.symbol" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                                    </span>
+                                </div>
+                                <div class="card-title reg">{{item.name}}</div>
+                            </div>
+                            <div class="card-det d-flex justify-content-between align-items mt-lg-1">
+                                <span class="value">{{item.value}}</span>
+                                <span class="arrow" [ngStyle]="{'color': item.colorDark, 'background': item.colorLight}"><i class="{{item.icon}}"></i>{{item.percentChange}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="row-section mt-lg-4">
+            <div class="table-wrap">
+
+                <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                    <div class="card-title">Payroll History</div>
+                    <div class="bulk-actions d-flex justify-content-between align-items-center">
+                        <div class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div>
+                        <div class="cta primary-bkg sm ms-lg-2">Apply</div>
+                    </div>
+                </div>
+
+                <div class="inner-row">
+                    <table 
+                        mat-table
+                        [dataSource]="dataSource"
+                        class="dataTable mat-elevation-z0"
+                        matSort
+                    >
+
+                        <!-- Table Columns -->
+                        <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+
+                            <ng-container *ngIf="column.key == 'payPeriod'">
+                                <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                                <td mat-cell *matCellDef="let row"> {{strToDate(row.startDate, 'startDate')}} - {{strToDate(row.endDate, 'endDate')}}</td>
+                            </ng-container>
+
+                            <ng-container *ngIf="column.key == 'totalEarnings' || column.key == 'netEarnings' || column.key == 'deductions'">
+                                <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                                <td mat-cell *matCellDef="let row"> ₦ {{row[column.key].toLocaleString()}}</td>
+                            </ng-container>
+
+                            <ng-container *ngIf="column.key == 'status'">
+                                <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                                <td mat-cell 
+                                    *matCellDef="let row">
+                                    <span class="status approved" *ngIf="row[column.key] == 'Completed'">{{ row[column.key] }}</span>
+                                    <span class="status pending" *ngIf="row[column.key] == 'Pending'">{{ row[column.key] }}</span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container *ngIf="column.key == 'actions'">
+                                <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                                </th>
+                                <td style="width:1%; white-space: nowrap; align-items: center;" mat-cell *matCellDef="let element">
+                                    <span (click)="viewPayrollDetails(element)" class="table-icon edit" style="font-size: 1rem;"><i class="bi bi-eye-fill"></i></span>
+                                    <span *ngIf="element.status == 'Pending'" (click)="deletePayrollPeriod(element)" class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                                </td>
+                            </ng-container>
+
+                            <ng-container>
+                                <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                                <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                            </ng-container>
+                            
+                        </ng-container>
+
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                <div class="empty-data">
+                                    <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                    <div class="text">No payroll records were found.</div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

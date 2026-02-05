@@ -1,0 +1,175 @@
+<div class="content-wrap">
+
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header"><span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span> {{companyInView?.companyName}}</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div (click)="activateSubscription()" class="cta primary-bkg icon md">
+                <span class="icon pe-1">
+                    <app-icon [iconName]="'folderAi'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                Activate Subscription
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section my-lg-4">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="row-card card-xsm card-yxl">
+                <div class="cont company-summary">
+                    <div class="logo">
+                        <span><i class="bi bi-camera"></i></span>
+                    </div>
+                    <div class="info">
+                        <div class="name">{{companyInView?.companyName}}</div>
+                        <div class="email">{{companyInView?.email}}</div>
+                    </div>
+                    <div class="cta trans-bkg icon md w-100 mt-lg-3">
+                        <span class="icon pe-2">
+                            <app-icon [iconName]="'edit'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                        </span>
+                        Edit Company Info
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card card-xlg card-yxl">
+                <div class="cont lg company-details">
+                    <div *ngIf="companyInView" class="details">
+                        <div class="info-wrap">
+                            <div class="info-list space">
+                                <div class="info duo">
+                                    <span class="label">Company Name</span>
+                                    <span class="text">{{companyInView?.companyName}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Industry:</span>
+                                    <span class="text">{{companyInView?.industry ? companyInView?.industry : '-'}}</span>
+                                </div>
+
+                                <div class="info duo">
+                                    <span class="label">Company Address</span>
+                                    <span class="text">{{'-'}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Date Created:</span>
+                                    <span class="text">{{ companyInView?.dateCreated | date: 'd MMMM, y' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="companyInView" class="details">
+                        <div class="info-wrap">
+                            <div class="info-list space">
+                                <div class="info tri">
+                                    <span class="label">Subscription Status</span>
+                                    <span class="status approved" *ngIf="companyInView.activeStatus">Active</span>
+                                    <span class="status pending" *ngIf="!companyInView.activeStatus">Pending</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Current Plan:</span>
+                                    <span class="text text-capitalize">{{companyInView?.companyFeatures.subscriptionStatus.plan}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Current Cycle</span>
+                                    <span class="text text-capitalize">{{companyInView?.companyFeatures.subscriptionStatus.currentCycle}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Start Date:</span>
+                                    <span class="text">{{companyInView?.companyFeatures.subscriptionStatus.startDate | date: 'd MMMM, y'}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">End Date:</span>
+                                    <span class="text">{{companyInView?.companyFeatures.subscriptionStatus.endDate | date: 'd MMMM, y'}}</span>
+                                </div>
+
+                                <div class="info tri">
+                                    <span class="label">Number of Users</span>
+                                    <span class="text text-capitalize">{{companyInView?.companyFeatures.subscriptionStatus.noOfUsers}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3 mb-lg-4">
+        <div class="row-card">
+            <div class="row-hdr d-flex justify-content-between align-items-center">
+                <div class="card-title lg">Company Modules</div>
+                <div class="main-actions d-flex justify-content-start align-items-center gap-3">
+                    <div (click)="createRole()" class="cta trans-bkg icon md">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'userPlus'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                        </span>
+                        Create New Role
+                    </div>
+
+                    <div (click)="saveChanges()" class="cta primary-bkg icon md">
+                        <span class="icon pe-1">
+                            <app-icon [iconName]="'save'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                        </span>
+                        Save Changes
+                    </div>
+                </div>
+                
+            </div>
+            <form [formGroup]="permissionsForm">
+                <div *ngIf="formReady" class="module-wrap">
+                    <div class="accordion accordion-flush mt-lg-3">
+                        <div *ngFor="let module of currentCompanyModules; let i = index" class="accordion-item" [formArrayName]="module.key">
+                            <div class="accordion-header" id="{{'flush-heading'+module.key}}">
+                                <button (click)="toggleModuleInfo(module.key)" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#'+'flush-'+module.key" aria-expanded="false" [attr.aria-controls]="'flush-'+module.key">
+                                    <div class="name">{{module.moduleName}}</div>
+                                    <div class="app-switch">
+                                        <input type="checkbox">
+                                    </div>
+                                </button>
+                            </div>
+                            <div [class.show]="activeTab == module.key" id="{{'flush-'+module.key}}" class="accordion-collapse collapse" [attr.aria-labelledby]="'flush-heading'+module.key" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body pb-lg-4">
+                                    <div class="role-wrap">
+                                        <div class="role-hld"></div>
+                                        <div *ngFor="let role of companyInView.systemRoles; let roleIndex = index" class="role-hld">{{role.roleName}}</div>
+                                    </div>
+
+                                    <div class="features-wrap">
+                                        <div *ngFor="let feature of module.moduleFeatures; let featureIndex = index" class="feature-hld">
+                                            <div class="feature-hdr">{{feature.featureName}}</div>
+                                            <div class="permissions-wrap">
+                                                <div *ngFor="let permission of feature.featurePermissions; let permissionIndex = index" class="permission-hld">
+                                                    <div class="permission-col">{{permission.name}}</div>
+                                                    <div *ngFor="let role of companyInView.systemRoles; let roleIndex = index" class="permission-col">
+                                                        <ng-container [formGroupName]="roleIndex">
+                                                            <mat-checkbox
+                                                            
+                                                                [formControlName]="currentCompanyModules[i].moduleFeatures[featureIndex].featurePermissions[permissionIndex].key"
+                                                                color="primary" 
+                                                            >
+                                                            </mat-checkbox>
+                                                        </ng-container>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

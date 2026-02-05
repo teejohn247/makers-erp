@@ -1,0 +1,80 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { OrdersRoutingModule } from './orders-routing.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxGaugeModule } from 'ngx-gauge';
+import { OrdersDashboardComponent } from './components/orders-dashboard/orders-dashboard.component';
+import { PurchaseOrdersInfoComponent } from './purchase-orders/purchase-orders-info/purchase-orders-info.component';
+import { PurchaseOrdersHistoryComponent } from './purchase-orders/purchase-orders-history/purchase-orders-history.component';
+import { PurchaseOrdersDetailsComponent } from './purchase-orders/purchase-orders-details/purchase-orders-details.component';
+import { CustomerListComponent } from './customers/customer-list/customer-list.component';
+import { CustomerInfoComponent } from './customers/customer-info/customer-info.component';
+import { ProductListComponent } from './products/product-list/product-list.component';
+import { ProductInfoComponent } from './products/product-info/product-info.component';
+import { SupplierListComponent } from './suppliers/supplier-list/supplier-list.component';
+import { SupplierInfoComponent } from './suppliers/supplier-info/supplier-info.component';
+import { FreightCarrierListComponent } from './logistics/freight-carrier-list/freight-carrier-list.component';
+import { FreightCarrierInfoComponent } from './logistics/freight-carrier-info/freight-carrier-info.component';
+import { CustomerDetailsComponent } from './customers/customer-details/customer-details.component';
+import { SupplierDetailsComponent } from './suppliers/supplier-details/supplier-details.component';
+import { StockInfoComponent } from './products/stock-info/stock-info.component';
+import { ProductCategoryComponent } from './products/product-category/product-category.component';
+import { ProductDetailsComponent } from './products/product-details/product-details.component';
+import { CustomerOverviewComponent } from './customers/customer-overview/customer-overview.component';
+import { CustomerSalesComponent } from './customers/customer-sales/customer-sales.component';
+import { ProductOverviewComponent } from './products/product-overview/product-overview.component';
+import { ProductStockHistoryComponent } from './products/product-stock-history/product-stock-history.component';
+import { ProductSalesComponent } from './products/product-sales/product-sales.component';
+import { SupplierOverviewComponent } from './suppliers/supplier-overview/supplier-overview.component';
+import { SupplierOrderHistoryComponent } from './suppliers/supplier-order-history/supplier-order-history.component';
+import { CourierListComponent } from './couriers/courier-list/courier-list.component';
+import { CourierInfoComponent } from './couriers/courier-info/courier-info.component';
+import { CourierOverviewComponent } from './couriers/courier-overview/courier-overview.component';
+import { CourierDetailsComponent } from './couriers/courier-details/courier-details.component';
+import { CourierDeliveryHistoryComponent } from './couriers/courier-delivery-history/courier-delivery-history.component';
+
+
+@NgModule({
+  declarations: [
+    OrdersDashboardComponent,
+    PurchaseOrdersInfoComponent,
+    PurchaseOrdersHistoryComponent,
+    PurchaseOrdersDetailsComponent,
+    CustomerListComponent,
+    CustomerInfoComponent,
+    ProductListComponent,
+    ProductInfoComponent,
+    ProductDetailsComponent,
+    SupplierListComponent,
+    SupplierInfoComponent,
+    FreightCarrierListComponent,
+    FreightCarrierInfoComponent,
+    CustomerDetailsComponent,
+    SupplierDetailsComponent,
+    StockInfoComponent,
+    ProductCategoryComponent,
+    CustomerOverviewComponent,
+    CustomerSalesComponent,
+    ProductOverviewComponent,
+    ProductStockHistoryComponent,
+    ProductSalesComponent,
+    SupplierOverviewComponent,
+    SupplierOrderHistoryComponent,
+    CourierListComponent,
+    CourierInfoComponent,
+    CourierOverviewComponent,
+    CourierDetailsComponent,
+    CourierDeliveryHistoryComponent
+  ],
+  imports: [
+    CommonModule,
+    SharedModule,
+    NgxGaugeModule,
+    NgxChartsModule,
+    HighchartsChartModule,
+    OrdersRoutingModule
+  ]
+})
+export class OrdersModule { }

@@ -1,0 +1,127 @@
+<div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Profile</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <button [disabled]="!employeeDetails || !designationList || !departmentList" (click)="editEmployeeInfo()" class="cta primary-bkg icon md border-0">Edit profile</button>
+        </div>
+    </div>
+
+    <div class="row-section my-lg-4">
+        <div class="inner-row-hld card-yauto d-flex justify-content-between">
+            <div class="row-card card-xsm card-yauto">
+                <div class="cont rd-pd h-auto">
+                    <div class="info major">
+                        <div class="image bkg-standard" style="background-image: url('{{employeeDetails?.profilePic}}');"></div>
+                        <div class="det mt-lg-3">
+                            <div class="name">{{employeeDetails?.fullName}}</div>
+                            <div class="role">{{employeeDetails?.companyRole}}</div>
+
+                            <div *ngIf="employeeDetails" class="contact">
+                                <div class="info">
+                                    <span>{{employeeDetails?.email}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info minor mt-lg-3">
+                        <div *ngIf="employeeDetails" class="listed-items">
+                            <div class="item">
+                                <span class="label">Department:</span>
+                                <span class="text">{{employeeDetails?.department}}</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Designation:</span>
+                                <span class="text">{{employeeDetails?.designationName}}</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Date Joined:</span>
+                                <span class="text">{{strToDate(employeeDetails?.employmentStartDate) | date : 'd MMMM, y'}}</span>
+                            </div>
+                            <div class="item">
+                                <span class="label">Contract Type:</span>
+                                <span class="text">{{employeeDetails?.employmentType}}</span>
+                            </div>
+                            <div *ngIf="managerImage && managerRole" class="item flex-wrap">
+                                <div class="label w-100">Reports to:</div>
+                                <div class="image bkg-standard" style="background-image: url('{{managerImage}}');"></div>
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="major">{{employeeDetails?.managerName}}</div>
+                                        <div class="minor">{{managerRole}}</div>
+                                    </div>
+                                    <div class="det">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cont inner-row-hld card-xlg card-ymd d-flex justify-content-between ps-3">
+                <div class="info-wrap mt-lg-4">
+                    <div class="info-list space">
+                        <div class="info tri">
+                            <span class="label">Birthday:</span>
+                            <span *ngIf="!employeeDetails?.dateOfBirth">-</span>
+                            <span *ngIf="employeeDetails?.dateOfBirth" class="text">{{strToDate(employeeDetails?.dateOfBirth) | date: 'd MMMM, y'}}</span>
+                        </div>
+                        
+                        <div class="info duo">
+                            <span class="label">Address:</span>
+                            <span class="text">{{employeeDetails?.address ? employeeDetails?.address : '-'}}</span>
+                        </div>
+    
+                        <div class="info tri">
+                            <span class="label">City:</span>
+                            <span class="text">{{employeeDetails?.city ? employeeDetails?.city : '-'}}</span>
+                        </div>
+    
+                        <div class="info tri">
+                            <span class="label">Country:</span>
+                            <span class="text">{{employeeDetails?.country ? employeeDetails?.country : '-'}}</span>
+                        </div>
+    
+                        <div class="info tri">
+                            <span class="label">Nationality:</span>
+                            <span class="text">{{employeeDetails?.nationality ? employeeDetails?.nationality : '-'}}</span>
+                        </div>
+    
+                        <div class="info tri">
+                            <span class="label">Gender:</span>
+                            <span class="text">{{employeeDetails?.gender ? employeeDetails?.gender : '-'}}</span>
+                        </div>
+
+                        <div class="info tri">
+                            <span class="label">Marital Status:</span>
+                            <span class="text">{{employeeDetails?.maritalSatus ? employeeDetails?.maritalSatus : '-'}}</span>
+                        </div>
+    
+                        <div class="info tri">
+                            <span class="label">Next of Kin:</span>
+                            <span class="text">{{employeeDetails?.nextOfKinFullName ? employeeDetails?.nextOfKinFullName : '-'}}</span>
+                        </div>
+
+                        <div class="info tri">
+                            <span class="label">Next of Kin Relationship:</span>
+                            <span class="text">{{employeeDetails?.nextOfKinRelationship ? employeeDetails?.nextOfKinRelationship : '-'}}</span>
+                        </div>
+    
+                        <div class="info tri">
+                            <span class="label">Next of Kin Phone:</span>
+                            <span class="text">{{employeeDetails?.nextOfKinPhoneNumber ? employeeDetails?.nextOfKinPhoneNumber : '-'}}</span>
+                        </div>
+
+                        <div class="info">
+                            <span class="label">Next of Kin Address:</span>
+                            <span class="text">{{employeeDetails?.nextOfKinAddress ? employeeDetails?.nextOfKinAddress : '-'}}</span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

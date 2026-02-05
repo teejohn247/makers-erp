@@ -1,0 +1,63 @@
+::ng-deep {
+
+    .mat-chip-list-wrapper {
+        margin-top: 0.3rem;
+        margin-bottom: 0.3rem;
+        flex-wrap: nowrap !important;
+        overflow: auto;
+
+        &::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        mat-chip {
+            min-height: 24px !important;
+            font-size: 0.75rem !important;
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+        }
+    }
+
+    // .mat-select-panel-wrap {
+    //     margin-top: 2.5rem !important;
+    // }
+}
+
+.upload-wrap {
+    width: 100%;
+    height: auto;
+    display: flex;
+    padding: 1rem 0;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-black-lightest);
+    cursor: pointer;
+    gap: 0.3rem;
+
+    input {
+        display: none;
+    }
+
+    .icon {
+        font-size: 1.8rem;
+        color: var(--primary);
+    }
+
+    .info {
+        font-size: 0.9rem;
+        letter-spacing: 0.03rem;
+        color: var(--black-tint);
+    }
+
+    .file-name {
+        font-size: 0.8rem;
+        letter-spacing: 0.03rem;
+    }
+
+    .logo {
+        width: auto;
+        height: 2.7rem;
+    }
+}

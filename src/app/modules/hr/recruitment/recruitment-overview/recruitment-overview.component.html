@@ -1,0 +1,200 @@
+<div class="content-wrap with-tabs pb-5">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Recruitment Overview</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div (click)="addNewJobPost()" class="cta primary-bkg icon md"><i class="bi bi-signpost-2-fill"></i>New Job Post</div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3">
+        <div class="inner-row-hld d-flex align-items-start justify-content-between">
+            <div class="col-card card-yxl d-flex justify-content-between align-items-start">
+                <div class="row-card d-flex justify-content-between card-xmlg card-yxl">
+                    <div class="inner-col card-xmmd card-yxl d-flex flex-column justify-content-between">
+                        <div *ngFor="let item of jobPostSummary" class="cont status-card d-flex flex-column justify-content-center card-ymmd">
+                            <div class="card-det d-flex align-items-center">
+                                <div class="icon lg" [ngStyle]="{'color': item.colorDark}"><i class="{{item.icon}}"></i></div>
+                                <div class="card-title thin">{{item.name}}</div>
+                                <div class="fraction"><span class="lg">{{item.count}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cont card-xmmd">
+                        <div class="donut-chart">
+                            <!-- <canvas #doughnutCanvas></canvas> -->
+                            <div class="chart-title">
+                                <span>NUMBER OF APPLICATIONS <br> BY DEPARTMENT</span>
+                            </div>
+                            <highcharts-chart
+                                [Highcharts]="Highcharts"
+                                [options]="chartOptions"
+                                style="width: auto; max-width: 100%; height: 300px; display: flex; align-items: center; justify-content: center; background: transparent;"
+                            >
+                            </highcharts-chart>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-card card-xmd card-yxl">
+                    <div class="cont">
+                        <div class="card-title clr">Upcoming Interviews</div>
+                        <div class="listed-items mt-lg-3">
+                            <div class="item">
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="major bd">Senior Frontend Engineer</div>
+                                        <div class="minor">Ibrahim Babatunde</div>
+                                    </div>
+                                    <div class="det right">
+                                        <div class="major">Apr 20</div>
+                                        <div class="minor sm">12:30pm - 12:45pm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="item">
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="major bd">Marketing Manager</div>
+                                        <div class="minor">Remi Olubode</div>
+                                    </div>
+                                    <div class="det right">
+                                        <div class="major">May 21</div>
+                                        <div class="minor sm">1:10pm - 2:45pm</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="major bd">Finance Analyst</div>
+                                        <div class="minor">Matt Greg</div>
+                                    </div>
+                                    <div class="det right">
+                                        <div class="major">May 26</div>
+                                        <div class="minor sm">4:10pm - 4:25pm</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="major bd">Technology Consultant</div>
+                                        <div class="minor">Rita Mreace</div>
+                                    </div>
+                                    <div class="det right">
+                                        <div class="major">May 30</div>
+                                        <div class="minor sm">9:30am - 10:45am</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="major bd">HR Consultant</div>
+                                        <div class="minor">Spence Holderyne</div>
+                                    </div>
+                                    <div class="det right">
+                                        <div class="major">Jun 4</div>
+                                        <div class="minor sm">10:30am - 10:45am</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3">
+        <div class="table-wrap">
+
+            <div class="inner-row py-2 d-flex hdr justify-content-start align-items-center">
+                <div class="card-title">Recruitment History</div>
+
+                <div class="bulk-actions d-flex justify-content-between align-items-center">
+                    <div class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div>
+                    <div class="cta primary-bkg sm ms-lg-2">Apply</div>
+                </div>
+            </div>
+
+            <div class="inner-row">
+                <table 
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="dataTable mat-elevation-z0"
+                    matSort
+                >
+
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+
+                        <ng-container *ngIf="column.key == 'jobTitle'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <div class="major">{{ row[column.key] }}</div>
+                                <!-- <div class="minor">{{row["Job ID"]}}</div> -->
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'openingDate' || column.key == 'closingDate'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>Check Out</th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <span class="">{{ row[column.key] && strToDate(row[column.key], 'date') }}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'status'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="status pending text-capitalize" *ngIf="row[column.key] == 'inactive'">{{ row[column.key] }}</span>
+                                <span class="status approved text-capitalize" *ngIf="row[column.key] == 'active'">{{ row[column.key] }}</span>
+                                <span class="status rejected text-capitalize" *ngIf="row[column.key] == 'expired'">{{ row[column.key] }}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'actions'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let element">
+                                <span class="table-icon edit"><i class="bi bi-pen-fill"></i></span>
+                                <span class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container>
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <div class="empty-data">
+                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                <div class="text">No job post records were found.</div>
+                                <div (click)="addNewJobPost()"  class="cta primary-bkg icon lg mt-3"><i class="bi bi-signpost-2-fill"></i>New Job Post</div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+        
+    </div>
+
+</div>

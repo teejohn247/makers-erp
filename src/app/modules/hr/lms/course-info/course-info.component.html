@@ -1,0 +1,129 @@
+<div class="content-wrap d-block">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header md"><span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span> New Course</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <!-- <div (click)="addStock()" class="cta primary-bkg icon md">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'box'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                Add Stock
+            </div> -->
+        </div>
+    </div>
+
+    <div class="row-section my-lg-4">
+        <form *ngIf="courseInfoForm" [formGroup]="courseInfoForm" class="inner-row-hld d-flex justify-content-between">
+            <div style="width: 60%" class="row-card card-yxl">
+                <div class="form-wrap">
+                    <div class="form-container d-flex justify-content-between flex-wrap" style="font-size: 0.8rem; font-family: 'AR';">
+                        <ng-container class="d-flex" *ngFor="let field of courseInfoFields">
+                            <ng-container [ngSwitch]="field.controlType">
+    
+                                <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <input matInput [formControlName]="field.controlName">
+                                    <mat-error *ngIf="courseInfoForm.get(field.controlName)?.hasError('email')">Please enter a valid email address</mat-error>
+                                    <mat-error *ngIf="courseInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'number'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label class="text-capitalize">{{field.controlLabel}}</mat-label>
+                                    <input type="number" min="0" matInput [formControlName]="field.controlName">
+                                    <mat-error *ngIf="courseInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                </mat-form-field>
+        
+                                <mat-form-field *ngSwitchCase="'select'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <mat-select
+                                        class="selectField"
+                                        disableOptionCentering
+                                        panelClass="matDropdown"
+                                        [formControlName]="field.controlName"
+                                    >
+                                        <!-- <mat-option ></mat-option> -->
+                                        <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="courseInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                </mat-form-field>
+    
+                                <mat-form-field *ngSwitchCase="'date'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <input matInput [matDatepicker]="picker" readonly [formControlName]="field.controlName">
+                                    <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                    <mat-error *ngIf="courseInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                    <mat-error *ngIf="courseInfoForm.get(field.controlName)?.hasError('date')">{{field.controlLabel}} is invalid</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'textarea'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <textarea type="field.controlType" rows="5" matInput [formControlName]="field.controlName"></textarea>
+                                </mat-form-field>
+
+                                <ng-container *ngSwitchCase="'modifyOptions'">
+                                    <div class="field-wrap d-flex gap-2" [style.width]="field.controlWidth">
+                                        <div style="flex: 1;" class="field w-100">
+                                            <mat-form-field class="mb-lg-2 w-100" appearance="outline">
+                                                <mat-label>{{field.controlLabel}}</mat-label>
+                                                <mat-select
+                                                    class="selectField"
+                                                    disableOptionCentering
+                                                    panelClass="matDropdown"
+                                                    [formControlName]="field.controlName"
+                                                >
+                                                    <!-- <mat-option ></mat-option> -->
+                                                    <mat-option *ngFor="let option of courseCatOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="courseInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div (click)="addNewCategory()" [class.disabled]="!addCategory" class="cta select-add"><i class="bi bi-plus"></i></div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngSwitchCase="'quillEditor'">
+                                    <label class="quill-label">{{field.controlLabel}}</label>
+                                    <app-quill-editor class="w-100 mb-lg-3" formControlName="courseDescription"></app-quill-editor>
+                                </ng-container>
+    
+                            </ng-container>
+                        </ng-container>
+    
+                        <div class="btn-hld d-flex justify-content-end mt-lg-4" style="width: 100%">
+                            <div *ngIf="!courseId" (click)="onSubmit()" class="cta primary-bkg lg text-uppercase" style="min-width: 30%" type="submit">Submit <span *ngIf="apiLoading" class="loader"></span></div>
+                            <div *ngIf="courseId && courseInView" (click)="onSubmit()" class="cta primary-bkg lg text-uppercase" style="min-width: 30%" type="submit">Update <span *ngIf="apiLoading" class="loader"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width: 35%" class="row-card flex-grow-0">
+                <div class="h-auto">
+                    <div [class.hasImage]="imgPic" (click)="fileUpload.click()" class="upload-wrap">
+                        <input 
+                            type="file" 
+                            class="file-upload"
+                            (change)="fileImgUpload($event)" 
+                            #fileUpload
+                        />
+                        <span *ngIf="!imgPic" class="icon">
+                            <app-icon [iconName]="'export'" [iconWidth]="30" [iconHeight]="30"></app-icon>
+                        </span>
+                        <div *ngIf="!imgPic" class="info">Click to upload a thumbnail image</div>
+                        <img class="logo" *ngIf="!imgUploadError && imgPic" [src]="imgPic" alt="">
+                        <span class="file-name d-flex align-items-center gap-2">
+                            {{imgFileName || imgPic ? imgFileName : 'No image uploaded'}} 
+                            <span *ngIf="imgPic && !imgFileName" class="text-primary">Change Image</span>
+                            <span *ngIf="imgFileName" class="icon ps-lg-1 ps-1">
+                                <app-icon [iconName]="'edit'" [iconWidth]="15" [iconHeight]="15"></app-icon>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row-section my-5 py-5"></div>
+</div>

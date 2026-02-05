@@ -1,0 +1,100 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <!-- <div class="hdr-title">
+                <div class="create-title">Create New Employee</div>
+
+                
+            </div> -->
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon">
+                        <span class="icon">
+                            <app-icon [iconName]="'alarm'" [iconWidth]="50" [iconHeight]="50"></app-icon>
+                        </span>
+                        <!-- <img src="../../../../assets/images/illustrations/stopwatch.png" /> -->
+                    </div>
+                    <div class="create-details">
+                        <div *ngIf="!data.forApproval && !data.isExisting" class="create-name">Create Absence Request</div>
+                        <div *ngIf="!data.forApproval && data.isExisting" class="create-name">Edit Absence Request</div>
+                        <div *ngIf="data.forApproval" class="create-name">Absence Request</div>
+                        <p class="lead-text" *ngIf="data.forApproval" >{{data.modalInfo.fullName}}</p>
+                    </div>
+                    <div (click)="dialogRef.close()" class="close-btn">&times;</div>
+                    <!-- <div *ngIf="isUpdateCustomer" class="create-details">
+                        <div class="create-name">{{firstName}} {{lastName}}</div>
+                        <div class="create-id">Customer ID: {{customerId}}</div>
+                    </div> -->
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+        <div class="form-wrap clearfix">
+            <div class="form-hld">
+
+                <form [formGroup]="leaveForm" class="form-container px-3" style="font-size: 0.85rem;">
+
+                    <ng-container class="d-flex" *ngFor="let field of leaveRequestFields">
+                        <ng-container [ngSwitch]="field.controlType">
+
+                            <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label class="text-capitalize">{{field.controlLabel}}</mat-label>
+                                <input readonly="field.readonly" matInput [formControlName]="field.controlName">
+                                <mat-error *ngIf="leaveForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'textarea'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <textarea [readonly]="field.readonly" type="field.controlType" rows="4" matInput [formControlName]="field.controlName"></textarea>
+                                <mat-error *ngIf="leaveForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+    
+                            <mat-form-field *ngSwitchCase="'select'" class="mb-lg-0" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <mat-select
+                                    class="selectField"
+                                    [disabled]="field.readonly"
+                                    disableOptionCentering
+                                    panelClass="matDropdown"
+                                    [formControlName]="field.controlName"
+                                >
+                                    <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="leaveForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'date'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <input readonly matInput [matDatepicker]="picker" [formControlName]="field.controlName">
+                                <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+                                <mat-datepicker-toggle [disabled]="field.readonly" matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                <mat-error *ngIf="leaveForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                <mat-error *ngIf="leaveForm.get(field.controlName)?.hasError('date')">{{field.controlLabel}} is invalid</mat-error>
+                            </mat-form-field>
+    
+                        </ng-container>
+                    </ng-container>
+
+                    <div *ngIf="!data.forApproval && !data.isExisting" class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="createLeaveRequest()" class="cta primary-bkg mmd text-uppercase" style="min-width: 32%">Submit</div>
+                    </div>
+
+                    <div *ngIf="!data.forApproval && data.isExisting" class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="updateLeaveRequest()" class="cta primary-bkg mmd text-uppercase" style="min-width: 32%">Update Request</div>
+                    </div>
+
+                    <div *ngIf="data.forApproval && data.modalInfo.status == 'Pending'" class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="onSubmit('decline')" class="cta warning-bkg mmd text-uppercase me-lg-3 me-2" style="min-width: 30%">Decline <span *ngIf="declining" class="loader"></span></div>
+                        <div (click)="onSubmit('approve')" class="cta approved-bkg mmd text-uppercase" style="min-width: 30%">Approve <span *ngIf="approving" class="loader"></span></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

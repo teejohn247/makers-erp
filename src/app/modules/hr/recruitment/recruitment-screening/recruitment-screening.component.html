@@ -1,0 +1,160 @@
+<div class="content-wrap with-tabs">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Job Applicants</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <div class="cta trans-bkg filter-trigger"><i class="bi bi-filter"></i> Filter</div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3" style="flex: unset;">
+        <div class="inner-col card-xxl" style="overflow-x: hidden;">
+            <div class="job-wrap">
+                <div *ngFor="let item of jobApplications" class="job-hld">
+                    <div class="view"><i class="bi bi-pencil-square"></i></div>
+                    <div (click)="viewJobApplications(item.id)" [ngClass]="item.clicked ? 'cont selected' : 'cont'">
+                        <div class="det">
+                            <div class="title">{{item.jobTitle}}</div>
+                            <div class="date">
+                                <span><i class="bi bi-calendar2-week"></i></span>
+                                <span>{{item.openingDate}}</span>
+                            </div>
+                        </div>
+                        <div class="det">
+                            <div class="count"><span>{{item.applicants}}</span> Applicants</div>
+                            <div class="dept">{{item.department}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+
+    <div class="row-section mt-lg-4">
+        <div class="job-details-wrap">
+            <div class="candidates-container">
+
+                <div class="col-card d-flex justify-content-between align-items-start">
+
+                    <div class="row-card card-xxl">
+                        <div class="header">
+                            <div class="hdr">{{selectedJob}}</div>
+                            <div class="sort">
+                                <span>Sort By :</span>
+                                <span>Status <i class="bi bi-caret-down-fill"></i></span>
+                            </div>
+                        </div>
+                        <div class="candidates-wrap">
+                            <div *ngFor="let item of candidates; let i = index" class="candidate-hld">
+                                <div class="image bkg-standard" style="background-image: url('../../../../../assets/images/illustrations/{{item.image}}');"></div>
+                                <div class="info">
+                                    <div class="name">{{item.firstName}} {{item.lastName}}</div>
+                                    <div class="email">{{item.email}}</div>
+                                </div>
+                                <div class="progress-wrap">
+                                    <div [ngClass]="item.stages[0].status" class="progress-hld">
+                                        <span *ngIf="item.stages[0].status == 'completed'"><i class="bi bi-calendar-check"></i></span>
+                                        <span *ngIf="item.stages[0].status == 'awaiting'"><i class="bi bi-calendar2-week"></i></span>
+                                        <span *ngIf="item.stages[0].status == 'missed'"><i class="bi bi-calendar-x"></i></span>
+                                        <span *ngIf="item.stages[0].status == 'pending'"><i class="bi bi-calendar"></i></span>
+                                    </div>
+                                    <div [ngClass]="item.stages[1].status" class="progress-hld">
+                                        <span><i class="bi bi-star"></i></span>
+                                    </div>
+                                    <div [ngClass]="item.stages[2].status" class="progress-hld">
+                                        <span><i class="bi bi-chat-dots-fill"></i></span>
+                                    </div>
+                                    <div [ngClass]="item.stages[3].status" class="progress-hld">
+                                        <span><i class="bi bi-person-circle"></i></span>
+                                    </div>
+                                </div>
+                                <div class="outcome">
+                                    <div *ngIf="item.overallStatus == 'Decision' " class="btn-hld">
+                                        <span>Reject</span>
+                                        <span class="cta primary-bkg xs py-0">Hire</span>
+                                    </div>
+                                    <div *ngIf="item.overallStatus != 'Decision'" [ngClass]="item.overallStatus == 'Rejected' ? 'rejected': ''" class="status">{{item.overallStatus}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="row-card card-xmmd card-yxl ms-lg-5">
+                        <div class="cont">
+                            <div class="card-title clr">Upcoming Interviews</div>
+                            <div class="listed-items mt-lg-3">
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="det">
+                                            <div class="major bd">Senior Frontend Engineer</div>
+                                            <div class="minor">Ibrahim Babatunde</div>
+                                        </div>
+                                        <div class="det right">
+                                            <div class="major">Apr 20</div>
+                                            <div class="minor sm">12:30pm - 12:45pm</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="det">
+                                            <div class="major bd">Marketing Manager</div>
+                                            <div class="minor">Remi Olubode</div>
+                                        </div>
+                                        <div class="det right">
+                                            <div class="major">May 21</div>
+                                            <div class="minor sm">1:10pm - 2:45pm</div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="det">
+                                            <div class="major bd">Finance Analyst</div>
+                                            <div class="minor">Matt Greg</div>
+                                        </div>
+                                        <div class="det right">
+                                            <div class="major">May 26</div>
+                                            <div class="minor sm">4:10pm - 4:25pm</div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="det">
+                                            <div class="major bd">Technology Consultant</div>
+                                            <div class="minor">Rita Mreace</div>
+                                        </div>
+                                        <div class="det right">
+                                            <div class="major">May 30</div>
+                                            <div class="minor sm">9:30am - 10:45am</div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="item">
+                                    <div class="content">
+                                        <div class="det">
+                                            <div class="major bd">HR Consultant</div>
+                                            <div class="minor">Spence Holderyne</div>
+                                        </div>
+                                        <div class="det right">
+                                            <div class="major">Jun 4</div>
+                                            <div class="minor sm">10:30am - 10:45am</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+</div>

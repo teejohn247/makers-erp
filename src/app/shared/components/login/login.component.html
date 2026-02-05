@@ -1,0 +1,190 @@
+
+<div class="page-wrap">
+    <div class="inner-wrap">
+        <div class="main-container">
+            <div class="col-sec">
+                <h2>{{dateTime | date: 'EE, MMMM d'}}</h2>
+                <h1>{{dateTime | date: 'hh:mm a'}}</h1>
+                <div class="image">
+                    <img src="./assets/images/photos/acehr1.png" alt="human-resources">
+                </div>
+            </div>
+            <div class="col-sec">
+                <div class="login-container">
+                    <div class="logo">
+                        <img src="./assets/images/brand/acehr-logo.png" alt="acehr-logo">
+                    </div>
+        
+                    <div class="intro">
+                        <div *ngIf="loggingIn" class="heading">
+                            <span>Welcome to AceHR<img src="https://silo-inc.com/wp-content/themes/wp-silo/dist/img/waving_hand.gif" alt=""></span>
+                        </div>
+                        <div *ngIf="loggingIn" class="preamble">Please input your details to gain access.</div>
+                        <div *ngIf="forgotPass" class="heading">
+                            <span>Forgot Password</span>
+                        </div>
+                        <div *ngIf="forgotPass" class="preamble mt-lg-3 mt-3">Enter your verified email</div>
+                        <div *ngIf="!forgotPass && !loggingIn" class="heading">Set your password</div>
+                    </div>
+        
+                    <form *ngIf="loggingIn" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate autocomplete="off">
+                        <div class="form-hld">
+        
+                            <div class="input-hld mb-4">
+                                <input 
+                                    type="email" 
+                                    formControlName="email" 
+                                    autofocus 
+                                    class="form-control form-control-lg" 
+                                    id="email" 
+                                    placeholder="Enter your email"
+                                    [ngClass]="{ 'is-valid': (f.email.dirty || submitted) && !f.email.errors, 'is-invalid': (f.email.dirty || submitted) && f.email.errors }"
+                                >
+                                <div class="invalid-feedback">
+                                    <span class="text-danger" *ngIf="f.email.errors?.required">Email address is required</span>
+                                    <span class="text-danger" *ngIf="f.email.errors?.email">Email address is not valid</span>
+                                </div>
+                            </div>
+        
+                            <div class="input-hld">
+                                <input 
+                                    [type]="showPassword ? 'text' : 'password'" 
+                                    formControlName="password"
+                                    class="form-control form-control-lg" 
+                                    id="password" 
+                                    placeholder="Enter your password"
+                                    [ngClass]="{ 'is-valid': (f.password.touched || submitted) && passwordValid, 'is-invalid': (f.password.touched || submitted) && !passwordValid }" 
+                                />
+                                <div class="invalid-feedback">
+                                    <!-- required -->
+                                    <span class="text-danger" *ngIf="(f.password.dirty || submitted) && !requiredValid">Password is required</span>
+                                    <!-- password validation rules -->
+                                    <div id="validation-rules" class="mt-1" *ngIf="requiredValid">
+                                        <span [ngClass]="{ 'text-success': minLengthValid, 'text-danger': !minLengthValid }">Min-length 8,</span>
+                                        <span [ngClass]="{ 'text-success': requiresDigitValid, 'text-danger': !requiresDigitValid }"> Digit,</span>
+                                        <span [ngClass]="{ 'text-success': requiresUppercaseValid, 'text-danger': !requiresUppercaseValid }"> Uppercase,</span>
+                                        <span [ngClass]="{ 'text-success': requiresLowercaseValid, 'text-danger': !requiresLowercaseValid }"> Lowercase,</span>
+                                        <span [ngClass]="{ 'text-success': requiresSpecialCharsValid, 'text-danger': !requiresSpecialCharsValid }"> Special character</span>
+                                    </div>
+                                </div>
+                                
+                                <span class="eyePass">
+                                    <i alt="show" class="bi bi-eye-fill" 
+                                    (click)="showPassword = !showPassword"
+                                    *ngIf="showPassword"></i>
+                                    <i alt="hide" class="bi bi-eye-slash-fill" 
+                                    (click)="showPassword = !showPassword"
+                                    *ngIf="!showPassword"></i>
+                                </span>
+                            </div>
+            
+                            <p (click)="routeToforgotPassword()" class="forgot"><span>Forgot Password?</span></p>                
+            
+                            <div class="btn-hld">
+                                <button type="submit" class="cta primary-bkg icon lg">{{existingUser ? 'Login' : 'Create Account'}} <span *ngIf="apiLoading" class="loader"></span></button>
+                                <p *ngIf="existingUser" class="accountcheck mt-lg-2">Don't have an account? <span (click)="existingUser = !existingUser">Create Account</span></p>
+                                <p *ngIf="!existingUser" class="accountcheck mt-lg-2">Have an account? <span (click)="existingUser = !existingUser">Login</span></p>
+                            </div>
+                                        
+                        </div>
+                    </form>
+        
+                    <form *ngIf="!loggingIn" [formGroup]="setPasswordForm" class="" novalidate autocomplete="off">
+                        <div class="form-hld">
+        
+                            <div class="input-hld mb-4">
+                                <input 
+                                    type="email" 
+                                    formControlName="email" 
+                                    autofocus 
+                                    class="form-control form-control-lg" 
+                                    id="email"
+                                    [readonly] = "setPass" 
+                                    placeholder="Enter your email"
+                                    [ngClass]="{ 'is-valid': (fp.email.touched || submitted) && !fp.email.errors, 'is-invalid': (fp.email.touched || submitted) && fp.email.errors }"
+                                >
+                                <div class="invalid-feedback">
+                                    <span class="text-danger" *ngIf="fp.email.errors?.required">Email address is required</span>
+                                    <span class="text-danger" *ngIf="fp.email.errors?.email">Email address is not valid</span>
+                                </div>
+                            </div>
+        
+                            <div *ngIf="!forgotPass" class="input-hld mb-4">
+                                <input 
+                                    [type]="showPassword ? 'text' : 'password'" 
+                                    formControlName="password"
+                                    class="form-control form-control-lg" 
+                                    id="password" 
+                                    placeholder="Enter your password"
+                                    [ngClass]="{ 'is-valid': (f.password.touched || submitted) && passwordValid, 'is-invalid': (f.password.touched || submitted) && !passwordValid }" 
+                                />
+                                <div class="invalid-feedback d-flex flex-column">
+                                    <!-- required -->
+                                    <span class="text-danger" *ngIf="(f.password.touched) && !setPasswordRequired">Password is required</span>
+                                    <!-- password validation rules -->
+                                    <div id="validation-rules" class="mt-1" *ngIf="setPasswordRequired">
+                                        <span [ngClass]="{ 'text-success': setPasswordMinLengthValid, 'text-danger': !setPasswordMinLengthValid }">Min-length 8,</span>
+                                        <span [ngClass]="{ 'text-success': setPasswordRequiresDigitValid, 'text-danger': !setPasswordRequiresDigitValid }"> Digit,</span>
+                                        <span [ngClass]="{ 'text-success': setPasswordRequiresUppercaseValid, 'text-danger': !setPasswordRequiresUppercaseValid }"> Uppercase,</span>
+                                        <span [ngClass]="{ 'text-success': setPasswordRequiresLowercaseValid, 'text-danger': !setPasswordRequiresLowercaseValid }"> Lowercase,</span>
+                                        <span [ngClass]="{ 'text-success': setPasswordRequiresSpecialCharsValid, 'text-danger': !setPasswordRequiresSpecialCharsValid }"> Special character</span>
+                                    </div>
+                                </div>
+                                
+                                <span class="eyePass">
+                                    <i alt="show" class="bi bi-eye-fill" 
+                                    (click)="showPassword = !showPassword"
+                                    *ngIf="showPassword"></i>
+                                    <i alt="hide" class="bi bi-eye-slash-fill" 
+                                    (click)="showPassword = !showPassword"
+                                    *ngIf="!showPassword"></i>
+                                </span>
+                            </div>
+            
+                            <div *ngIf="!forgotPass" class="input-hld mb-2">
+                                <input 
+                                    [type]="showPassword ? 'text' : 'password'" 
+                                    formControlName="confirmPassword"
+                                    class="form-control form-control-lg" 
+                                    id="confirmPassword" 
+                                    placeholder="Confirm your password"
+                                    [ngClass]="{ 'is-valid': (fp.confirmPassword.touched || submitted) && requiredConfirmationValid, 'is-invalid': (fp.confirmPassword.touched || submitted) && !matchValid }" 
+                                />
+                                <div class="invalid-feedback d-flex flex-column">
+                                    <!-- required -->
+                                    <span class="text-danger" *ngIf="(fp.confirmPassword.touched || submitted) && !requiredConfirmationValid">Password is required</span>
+                                    <span class="text-danger" *ngIf="(fp.confirmPassword.touched || submitted) && !matchValid">Passwords do not match</span>
+                                    <!-- password validation rules -->
+                                    <div id="validation-rules" class="mt-1" *ngIf="requiredValid">
+                                        <span [ngClass]="{ 'text-success': matchValid, 'text-danger': !matchValid }">Passwords match,</span>
+                                    </div>
+                                </div>
+                                
+                                <span class="eyePass">
+                                    <i alt="show" class="bi bi-eye-fill" 
+                                    (click)="showPassword = !showPassword"
+                                    *ngIf="showPassword"></i>
+                                    <i alt="hide" class="bi bi-eye-slash-fill" 
+                                    (click)="showPassword = !showPassword"
+                                    *ngIf="!showPassword"></i>
+                                </span>
+                            </div>               
+            
+                            <div *ngIf="!forgotPass" class="btn-hld">
+                                <button (click)="setPassword()" class="cta primary-bkg icon lg">Save & Login</button>
+                            </div>
+        
+                            <div *ngIf="forgotPass" class="btn-hld">
+                                <button (click)="forgotPassword()" class="cta primary-bkg icon lg">Submit Email</button>
+                            </div>
+            
+                            <!-- <div class="disclaimer"><i class="bi bi-check-circle-fill"></i> By creating an account and signing in, it means you agree to our <a href="#">Terms and Condition</a> and <a href="#">Privacy Policy</a></div> -->
+                            
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

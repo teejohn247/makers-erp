@@ -1,0 +1,116 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <!-- <div class="hdr-title">
+                <div class="create-title">Create New Employee</div>
+
+                
+            </div> -->
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon">
+                        <span class="icon">
+                            <app-icon [iconName]="'truckFast'" [iconWidth]="50" [iconHeight]="50"></app-icon>
+                        </span>
+                        <!-- <img src="../../../../assets/images/illustrations/user_shield.png" /> -->
+                    </div>
+                    <div class="create-details">
+                        <div *ngIf="!dialogData.isExisting" class="create-name">Add Freight Carrier</div>
+                        <!-- <div *ngIf="data.isExisting" class="create-name">Edit KPI Group</div> -->
+                        <!-- <p>The first step is to complete your business information.</p> -->
+                    </div>
+                    <div (click)="dialogRef.close()" class="close-btn">&times;</div>
+                    <!-- <div *ngIf="isUpdateCustomer" class="create-details">
+                        <div class="create-name">{{firstName}} {{lastName}}</div>
+                        <div class="create-id">Customer ID: {{customerId}}</div>
+                    </div> -->
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+        <div class="form-wrap clearfix">
+            <div class="form-hld">
+
+                <form [formGroup]="carrierInfoForm" class="form-container px-3" style="font-size: 0.85rem; font-family: 'AR';">
+
+                    <ng-container class="d-flex" *ngFor="let field of carrierInfoFields">
+                        <ng-container [ngSwitch]="field.controlType">
+
+                            <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label class="text-capitalize">{{field.controlLabel}}</mat-label>
+                                <input matInput [formControlName]="field.controlName">
+                                <mat-error *ngIf="carrierInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'textarea'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <textarea type="field.controlType" rows="2" matInput [formControlName]="field.controlName"></textarea>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'select'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <mat-select
+                                    class="selectField"
+                                    disableOptionCentering
+                                    panelClass="matDropdown"
+                                    [formControlName]="field.controlName"
+                                >
+                                    <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="carrierInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'mutipleSelect'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <mat-select [formControlName]="field.controlName" multiple>
+                              
+                                    <mat-select-trigger>
+                                        <mat-chip-list>
+                                            <mat-chip *ngFor="let chip of carrierInfoForm.value[field.controlName]"
+                                                [removable]="true" (removed)="removeFreightType(chip)">
+                                                {{ carrierInfoFields[1].selectOptions[chip] }}
+                                                <mat-icon matChipRemove>cancel</mat-icon>
+                                            </mat-chip>
+                                        </mat-chip-list>
+                                    </mat-select-trigger>
+                              
+                                    <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                    <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option> -->
+                              
+                                </mat-select>
+                            </mat-form-field>
+
+                            <ng-container *ngSwitchCase="'file'">
+                                <div (click)="fileUpload.click()" class="upload-wrap mt-lg-2">
+                                    <input 
+                                        type="file" 
+                                        class="file-upload"
+                                        (change)="carrierLogoUpload($event)" 
+                                        #fileUpload
+                                    />
+                                    <span *ngIf="!imgPic" class="icon">
+                                        <app-icon [iconName]="'export'" [iconWidth]="30" [iconHeight]="30"></app-icon>
+                                    </span>
+                                    <div *ngIf="!imgPic" class="info">Click to upload a logo</div>
+                                    <img class="logo" *ngIf="!imgUploadError && imgPic" [src]="imgPic" alt="">
+                                    <span class="file-name">{{imgFileName ? imgFileName : 'No logo uploaded'}}</span>
+                                </div>
+                                <mat-error *ngIf="imgUploadError">{{imgUploadError}} is required</mat-error>
+                            </ng-container>
+    
+                        </ng-container>
+                    </ng-container>
+
+                    <div class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="onSubmit()" class="cta primary-bkg mmd text-uppercase" style="min-width: 30%" type="submit">Submit <span *ngIf="apiLoading" class="loader"></span></div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

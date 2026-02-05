@@ -1,0 +1,119 @@
+.form-check {
+    width: 100%;
+    font-family: var(--font-regular);
+    padding: 0.4rem 0 0.35rem;
+    border-radius: 6px;
+
+    // &.events {
+    //     background: var(--primary-light);
+    // }
+
+    // &.meetings {
+    //     background: var(--pending-light);
+    // }
+
+    // &.holidays {
+    //     background: var(--considered-light);
+    // }
+
+    // &.leave {
+    //     background: var(--approved-light);
+    // }
+
+    .form-check-label {
+        width: 100%;
+
+        span {
+            cursor: pointer;
+            color: var(--black-tint);
+            letter-spacing: 0.02rem;
+        }
+
+        input[type=checkbox] {
+            appearance: none;
+            opacity: 0;
+        }
+
+        .check-wrap {
+            width: 100%;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            //justify-content: center;
+            padding: 0.3rem 1rem;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--primary-light);
+            background-color: transparent;
+            transition: all 0.4s ease;
+            gap: 0.5rem;
+            
+            .icon {
+                //color: var(--primary);
+                transition: all 0.4s ease;
+            }
+
+            span {
+                font-family: var(--font-medium);
+                white-space: nowrap;
+                transition: all 0.4s ease;
+            }
+        }
+
+        input:checked[type=checkbox] {
+
+            & + .check-wrap {
+                background: var(--approved-lightest);
+                border: 3px solid var(--approved);
+
+                .icon {
+                    //color: white;
+                }
+
+                span {
+                    
+                }
+            }
+        }
+    }
+}
+
+.input-wrap {
+    position: relative;
+
+    input {
+        font-size: 0.9rem;
+        padding-left: 3rem;
+        letter-spacing: 0.03rem;
+        font-family: var(--font-medium);
+    }
+
+    .search-icon {
+        font-size: 1.1rem;
+        font-weight: 500;
+        position: absolute;
+        transform: translateY(-50%);
+        top: 50%;
+        left: 1rem;
+        color: var(--black-tint);
+    }
+}
+
+.assessments-wrap {
+    gap: 2rem 2%;
+
+    .assessment-hld {
+        width: 32%;
+        overflow: hidden;
+        position: relative;
+        background: white;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--card-shadow);
+        //border: 1px solid var(--primary-light);
+        transition: all 0.4s ease;
+
+        &:hover {
+            background: var(--primary-lightest);
+        }
+    }
+}

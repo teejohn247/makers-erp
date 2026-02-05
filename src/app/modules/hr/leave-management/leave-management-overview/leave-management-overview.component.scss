@@ -1,0 +1,85 @@
+.summary-container {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+
+    .vertical-label {
+        font-size: 1.1rem;
+        font-family: var(--font-bold);
+        letter-spacing: 0.03rem;
+        position: absolute;
+        transform: rotate(-90deg);
+        text-transform: uppercase;
+        color: var(--considered);
+        top: 47%;
+        left: -6%;
+    }
+}
+
+.summary-wrap {
+    width: 96%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .summary-hld {
+        display: flex;
+        align-items: center;
+        padding: 0.7rem 0;
+        flex: 1;
+
+        &:nth-child(n+2) {
+            border-top: 1px solid var(--border-black-lightest);
+        }
+
+        .row-label {
+            width: 4rem;
+            height: 3rem;
+            display: flex;
+            line-height: 1;
+            flex-direction: column;
+            font-size: 0.9rem;
+            font-family: var(--font-bold);
+            letter-spacing: 0.03rem;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            background-color: var(--primary-light);
+            color: var(--darker);
+
+            span {
+                font-size: 0.65rem;
+                font-family: var(--font-medium);
+                font-family: var(--font-medium);
+                letter-spacing: 0.04rem;
+            }
+        }
+    }
+}
+
+.actions-info {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 3;
+
+    .dropdown-trigger {
+        width: 10rem;
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.75rem;
+        letter-spacing: 0.03rem;
+        padding: 0.2rem 0.7rem;
+        border-radius: var(--radius-xs);
+        transition: var(--transition-norm);
+        box-shadow: var(--card-shadow);
+        border: 1px solid var(--primary-light);
+        cursor: pointer;
+
+        i {
+            margin-left: 0.6rem;
+        }
+    }
+}

@@ -1,0 +1,81 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <!-- <div class="hdr-title">
+                <div class="create-title">Create New Employee</div>
+
+                
+            </div> -->
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon">
+                        <img src="../../../../assets/images/illustrations/user.png" />
+                    </div>
+                    <div class="create-details">
+                        <div class="create-name">Enter visitor information</div>
+                        <!-- <p>The first step is to complete your business information.</p> -->
+                    </div>
+                    <div (click)="closeDialog()" class="close-btn">&times;</div>
+                    <!-- <div *ngIf="isUpdateCustomer" class="create-details">
+                        <div class="create-name">{{firstName}} {{lastName}}</div>
+                        <div class="create-id">Customer ID: {{customerId}}</div>
+                    </div> -->
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+        <div class="form-wrap clearfix">
+            <div class="form-hld">
+
+                <form [formGroup]="visitorForm" class="form-container" style="font-size: 0.85rem;">
+
+                    <ng-container class="d-flex" *ngFor="let field of visitorFieldData">
+                        <ng-container [ngSwitch]="field.controlType">
+
+                            <mat-form-field *ngSwitchCase="'text'" color="accent" class="mb-lg-2" [style.width]="field.controlWidth" appearance="fill">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <input matInput [formControlName]="field.controlName">
+                                <mat-error *ngIf="visitorForm.get(field.controlName)?.hasError('email')">Please enter a valid email address</mat-error>
+                                <mat-error *ngIf="visitorForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                
+                            </mat-form-field>
+    
+                            <mat-form-field *ngSwitchCase="'select'" color="accent" class="mb-lg-2" [style.width]="field.controlWidth" appearance="fill">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <mat-select
+                                    class="selectField"
+                                    disableOptionCentering
+                                    panelClass="matDropdown"
+                                    [formControlName]="field.controlName"
+                                >
+                                    <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.value">{{option.key}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="visitorForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field *ngSwitchCase="'date'" color="accent" class="mb-lg-2" [style.width]="field.controlWidth" appearance="fill">
+                                <mat-label>{{field.controlLabel}}</mat-label>
+                                <input matInput [matDatepicker]="picker" readonly [formControlName]="field.controlName">
+                                <mat-hint>DD/MM/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                <mat-error *ngIf="visitorForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                <mat-error *ngIf="visitorForm.get(field.controlName)?.hasError('date')">{{field.controlLabel}} is invalid</mat-error>
+                            </mat-form-field>
+
+                        </ng-container>
+                    </ng-container>
+
+                    <div class="btn-hld d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div class="cta primary-bkg mmd text-uppercase" style="min-width: 30%" type="submit">Submit</div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

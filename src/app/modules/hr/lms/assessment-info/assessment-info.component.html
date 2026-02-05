@@ -1,0 +1,342 @@
+<div class="content-wrap d-block">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header md"><span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span> {{assessmentInfoForm.value.title ? assessmentInfoForm.value.title : 'New Assessment'}}</div>
+        <div class="main-actions d-flex justify-content-start align-items-center"> 
+            <div (click)="viewingQuestions = false" *ngIf="viewingQuestions" class="cta trans-bkg icon md me-3">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'medalStar'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                </span>
+                View Grades
+            </div>
+            <div (click)="viewingQuestions = true" *ngIf="!viewingQuestions" class="cta trans-bkg icon md me-3">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'trophyStar'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                </span>
+                View Questions
+            </div>
+            <div (click)="previewAssessment()" class="cta trans-bkg icon md me-3">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'box'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                </span>
+                Preview Assessment
+            </div>
+            <div (click)="onSubmit()" class="cta primary-bkg icon md">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'save'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                </span>
+                Save Changes <span *ngIf="apiLoading" class="loader"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section d-block my-lg-4">
+        <form [formGroup]="assessmentInfoForm" class="inner-row-hld d-flex justify-content-between">
+            <div style="width: 30%" class="row-card flex-grow-0">
+                <div class="cont h-auto">
+                    <div class="hdr d-flex justify-content-between align-items-center">
+                        <div class="card-title clr">Questions</div>
+                        <div (click)="addQuestion()" class="cta trans-bkg icon sm">
+                            <span class="icon pe-lg-1 pe-1">
+                                <app-icon [iconName]="'cogUnknown'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                            </span>
+                            Add Question
+                        </div>
+                    </div>
+                    <div class="side-wrap mt-3">
+                        <div *ngFor="let item of questionDetails.controls; let idx = index" [class.active]="questionInViewIndex == idx + 1" class="question-hld">
+                            <span class="quest" role="button" (click)="questionInViewIndex = idx+1">Question {{idx+1}}</span>
+                            <span (click)="removeQuestion(idx)" class="icon delete"><i class="bi bi-trash3-fill"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width: 65%" class="row-card card-yxl">
+                <div class="form-wrap">
+                    <div class="form-container d-flex justify-content-between flex-wrap" style="font-size: 0.8rem; font-family: 'AR';">
+                        <ng-container class="d-flex" *ngFor="let field of assessmentInfoFields">
+                            <ng-container [ngSwitch]="field.controlType">
+                                <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <input matInput [formControlName]="field.controlName">
+                                    <mat-error *ngIf="assessmentInfoForm.get(field.controlName)?.hasError('email')">Please enter a valid email address</mat-error>
+                                    <mat-error *ngIf="assessmentInfoForm.get(field.controlName)?.hasError('required')">This field is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'number'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label class="text-capitalize">{{field.controlLabel}}</mat-label>
+                                    <input type="number" min="0" matInput [formControlName]="field.controlName">
+                                    <mat-error *ngIf="assessmentInfoForm.get(field.controlName)?.hasError('required')">This field is required</mat-error>
+                                </mat-form-field>
+        
+                                <mat-form-field *ngSwitchCase="'select'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <mat-select
+                                        class="selectField"
+                                        disableOptionCentering
+                                        panelClass="matDropdown"
+                                        [formControlName]="field.controlName"
+                                    >
+                                        <!-- <mat-option ></mat-option> -->
+                                        <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="assessmentInfoForm.get(field.controlName)?.hasError('required')">This field is required</mat-error>
+                                </mat-form-field>
+    
+                                <mat-form-field *ngSwitchCase="'date'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <input matInput [matDatepicker]="picker" readonly [formControlName]="field.controlName">
+                                    <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                    <mat-error *ngIf="assessmentInfoForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                    <mat-error *ngIf="assessmentInfoForm.get(field.controlName)?.hasError('date')">{{field.controlLabel}} is invalid</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'textarea'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <textarea type="field.controlType" rows="5" matInput [formControlName]="field.controlName"></textarea>
+                                </mat-form-field>
+
+                                <ng-container *ngSwitchCase="'quillEditor'">
+                                    <label class="quill-label">{{field.controlLabel}}</label>
+                                    <app-quill-editor class="w-100 mb-lg-3"></app-quill-editor>
+                                </ng-container>
+    
+                            </ng-container>
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="viewingQuestions"  class="questions-cont">
+                        <ng-container formArrayName="questions">
+                            <div class="question-wrap">
+                                <div *ngFor="let _ of questionDetails.controls; index as i" class="question-hld d-flex flex-wrap justify-content-between">
+                                    <ng-container *ngIf="questionInViewIndex == i+1" [formGroupName]="i">
+                                        <div class="quill-wrap mb-lg-2" [style.width]="'100%'" appearance="fill">
+                                            <label class="card-title md mb-3">Question {{i+1}}</label>
+                                            <app-quill-editor class="w-100 mb-lg-3" formControlName="questionTitle"></app-quill-editor>
+                                            <!-- <mat-error *ngIf="orderForm.get(field.controlName)?.hasError('required')">Item description is required</mat-error> -->
+                                        </div>
+
+                                        <div class="w-100 inner-hdr d-flex justify-content-between align-items-center">
+                                            <div *ngIf="questionOptions(i).controls.length > 0" class="info-strip mt-3">Click the plus button to add an option and click the options to select correct options</div>
+                                        </div>
+
+                                        <div formArrayName="options" class="option-fields-wrap w-100 my-lg-3 my-3">
+                                            <div *ngFor="let _ of questionOptions(i).controls; let j = index" class="item w-100 d-flex flex-wrap justify-content-between mb-1">
+                                                <ng-container [formGroupName]="j">
+                                                    <div *ngIf="questionOptions(i).controls[j].value.editMode" class="creation w-100 d-flex justify-content-between align-items-center gap-2 mb-0">
+                                                        <div class="input-wrap w-100">
+                                                            <input formControlName="option" class="form-control form-control-md flex-grow-1" type="text" style="font-size: 0.8rem; font-family: var(--font-regular);" placeholder="Enter Option">
+                                                            <span class="error text-danger small d-inline-block" *ngIf="questionOptions(i).controls[j].get('option')?.hasError('touched') && questionOptions(i).controls[j].get('option')?.hasError('required')">This option is required</span>    
+                                                        </div>
+                                                        <!-- <mat-form-field class="mb-lg-2 flex-grow-1" appearance="outline">
+                                                            <mat-label>Option {{j+1}}</mat-label>
+                                                            <input matInput formControlName="option">
+                                                        </mat-form-field> -->
+                                                        <div (click)="changeEditMode(i, j, false)" class="cta select-add"><i class="bi bi-plus"></i></div>
+                                                    </div>
+                                                    
+                                                    <div *ngIf="!questionOptions(i).controls[j].value.editMode" class="selection w-100 d-flex justify-content-between align-items-center gap-2 mb-0">
+                                                        <div class="form-check events cursor-pointer flex-grow-1">
+                                                            <label class="form-check-label">
+                                                                <input 
+                                                                    class="form-check-input" 
+                                                                    type="checkbox"
+                                                                    formControlName="isCorrect"
+                                                                >
+                                                                <div [class.correct]="questionOptions(i).controls[j].value.isCorrect" class="check-wrap">
+                                                                    <div class="option-check"></div>
+                                                                    <span class="option-text">{{questionOptions(i).controls[j].value.option}}</span>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+    
+                                                        <div class="actions">
+                                                            <span (click)="changeEditMode(i, j, true)" class="icon edit pe-lg-1 pe-1">
+                                                                <app-icon [iconName]="'edit'" [iconWidth]="15" [iconHeight]="15"></app-icon>
+                                                            </span>
+                                                            <span (click)="removeOption(i, j)" class="icon delete"><i class="bi bi-trash3-fill"></i></span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </ng-container>
+                                            </div>
+                                        </div>
+
+                                        <div class="w-100 inner-hdr d-flex justify-content-end align-items-center mb-3">
+                                            <div (click)="addOption(i)" class="cta trans-bkg icon sm">
+                                                <span class="icon pe-lg-1 pe-1">
+                                                    <app-icon [iconName]="'paperPlane'" [iconWidth]="20" [iconHeight]="20"></app-icon>
+                                                </span>
+                                                Add Option
+                                            </div>
+                                        </div>
+    
+                                        <mat-form-field color="accent" class="mt-lg-4" [style.width]="'48%'" appearance="outline">
+                                            <mat-label>Assigned Score</mat-label>
+                                            <input type="number" matInput formControlName="score">
+                                            <!-- <mat-error *ngIf="orderForm.get(field.controlName)?.hasError('required')">Item description is required</mat-error> -->
+                                        </mat-form-field>
+    
+                                        <mat-form-field class="mt-lg-4" [style.width]="'48%'" appearance="outline">
+                                            <mat-label>Difficulty</mat-label>
+                                            <mat-select
+                                                class="selectField"
+                                                disableOptionCentering
+                                                panelClass="matDropdown"
+                                                formControlName="difficulty"
+                                            >
+                                                <!-- <mat-option ></mat-option> -->
+                                                <mat-option *ngFor="let option of questionRatingOptions | keyvalue; let k = index" [value]="option.key">
+                                                    {{k+1}}
+                                                    <span *ngFor="let f of [].constructor(k+1)">
+                                                        <i style="font-size: 0.75rem; color: var(--pending);" class="bi bi-star-fill"></i>
+                                                    </span>
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+                                        <mat-form-field color="accent" class="" [style.width]="'100%'" appearance="outline">
+                                            <mat-label>Explanation</mat-label>
+                                            <input type="text" matInput formControlName="explanation">
+                                            <!-- <mat-error *ngIf="orderForm.get(field.controlName)?.hasError('required')">Item description is required</mat-error> -->
+                                        </mat-form-field>
+    
+                                        <!-- <span *ngIf="i > 0" (click)="removeOrderItem(i)" class="remove"><i class="bi bi-trash3-fill"></i></span> -->
+                                    </ng-container>
+                                </div>
+                            </div>
+                    
+                        </ng-container>
+                    </div>
+
+                    <div *ngIf="!viewingQuestions" class="grades-cont">
+                        <div class="table-wrap">
+
+                            <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                                <div class="card-title">Assessment Grades</div>
+                                <div class="bulk-actions d-flex justify-content-between align-items-center">
+                                    <div class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div>
+                                    <div class="cta primary-bkg sm ms-lg-2">Apply</div>
+                                </div>
+                            </div>
+                
+                            <div class="inner-row">
+                                <table 
+                                    mat-table
+                                    [dataSource]="dataSource"
+                                    class="dataTable mat-elevation-z0"
+                                    matSort
+                                >
+                
+                                    <!-- Table Columns -->
+                                    <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+                                        <!-- <ng-container *ngIf="column.key == 'select'">
+                                            <th style="width:6%" mat-header-cell *matHeaderCellDef>
+                                                <mat-checkbox 
+                                                    color="primary" 
+                                                    (change)="$event ? masterToggle() : null"
+                                                    [checked]="selection.hasValue() && isAllSelected()"
+                                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                </mat-checkbox>
+                                            </th>
+                                    
+                                            <td mat-cell *matCellDef="let row">
+                                                <mat-checkbox
+                                                    color="primary" 
+                                                    (click)="$event.stopPropagation()"
+                                                    (change)="$event ? selection.toggle(row) : null"
+                                                    [checked]="selection.isSelected(row)">
+                                                </mat-checkbox>
+                                            </td>
+                                        </ng-container> -->
+                
+                                        <ng-container *ngIf="column.key == 'image'">
+                                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef></th>
+                                            <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                                <span *ngIf="!row.employeeImage" class="initials">{{row.userName[0]}}</span>
+                                                <span *ngIf="row.employeeImage" class="table-img bkg-standard" style="background-image: url('{{row.employeeImage}}');"></span>
+                                            </td>
+                                        </ng-container>
+                
+                                        <ng-container *ngIf="column.key == 'userName'">
+                                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="column.key == 'submittedAt'">
+                                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                                            <td mat-cell *matCellDef="let row">{{ row[column.key] | date : 'd MMM, YYY' }}</td>
+                                        </ng-container>
+                
+                                        <ng-container *ngIf="column.key == 'status'">
+                                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                <span class="status approved" *ngIf="row.passed">Passed</span>
+                                                <!-- <span class="status pending" *ngIf="row[column.key] == 'Pending'">{{ row[column.key] }}</span> -->
+                                                <span class="status rejected" *ngIf="!row.passed">Failed</span>
+                                            </td>
+                                        </ng-container>
+                                
+                                        <!-- <ng-container *ngIf="column.key == 'actions'">
+                                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                                            </th>
+                                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let element">
+                                                <span class="table-icon edit"><i class="bi bi-pen-fill"></i></span>
+                                                <span class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                                            </td>
+                                        </ng-container> -->
+                
+                                        <ng-container>
+                                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                                        </ng-container>
+                                        
+                                    </ng-container>
+                
+                
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+                
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                                            <app-no-data 
+                                                [height]="'15rem'"
+                                                [icon]="'medalStar'"
+                                                [message]="'No assessments grades exist for this course'"
+                                            >
+                                            </app-no-data>
+                                            <!-- <div class="empty-data">
+                                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                                <div class="text">No leave request records exist.</div>
+                                            </div> -->
+                                        </td>
+                                    </tr>
+                                    
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="row-section my-5 py-5"></div>
+</div>
+
+
+<div [class.opened]="previewModalOpened" class="sidenav-container"> 
+    <div (click)="closePreviewModal()" class="sidenav-bkg"></div> 
+    <div [class.opened]="previewModalOpened" class="sidenav-content">
+        <app-assessment-page
+            [assessmentTitle]="assessmentInfoForm.value.title"
+            [assessmentInfo$]="assessmentInView$"
+            [assessmentDuration$]="timeLimit$"
+            (triggerModalClosure)="closePreviewModal()"
+        >
+        </app-assessment-page>
+    </div>
+</div>

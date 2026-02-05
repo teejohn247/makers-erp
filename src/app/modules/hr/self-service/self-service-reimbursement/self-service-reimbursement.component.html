@@ -1,0 +1,256 @@
+<div class="content-wrap with-tabs">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Reimbursement</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3">
+        <div class="inner-row-hld d-flex align-items-start justify-content-between">
+            <div class="col-card card-yxl d-flex justify-content-between align-items-start">
+                <div class="row-card d-flex justify-content-between card-yxl" style="width: 60.5%;">
+                    <div class="cont card-xxl" style="padding-right: 2rem; margin-right: 2.5%;">
+                        <div class="card-title">
+                            <span>Expense Card</span>
+                            <span class="grp-btn ms-lg-4" style="font-weight: 400;">
+                                <div class="cta primary-bkg xs">Renew Card</div>
+                                <div class="cta primary-bkg xs ms-lg-1">Withdraw</div>
+                                <div class="cta primary-bkg xs ms-lg-1">Change Limit</div>
+                            </span>
+                        </div>
+
+                        <div class="card-wrap">
+                            <div class="card">
+                                <div class="card-inner">
+                                    <div class="card-front">
+                                        <div class="card-bg"></div>
+                                        <div class="card-glow"></div>
+                                        <div class="card-balance">
+                                            <div class="hdr">Balance</div>
+                                            <!-- <div class="amount">₦ 2,500,000</div> -->
+                                            <div class="amount">NGN {{convertAmount(userDetails.expenseDetails.cardBalance)}}</div>
+                                        </div>
+                                        <div class="card-circles"></div>
+                                        <div class="card-contactless">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="56">
+                                                <path
+                                                fill="none"
+                                                stroke="#f9f9f9"
+                                                stroke-width="6"
+                                                stroke-linecap="round"
+                                                d="m35,3a50,50 0 0,1 0,50M24,8.5a39,39 0 0,1 0,39M13.5,13.55a28.2,28.5
+                                    0 0,1 0,28.5M3,19a18,17 0 0,1 0,18"
+                                                />
+                                            </svg>
+                                        </div>
+                                        <div class="card-chip"></div>
+                                        <div class="card-holder">{{userDetails.fullName}}</div>
+                                        <div class="card-number">1234 5678 9000 1234</div>
+                                        <div class="card-valid">12/24</div>
+                                    </div>
+
+                                    <!-- <div class="card-back">
+                                        <div class="card-signature">John Doe</div>
+                                        <div class="card-seccode">123</div>
+                                    </div> -->
+                                </div>
+                            </div>
+
+                            <div class="card-details">
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="minor">Card Holder</div>
+                                        <div class="major">{{userDetails.fullName}}</div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="minor">Date Issued</div>
+                                        <div class="major">December 12, 2022</div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="minor">Date of Expiry</div>
+                                        <div class="major warning">December 12, 2024</div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="minor">Card Limit</div>
+                                        <div class="major">NGN {{convertAmount(userDetails.expenseDetails.cardLimit)}} monthly</div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <div class="det">
+                                        <div class="minor">Current Month Expense</div>
+                                        <div class="major">NGN {{convertAmount(userDetails.expenseDetails.currentExpense)}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-card card-yxl" style="flex: 1;">
+                    <div class="cont">
+                        <div class="card-title">Expense Request</div>
+                        <form *ngIf="expenseRequestFields" [formGroup]="expenseForm" class="form-container mt-lg-3 d-flex justify-content-between" style="font-size: 0.75rem; flex-wrap: wrap;">
+
+                            <ng-container class="d-flex justify-content-between" *ngFor="let field of expenseRequestFields">
+                                <ng-container [ngSwitch]="field.controlType">
+        
+                                    <mat-form-field *ngSwitchCase="'text'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                        <mat-label>{{field.controlLabel}}</mat-label>
+                                        <input matInput [formControlName]="field.controlName">
+                                        <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('email')">Please enter a valid email address</mat-error>
+                                        <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">Required</mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field *ngSwitchCase="'file'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                        <mat-label>{{field.controlLabel}}</mat-label>
+                                        <input (click)="fileUpload.click()" matInput [formControlName]="field.controlName">
+                                        <input 
+                                            type="file" 
+                                            class="file-upload"
+                                            style="display: none;"
+                                            (change)="attachmentUpload($event)" 
+                                            #fileUpload
+                                        />
+                                        <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">Required</mat-error>
+                                    </mat-form-field>
+
+            
+                                    <mat-form-field *ngSwitchCase="'select'" class="mb-lg-0" [style.width]="field.controlWidth" appearance="outline">
+                                        <mat-label>{{field.controlLabel}}</mat-label>
+                                        <mat-select
+                                            class="selectField"
+                                            disableOptionCentering
+                                            panelClass="matDropdown"
+                                            [formControlName]="field.controlName"
+                                        >
+                                            <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">Required</mat-error>
+                                    </mat-form-field>
+        
+                                    <mat-form-field *ngSwitchCase="'date'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                        <mat-label>{{field.controlLabel}}</mat-label>
+                                        <input matInput [min]="minDate" [matDatepicker]="picker" readonly [formControlName]="field.controlName">
+                                        <mat-hint>DD/MM/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                        <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                        <mat-error *ngIf="expenseForm.get(field.controlName)?.hasError('date')">{{field.controlLabel}} is invalid</mat-error>
+                                    </mat-form-field>
+        
+                                </ng-container>
+                            </ng-container>
+        
+                            <div class="btn-hld d-flex justify-content-end" style="width: 100%">
+                                <div (click)="createExpenseRequest()" class="cta primary-bkg sm text-uppercase" style="min-width: 30%" type="submit">Submit</div>
+                            </div>
+        
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3">
+        <div class="table-wrap">
+
+            <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                <div class="card-title">Reimbursement Request History</div>
+            </div>
+
+            <div class="inner-row">
+                <table 
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="dataTable mat-elevation-z0"
+                    matSort
+                >
+
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+
+                        <ng-container *ngIf="column.key == 'expenseTypeName'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <div class="major">{{ row[column.key] }}</div>
+                                <div class="minor">{{strToDate(row["expenseDate"], 'dateRequested')}}</div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'attachment'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="icon adobe"><i class="bi bi-file-earmark-pdf"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'approver'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <div class="major">{{ row[column.key] }}</div>
+                                <div class="minor">{{row["Decision Date"]}}</div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'dateRequested'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell *matCellDef="let row">{{ strToDate(row[column.key], 'dateRequested') }}</td>
+                            <!-- <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td> -->
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'status'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="status approved" *ngIf="row[column.key] == 'Approved'">{{ row[column.key] }}</span>
+                                <span class="status pending" *ngIf="row[column.key] == 'Pending'">{{ row[column.key] }}</span>
+                                <span class="status rejected" *ngIf="row[column.key] == 'Declined'">{{ row[column.key] }}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'actions'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let element">
+                                <span (click)="editExpenseRequest(element)" class="table-icon edit"><i class="bi bi-pen-fill"></i></span>
+                                <span (click)="deleteExpenseRequest(element)" *ngIf="element['status'] == 'Pending'" class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container>
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <div class="empty-data">
+                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                <div class="text">No expense records were found.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>

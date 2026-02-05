@@ -1,0 +1,181 @@
+<div class="menu-nav" [ngClass]="collapsed ? 'collapsed' : '' ">
+    <!-- <div class="super-nav">
+        <div class="menu-trigger-close flex-center">
+            <span (click)="collapsed = !collapsed" *ngIf="!collapsed"><i class="bi bi-list"></i></span>
+            <span *ngIf="userDetails.data.isSuperAdmin && collapsed" class="outward" (click)="collapsed = !collapsed"><mat-icon class="material-icons-round">chevron_right</mat-icon></span>
+        </div>
+        <ul class="menu-items">
+            <li *ngFor="let item of adminMenuData">
+                <a (click)="currentLink = item.label" [routerLink]="[item.routeLink]" [ngClass]="currentLink == item.label ? 'active' : '' ">
+                    <i class="{{item.icon}}"></i>
+                    <mat-icon class="material-icons-round">{{item.icon}}</mat-icon>
+                    <span>{{item.label}}</span>
+                </a>
+            </li>
+
+            <li>
+                <a (click)="logout()" class="admin-logout">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
+            </li>
+        </ul>
+    </div> -->
+
+    <div *ngIf="activeModule == 'aceerp'" class="sub-nav">
+        <div class="logo-container flex-center">
+            <img src="./assets/images/brand/acehr-logo.png" alt="silo-logo">
+        </div>
+
+        <div class="sub-nav-list">
+            <div class="list-items">
+                <ng-container>
+                    <ul class="list">
+                        <li *ngFor="let link of aceerpMenuData" >
+                            <a [routerLink]="[link.routeLink]" routerLinkActive="active" >
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons[link.icon])" class=""></svg>
+                                </span>
+                                <span>{{link.label}}</span>
+                            </a>
+                        </li>
+
+                        <li></li>
+                        <li (click)="logout()" class="logout">
+                            <span>
+                                <i class="bi bi-box-arrow-left"></i>
+                            </span>   
+                            <span>Logout</span>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="activeModule == 'human-resources'" class="sub-nav">
+        <div class="logo-container flex-center">
+            <img src="./assets/images/brand/acehr-logo.png" alt="silo-logo">
+        </div>
+        <div *ngIf="userDetails.data.isSuperAdmin" class="sub-nav-list">
+            <div *ngFor="let item of adminMenuData" class="list-items">
+                <ng-container *ngIf="currentLink == item.label">
+                    <!-- <div class="list-header">{{item.label}}</div> -->
+                    <ul class="list">
+                        <li *ngFor="let link of item.subMenu">
+                            <a [routerLink]="[link.routeLink]" routerLinkActive="active" >
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons[link.icon])" class=""></svg>
+                                </span>
+                                <span>{{link.label}}</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a [routerLink]="['human-resources/general-settings']" routerLinkActive="active">
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.settings)" class=""></svg>
+                                </span>
+                                <span>Account Settings</span>
+                            </a>
+                        </li>
+                        <li (click)="logout()" class="logout">
+                            <span class="icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.logout)" class=""></svg>
+                            </span>
+                            <span>Logout</span>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>            
+        </div>
+
+        <div *ngIf="!userDetails.data.isSuperAdmin && !userDetails.data.isManager" class="sub-nav-list">
+            <div class="list-items">
+                <ng-container>
+                    <ul class="list">
+                        <li *ngFor="let link of regMenuData" >
+                            <a [routerLink]="[link.routeLink]" routerLinkActive="active" >
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons[link.icon])" class=""></svg>
+                                </span>
+                                <span>{{link.label}}</span>
+                            </a>
+                        </li>
+
+                        <li></li>
+
+                        <li (click)="logout()" class="logout">
+                            <span>
+                                <i class="bi bi-box-arrow-left"></i>
+                            </span>
+                            <span>Logout</span>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div> 
+        
+        <div *ngIf="!userDetails.data.isSuperAdmin && userDetails.data.isManager" class="sub-nav-list">
+            <div class="list-items">
+                <ng-container>
+                    <ul class="list">
+                        <li *ngFor="let link of managerMenuData" >
+                            <a [routerLink]="[link.routeLink]" routerLinkActive="active" >
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons[link.icon])" class=""></svg>
+                                </span>
+                                <span>{{link.label}}</span>
+                            </a>
+                        </li>
+
+                        <li></li>
+                        <li (click)="logout()" class="logout">
+                            <span>
+                                <i class="bi bi-box-arrow-left"></i>
+                            </span>   
+                            <span>Logout</span>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>          
+    </div>
+
+    <div *ngIf="activeModule == 'orders'" class="sub-nav">
+        <div class="logo-container flex-center">
+            <img src="./assets/images/brand/acehr-logo.png" alt="">
+        </div>
+
+        <div class="sub-nav-list">
+            <div class="list-items">
+                <ng-container>
+                    <ul class="list">
+                        <li *ngFor="let link of ordersMenuData" >
+                            <a [routerLink]="[link.routeLink]" routerLinkActive="active" >
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons[link.icon])" class=""></svg>
+                                </span>
+                                <span>{{link.label}}</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a [routerLink]="['settings']" routerLinkActive="active">
+                                <span class="icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.settings)" class=""></svg>
+                                </span>
+                                <span>Order Settings</span>
+                            </a>
+                        </li>
+                        <li (click)="logout()" class="logout">
+                            <span>
+                                <i class="bi bi-box-arrow-left"></i>
+                            </span>   
+                            <span>Logout</span>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="create-card">
+    <div class="top-card">
+        <div class="inner-wrap">
+            <!-- <div class="hdr-title">
+                <div class="create-title">Create New Employee</div>
+
+                
+            </div> -->
+            <div class="hdr-details">
+                <div class="inner-wrap">
+                    <div class="create-icon">
+                        <span class="icon">
+                            <app-icon [iconName]="'csv'" [iconWidth]="50" [iconHeight]="50"></app-icon>
+                        </span>
+                        <!-- <img src="../../../../assets/images/illustrations/csv-icon-slant.png" /> -->
+                    </div>
+                    <div class="create-details">
+                        <div class="create-name">Bulk employee upload</div>
+                        <!-- <p>The first step is to complete your business information.</p> -->
+                    </div>
+                    <div (click)="dialogRef.close()" class="close-btn">&times;</div>
+                    <!-- <div *ngIf="isUpdateCustomer" class="create-details">
+                        <div class="create-name">{{firstName}} {{lastName}}</div>
+                        <div class="create-id">Customer ID: {{customerId}}</div>
+                    </div> -->
+                </div>
+                <div class="hdr-overlay"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="bottom-card">
+        <div class="content">
+            <div class="text">Importing a csv file is the fastest way to add or modify several employees at once. For first time use, download our <a href="../../../../../assets/bulk-upload-template.csv" target="_blank">template</a>.</div>
+
+            <div class="actions">
+                <div class="btn-hld mt-lg-3 mt-2">
+                    <div class="upload-btn">
+                        <input 
+                            type="file" 
+                            class="file-upload"
+                            (change)="bulkEmployeeUpload($event)" 
+                            #fileUpload
+                        />
+                        <div (click)="fileUpload.click()" class="icon"><i class="bi bi-file-earmark-arrow-up-fill"></i> Upload csv file </div>
+                        <span class="file-name">{{fileName}}</span>
+                    </div>
+                    <div class="d-flex justify-content-end mt-lg-3" style="width: 100%">
+                        <div (click)="uploadEmployees()" class="cta primary-bkg lg text-capitalize" style="min-width: 30%" type="submit">Submit File</div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+
+    </div>
+</div>

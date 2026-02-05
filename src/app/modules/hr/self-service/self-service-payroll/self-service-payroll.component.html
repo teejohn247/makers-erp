@@ -1,0 +1,197 @@
+<div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Payroll</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <!-- <div class="cta primary-bkg icon md">New Payroll</div> -->
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3">
+        <div class="inner-row-hld d-flex justify-content-between">
+            
+            <div class="row-card card-xlg" style="height: 95%;">
+                <div class="cont">
+                    <div class="col-card card-xxl">
+                        <highcharts-chart
+                            [Highcharts]="AreaHighcharts"
+                            [options]="areaChartOptions"
+                            style="width: 100%; max-width: 100%; height: 280px; display: block;"
+                        >
+                        </highcharts-chart>
+                    </div>
+                    <!-- <div class="donut-chart">
+                        <div class="chart-title">
+                            <span>14</span>
+                            <span>Leave Balance <br> (Days)</span>
+                        </div>
+                        <highcharts-chart
+                            [Highcharts]="PieHighcharts"
+                            [options]="pieChartOptions"
+                            style="width: auto; max-width: 100%; height: 250px; display: flex; align-items: center; justify-content: center; background: transparent;"
+                        >
+                        </highcharts-chart>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="row-card card-xsm" style="height: 95%;">
+                <div class="cont">
+                    <div (click)="editPaymentInfo()" class="cta quick primary-bkg xs">Edit Info</div>
+                    <div class="card-title">Payment Information</div>
+                    <div class="listed-items mt-lg-4">
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Bank Name:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails.paymentInformation[0]?.bankName}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Account Name:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails.paymentInformation[0]?.accountName}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Account Number:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails.paymentInformation[0]?.accountNumber}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Bank Address:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails.paymentInformation[0]?.bankAddress}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Sort Code:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails.paymentInformation[0]?.sortCode}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major">Tax Identification No:</div>
+                                </div>
+                                <div class="det">
+                                    <div class="minor">{{employeeDetails.paymentInformation[0]?.taxIdentificationNumber}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-0">
+        <div class="table-wrap">
+
+            <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                <div class="card-title">Payroll History</div>
+                <div class="bulk-actions d-flex justify-content-between align-items-center">
+                    <div class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div>
+                    <div class="cta primary-bkg sm ms-lg-2">Apply</div>
+                </div>
+            </div>
+
+            <div class="inner-row">
+                <table 
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="dataTable mat-elevation-z0"
+                    matSort
+                >
+
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+
+                        <ng-container *ngIf="column.key == 'payPeriod'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell *matCellDef="let row"> {{strToDate(row.startDate, 'startDate')}} - {{strToDate(row.endDate, 'endDate')}}</td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'totalEarnings'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="icon" style="color: green;"> +{{ row[column.key] }}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'deductions'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="icon" style="color: red;"> -{{ row[column.key] }}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'status'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.key}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="status approved" *ngIf="row[column.key] == 'Completed'">{{ row[column.key] }}</span>
+                                <span class="status pending" *ngIf="row[column.key] == 'Pending'">{{ row[column.key] }}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'actions'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td style="white-space: nowrap;" mat-cell *matCellDef="let element">
+                                <span (click)="getPayrollDetails(element)" class="table-icon edit" style="font-size: 0.9rem;"><i class="bi bi-printer"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container>
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <div class="empty-data">
+                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                <div class="text">No payroll records were found.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>

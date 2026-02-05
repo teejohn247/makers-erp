@@ -1,0 +1,224 @@
+<div class="content-wrap pb-5">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <div class="page-header">Absence Management</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <!-- <div class="cta primary-bkg icon md">New Payroll</div> -->
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-4">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div class="row-card card-xlg card-yxl">
+                <div class="cont">
+                    <div class="actions-info mat-menu-select">
+                        <!-- <mat-form-field class="mb-lg-2" [style.width]="'10rem'" appearance="outline">
+                            <mat-label>Select Year</mat-label>
+                            <mat-select
+                                class="selectField"
+                                disableOptionCentering
+                                panelClass="matDropdown"
+                            >
+                                <mat-option [value]="2025">2025</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <div [matMenuTriggerFor]="leaveYearSelect" class="dropdown-trigger"> Select Year <i class="bi bi-chevron-down"></i></div>
+                        <mat-menu #leaveYearSelect="matMenu" class="more">
+                            <div class="menu-item" mat-menu-item>2025</div>
+                        </mat-menu>
+                    </div>
+
+                    <div class="summary-container">
+                        <div class="vertical-label">Days Used</div>
+                        <div class="summary-wrap">
+                            <div *ngFor="let item of requestMatrix" class="summary-hld">
+                                <div class="row-label">{{item.label}} <span>Days</span></div>
+                                <div class="row-details">
+                                    <div class="stacked-items lg ms-lg-4">
+                                        <div class="stack">
+                                            <span *ngFor="let staff of item.staff" style="background-image: url('{{staff.employeeImage}}');"></span>
+                                            <!-- <span style="background-image: url('../../../../../assets/images/illustrations/staff1.jpg');"></span>
+                                            <span style="background-image: url('../../../../../assets/images/illustrations/staff3.jpg');"></span>
+                                            <span style="background-image: url('../../../../../assets/images/illustrations/staff2.jpg');"></span>
+                                            <span style="background-image: url('../../../../../assets/images/illustrations/profile-img.jpg');"></span>
+                                            <span style="background-image: url('../../../../../assets/images/illustrations/staff1.jpg');"></span>
+                                            <span style="background-image: url('../../../../../assets/images/illustrations/staff3.jpg');"></span>
+                                            <span>+9</span> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-card card-xsm card-yxl">
+                <div class="cont">
+                    <div class="card-title clr">Approved Absence Requests</div>
+                    <div class="listed-items mt-lg-3">
+                        <div *ngIf="approvedRequests?.length == 0" class="item">
+                            <div class="content">
+                                <app-no-data 
+                                    [height]="'15rem'"
+                                    [icon]="'alarm'"
+                                    [message]="'There are no approved absence requests at the moment'"
+                                >
+                                </app-no-data>
+                            </div>
+                        </div>
+
+                        <div *ngFor="let request of approvedRequests | slice:0:5;" class="item">
+                            <div class="content">
+                                <div class="det">
+                                    <div class="major bd">{{request.fullName}}</div>
+                                    <div class="minor">{{request.department}}</div>
+                                </div>
+                                <div class="det right">
+                                    <div class="major">{{ request.leaveStartDate | date : 'MMM d'}} - {{ request.leaveEndDate | date : 'MMM d'}}</div>
+                                    <!-- <div class="minor sm">Apr 20 -28</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row-section mt-lg-3">
+        <div class="table-wrap">
+
+            <div class="inner-row hdr d-flex justify-content-start align-items-center">
+                <div class="card-title">Absence History</div>
+                <div class="bulk-actions d-flex justify-content-between align-items-center">
+                    <div class="dropdown-trigger"> Bulk Actions <i class="bi bi-chevron-down"></i></div>
+                    <div class="cta primary-bkg sm ms-lg-2">Apply</div>
+                </div>
+            </div>
+
+            <div class="inner-row">
+                <table 
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="dataTable mat-elevation-z0"
+                    matSort
+                >
+
+                    <!-- Table Columns -->
+                    <ng-container *ngFor="let column of tableColumns" [matColumnDef]="column.label">
+                        <ng-container *ngIf="column.key == 'select'">
+                            <th style="width:6%" mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox 
+                                    color="primary" 
+                                    (change)="$event ? masterToggle() : null"
+                                    [checked]="selection.hasValue() && isAllSelected()"
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </th>
+                    
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox
+                                    color="primary" 
+                                    (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(row) : null"
+                                    [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'image'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef></th>
+                            <td style="white-space: nowrap;" mat-cell *matCellDef="let row">
+                                <span *ngIf="!row.employeeImage" class="initials">{{row.fullName[0]}}</span>
+                                <span *ngIf="row.employeeImage" class="table-img bkg-standard" style="background-image: url('{{row.employeeImage}}');"></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'leaveTypeName'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell *matCellDef="let row">
+                                <!-- <span class="icon"><i class="bi bi-calendar2-week"></i> {{ row[column.key] }}</span> -->
+                                <span class="icon">
+                                    <app-icon [iconName]="'calendarTime'" [iconWidth]="25" [iconHeight]="25"></app-icon>
+                                </span>
+                                <span class="ps-2">{{ row[column.key] }}</span>
+                                <!-- <span class="icon" *ngIf="row[column.key] == 'Unpaid'"><i class="bi bi-exclamation-diamond"></i> {{ row[column.key] }}</span>
+                                <span class="icon" *ngIf="row[column.key] == 'Sick'"><i class="bi bi-bandaid"></i> {{ row[column.key] }}</span> -->
+                            </td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'name'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell *matCellDef="let row">{{ row["First Name"] }} {{ row["Last Name"] }}</td>
+                        </ng-container>
+
+                        <ng-container *ngIf="column.key == 'status'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell 
+                                *matCellDef="let row">
+                                <span class="status approved" *ngIf="row[column.key] == 'Approved'">{{ row[column.key] }}</span>
+                                <span class="status pending" *ngIf="row[column.key] == 'Pending'">{{ row[column.key] }}</span>
+                                <span class="status rejected" *ngIf="row[column.key] == 'Declined'">{{ row[column.key] }}</span>
+                            </td>
+                        </ng-container>
+
+                        <!-- <ng-container *ngIf="column.key == 'leaveType'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{column.label}}</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="icon" *ngIf="row[column.key] != 'Unpaid' || row[column.key] != 'Sick'"><i class="bi bi-cash"></i> {{ row[column.key] }}</span>
+                                <span class="icon" *ngIf="row[column.label] == 'Unpaid'"><i class="bi bi-exclamation-diamond"></i> {{ row[column.label] }}</span>
+                                <span class="icon" *ngIf="row[column.label] == 'Sick'"><i class="bi bi-bandaid"></i> {{ row[column.label] }}</span>
+                            </td>
+                        </ng-container> -->
+
+                        <ng-container *ngIf="column.key == 'leaveStartDate' || column.key == 'leaveEndDate' || column.key == 'requestDate'">
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ strToDate(row[column.key]) | date : 'd MMM, y'}}</td>
+                        </ng-container>
+
+                        
+
+                        <ng-container *ngIf="column.key == 'actions'">
+                            <th style="width:5%" mat-header-cell *matHeaderCellDef>
+                            </th>
+                            <td style="width:1%; white-space: nowrap;" mat-cell *matCellDef="let element">
+                                <span (click)="actionRequest(element)" class="table-icon edit"><i class="bi bi-pen-fill"></i></span>
+                                <span *ngIf="element['Status'] == 'Pending'" class="table-icon delete ms-lg-3"><i class="bi bi-trash3-fill"></i></span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container>
+                            <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.key == 'image' || column.key == 'actions' ? "" : column.label }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[column.key] }}</td>
+                        </ng-container>
+                        
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emprow; columns: displayedColumns"></tr>
+
+                    <tr class="mat-row" *matNoDataRow>
+                        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                            <app-loading-data *ngIf="!requestedApprovals" [height]="'15rem'"></app-loading-data>
+                            <app-no-data
+                                *ngIf="requestedApprovals" 
+                                [height]="'15rem'"
+                                [icon]="'calendarTime'"
+                                [message]="'No absence request records exist'"
+                            >
+                            </app-no-data>
+                            <!-- <div class="empty-data">
+                                <img src="../../../../assets/images/illustrations/empty1.png" alt=""/>
+                                <div class="text">No leave request records exist.</div>
+                            </div> -->
+                        </td>
+                    </tr>
+                    
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>
