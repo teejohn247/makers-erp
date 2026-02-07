@@ -1,0 +1,181 @@
+<div class="content-wrap">
+    <div class="row-section d-flex justify-content-between align-items-center">
+        <!-- <span (click)="goBack()" class="back-btn"><i class="bi bi-arrow-left"></i></span>  -->
+        <div class="page-header">Create Announcement</div>
+        <div class="main-actions d-flex justify-content-start align-items-center">
+            <!-- <div (click)="addStock()" class="cta primary-bkg icon md">
+                <span class="icon pe-lg-1 pe-1">
+                    <app-icon [iconName]="'box'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                </span>
+                Add Stock
+            </div> -->
+        </div>
+    </div>
+
+    <div class="row-section my-lg-4">
+        <div class="inner-row-hld d-flex justify-content-between">
+            <div style="width: 60%" class="row-card card-yxl">
+                <div class="form-wrap">
+                    <form [formGroup]="form" class="form-container d-flex justify-content-between flex-wrap" style="font-size: 0.8rem; font-family: 'AR';">
+                        <ng-container class="d-flex" *ngFor="let field of formInfoFields">
+                            <ng-container [ngSwitch]="field.controlType">
+    
+                                <mat-form-field *ngSwitchCase="'text'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <input matInput [formControlName]="field.controlName">
+                                    <mat-error *ngIf="form.get(field.controlName)?.hasError('email')">Please enter a valid email address</mat-error>
+                                    <mat-error *ngIf="form.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'number'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label class="text-capitalize">{{field.controlLabel}}</mat-label>
+                                    <input type="number" min="0" matInput [formControlName]="field.controlName">
+                                    <mat-error *ngIf="form.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                </mat-form-field>
+        
+                                <mat-form-field *ngSwitchCase="'select'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <mat-select
+                                        class="selectField"
+                                        disableOptionCentering
+                                        panelClass="matDropdown"
+                                        [formControlName]="field.controlName"
+                                    >
+                                        <!-- <mat-option ></mat-option> -->
+                                        <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="form.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                </mat-form-field>
+    
+                                <mat-form-field *ngSwitchCase="'date'" class="mb-lg-2" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <input matInput [matDatepicker]="picker" readonly [formControlName]="field.controlName">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker color="accent" disabled="false"></mat-datepicker>
+                                    <mat-error *ngIf="form.get(field.controlName)?.hasError('required')">{{field.controlLabel}} is required</mat-error>
+                                    <mat-error *ngIf="form.get(field.controlName)?.hasError('date')">{{field.controlLabel}} is invalid</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'textarea'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <textarea type="field.controlType" rows="5" matInput [formControlName]="field.controlName"></textarea>
+                                </mat-form-field>
+
+                                <ng-container *ngSwitchCase="'quillEditor'">
+                                    <label class="quill-label">{{field.controlLabel}}</label>
+                                    <app-quill-editor class="w-100 mb-lg-3" [formControlName]="field.controlName"></app-quill-editor>
+                                </ng-container>
+
+                                <mat-form-field *ngSwitchCase="'departmentSelect'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <mat-select class="multiple-select" [formControlName]="field.controlName" multiple>
+                                        <mat-select-trigger>
+                                            <mat-chip-list>
+                                                <mat-chip *ngFor="let department of form.value[field.controlName]"
+                                                    [removable]="true" (removed)="removeDept(department)">
+                                                    {{ formInfoFields[3].selectOptions[department] }}
+                                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                                </mat-chip>
+                                            </mat-chip-list>
+                                        </mat-select-trigger>
+                                
+                                        <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                        <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option> -->
+                                
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field *ngSwitchCase="'employeeSelect'" class="mb-lg-1" [style.width]="field.controlWidth" appearance="outline">
+                                    <mat-label>{{field.controlLabel}}</mat-label>
+                                    <mat-select class="multiple-select" [formControlName]="field.controlName" multiple>
+                                        <mat-select-trigger>
+                                            <mat-chip-list>
+                                                <mat-chip *ngFor="let employee of form.value[field.controlName]"
+                                                    [removable]="true" (removed)="removeEmployee(employee)">
+                                                    {{ formInfoFields[3].selectOptions[employee] }}
+                                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                                </mat-chip>
+                                            </mat-chip-list>
+                                        </mat-select-trigger>
+                                
+                                        <mat-option *ngFor="let option of field.selectOptions | keyvalue" [value]="option.key">{{option.value}}</mat-option>
+                                        <!-- <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option> -->
+                                
+                                    </mat-select>
+                                </mat-form-field>
+    
+                                <ng-container *ngSwitchCase="'file'">
+                                    <div (click)="fileUpload.click()" class="upload-wrap mt-lg-2">
+                                        <input 
+                                            type="file" 
+                                            class="file-upload"
+                                            (change)="imgFileUpload($event)" 
+                                            #fileUpload
+                                        />
+                                        <span *ngIf="!imgPic" class="icon">
+                                            <app-icon [iconName]="'export'" [iconWidth]="30" [iconHeight]="30"></app-icon>
+                                        </span>
+                                        <div *ngIf="!imgPic" class="info">Click to upload an image</div>
+                                        <img class="logo" *ngIf="!imgUploadError && imgPic" [src]="imgPic" alt="">
+                                        <span class="file-name">{{imgFileName ? imgFileName : 'No image uploaded'}}</span>
+                                    </div>
+                                </ng-container>
+    
+                            </ng-container>
+                        </ng-container>
+    
+                        <div *ngIf="formInfoFields" class="btn-hld d-flex justify-content-end mt-lg-4" style="width: 100%">
+                            <div (click)="onSubmit()" class="cta primary-bkg lg text-uppercase" style="min-width: 30%" type="submit">Submit <span *ngIf="apiLoading" class="loader"></span></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div style="width: 35%" class="row-card card-yxl">
+                <div class="cont h-100">
+                    <div class="card-title">Notice Board</div>
+
+                    <div class="notices-wrap mt-3">
+                        <div class="notice">
+                            <div class="date">
+                                <span>10</span> <span>Feb</span>
+                            </div>
+                            <div class="details">
+                                <div class="title">System Maintenance Scheduled</div>
+                                <div class="photo"></div>
+                                <div class="content mt-2">We will be performing system maintenance on Saturday from 10:00 PM to 12:00 AM. During this time, some services may be unavailable.</div>
+                                <div class="author mt-2">
+                                    <div class="image"></div>
+                                    <div class="info">
+                                        <span>Adam Pegasus</span>
+                                        <span>05:32 PM</span>
+                                    </div>
+                                    <div class="preview"><i class="bi bi-arrow-up-right-square"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="notice">
+                            <div class="date">
+                                <span>23</span> <span>Jan</span>
+                            </div>
+                            <div class="details">
+                                <div class="title">Project Management Meeting</div>
+                                <!-- <div class="photo"></div> -->
+                                <div class="content mt-2">All project managers should note they have a meeting to discuss the feasibility of their projects with the CEO.</div>
+                                <div class="author mt-2">
+                                    <div class="image"></div>
+                                    <div class="info">
+                                        <span>Super Admin</span>
+                                        <span>10:12 AM</span>
+                                    </div>
+                                    <div (click)="viewNotice()" class="preview"><i class="bi bi-arrow-up-right-square"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

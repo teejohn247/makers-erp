@@ -37,6 +37,7 @@ import { QuillEditorComponent } from './components/quill-editor/quill-editor.com
 import { InfoDialogComponent } from './components/info-dialog/info-dialog.component';
 import { LoadingDataComponent } from './components/loading-data/loading-data.component';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { SupportInfoComponent } from './components/support-info/support-info.component';
 
 const SHARED_COMP = [
   MatIconModule,
@@ -70,7 +71,7 @@ const SHARED_COMP = [
     ProgressStepperComponent, 
     QuillEditorComponent, 
     InfoDialogComponent, 
-    LoadingDataComponent
+    LoadingDataComponent, SupportInfoComponent
   ],
 
   exports: [

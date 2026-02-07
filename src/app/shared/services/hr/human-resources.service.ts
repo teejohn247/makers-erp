@@ -100,6 +100,28 @@ export class HumanResourcesService {
     return this.http.delete<any>(`${this.path}/deleteDepartment/${deptId}`, this.requestOptions);
   }
 
+  /*************** BRANCH RELATED ACTIONS ***************/
+
+  //Create a new branch
+  public createBranch(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.path}/addBranch`, payload, this.requestOptions);
+  }
+
+  //Get the list of all Branches
+  public getBranches(): Observable<any> {
+    return this.http.get<any>(`${this.path}/fetchBranches`, this.requestOptions);
+  }
+
+  //Update Branch
+  public updateBranch(data: any, branchId: any): Observable<any> {
+    return this.http.patch<any>(`${this.path}/updateBranch/${branchId}`, data, this.requestOptions);
+  }
+
+  //Delete branch
+  public deleteBranch(branchId: any): Observable<any> {
+    return this.http.delete<any>(`${this.path}/deleteBranch/${branchId}`, this.requestOptions);
+  }
+
   /*************** COMPANY ROLES RELATED ACTIONS ***************/
 
   //Create a new company role
@@ -645,5 +667,22 @@ export class HumanResourcesService {
   public getAssessmentGrades(assessmentId: any): Observable<any> {
     return this.http.get<any>(`${this.path}/getResults/${assessmentId}`, this.requestOptions);
   }
+
+  /*************** NOTICE BOARD RELATED ACTIONS ***************/
+
+  //Create a new notice
+  public createNotice(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.path}/announcements`, payload, this.requestOptions);
+  }
+
+  //Get the list of all notices
+  public getNotices(): Observable<any> {
+    return this.http.get<any>(`${this.path}/announcements`, this.requestOptions);
+  }
+
+  //Publish a job post
+  // public publishJobPost(info: any, jobId: any): Observable<any> {
+  //   return this.http.patch<any>(`${this.path}/publishJob/${jobId}`, info, this.requestOptions);
+  // }
 
 }

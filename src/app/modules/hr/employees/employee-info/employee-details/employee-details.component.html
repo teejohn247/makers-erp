@@ -59,6 +59,15 @@
         </div>
     </div>
 
+    <div *ngIf="employeeDetails" class="row-section">
+        <div class="row-card w-100 card-xlg card-yxl">
+            <div class="inner-row w-100 d-flex justify-content-between align-items-center">
+                <div class="card-title md">Documents</div>
+                <button (click)="uploadDocument()" class="edit cta quick trans-bkg md">Upload Document</button>
+            </div>
+        </div>
+    </div>
+
     <!-- <div class="row-section my-lg-4">
         <div class="inner-row-hld d-flex justify-content-between">
             <div class="row-card card-xlg card-ymd">

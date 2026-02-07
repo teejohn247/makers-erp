@@ -50,6 +50,15 @@ import { AssessmentInfoComponent } from './lms/assessment-info/assessment-info.c
 import { AssessmentListComponent } from './lms/assessment-list/assessment-list.component';
 import { AppraisalPortalComponent } from './appraisals/appraisal-portal/appraisal-portal.component';
 import { AppraisalKpisComponent } from './appraisals/appraisal-kpis/appraisal-kpis.component';
+import { BranchesOverviewComponent } from '../settings/human-resources/branches/branches-overview/branches-overview.component';
+import { ReportsPortalComponent } from './reports/reports-portal/reports-portal.component';
+import { ReportsDashboardComponent } from './reports/reports-dashboard/reports-dashboard.component';
+import { EmployeeReportsComponent } from './reports/employee-reports/employee-reports.component';
+import { AbsenceReportsComponent } from './reports/absence-reports/absence-reports.component';
+import { ExpenseReportsComponent } from './reports/expense-reports/expense-reports.component';
+import { AppraisalReportsComponent } from './reports/appraisal-reports/appraisal-reports.component';
+import { PayrollReportsComponent } from './reports/payroll-reports/payroll-reports.component';
+import { NoticeListComponent } from './notice-board/notice-list/notice-list.component';
 
 
 const routes: Routes = [
@@ -243,6 +252,10 @@ const routes: Routes = [
     component: CalendarComponent
   },
   {
+    path: 'notice-board',
+    component: NoticeListComponent
+  },
+  {
     path: 'appraisals',
     component: AppraisalPortalComponent,
     children:[
@@ -270,6 +283,41 @@ const routes: Routes = [
     component: VisitorsLogComponent
   },
   {
+    path: 'reports',
+    component: ReportsPortalComponent,
+    children:[
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path : 'dashboard',
+        component: ReportsDashboardComponent
+      },
+      {
+        path : 'employees',
+        component: EmployeeReportsComponent
+      },
+      {
+        path : 'absence',
+        component: AbsenceReportsComponent
+      },
+      {
+        path : 'expense',
+        component: ExpenseReportsComponent
+      },
+      {
+        path : 'appraisal',
+        component: AppraisalReportsComponent
+      },
+      {
+        path : 'payroll',
+        component: PayrollReportsComponent
+      },
+    ]
+  },
+  {
     path: 'hr-settings',
     component: HumanResourcesSettingsComponent,
     children:[
@@ -281,6 +329,10 @@ const routes: Routes = [
       {
         path : 'departments',
         component: DepartmentsOverviewComponent
+      },
+      {
+        path : 'branches',
+        component: BranchesOverviewComponent
       },
       {
         path : 'absence',

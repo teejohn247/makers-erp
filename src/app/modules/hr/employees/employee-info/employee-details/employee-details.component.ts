@@ -7,6 +7,7 @@ import * as Highcharts from 'highcharts';
 import { HumanResourcesService } from 'src/app/shared/services/hr/human-resources.service';
 import { NotificationService } from 'src/app/shared/services/utils/notification.service';
 import { EditEmployeeComponent } from '../../edit-employee/edit-employee.component';
+import { EmployeeDocumentsComponent } from '../employee-documents/employee-documents.component';
 
 @Component({
   selector: 'app-employee-details',
@@ -222,6 +223,17 @@ export class EmployeeDetailsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(() => {
       this.getPageData();
+    });
+  }
+
+  //Upload a new document
+  uploadDocument() {
+    this.dialog.open(EmployeeDocumentsComponent, {
+      width: '40%',
+      height: 'auto',
+      data: {
+        isExisting: false
+      },
     });
   }
 

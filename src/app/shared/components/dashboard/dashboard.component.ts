@@ -14,6 +14,7 @@ import { concat, forkJoin, of } from 'rxjs';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { LeaveReviewComponent } from 'src/app/modules/hr/leave-management/leave-review/leave-review.component';
 import { ExpenseRequestReviewComponent } from 'src/app/modules/hr/expense-management/expense-request-review/expense-request-review.component';
+import { NoticeInfoComponent } from 'src/app/modules/hr/notice-board/notice-info/notice-info.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -458,6 +459,14 @@ export class DashboardComponent implements OnInit {
         });
       }
     }    
+  }
+
+  viewNotice(data?:any) {
+    this.dialog.open(NoticeInfoComponent, {
+      width: '40%',
+      height: 'auto',
+      data: data,
+    });
   }
 
 }

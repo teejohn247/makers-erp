@@ -23,6 +23,22 @@
                 <form class="settings-form card-xxl" [formGroup]="generalInfoForm" novalidate autocomplete="off">
 
                     <div class="form-wrap d-flex justify-content-between card-xxl">
+                        <div class="logo-wrap w-100 mb-4">
+                            <div class="create-icon profile">
+                                <div (click)="fileUpload.click()" class="image bkg-standard">
+                                    <div *ngIf="!(loggedInUser?.companyLogo || imgPic)" class="logo-text">Upload Logo</div>
+                                    <img *ngIf="loggedInUser?.companyLogo || imgPic" [src]="imgPic ? imgPic : loggedInUser?.companyLogo" alt="">
+                                </div>
+                                <span><i class="bi bi-camera-fill"></i></span>
+                                <input 
+                                    type="file" 
+                                    class="file-upload"
+                                    (change)="imgFileUpload($event)" 
+                                    #fileUpload
+                                />
+                            </div>
+                        </div>
+
                         <mat-form-field class="mb-lg-2" [style.width]="'48%'" appearance="outline">
                             <mat-label>Company Name</mat-label>
                             <input matInput formControlName="companyName">

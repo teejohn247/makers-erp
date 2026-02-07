@@ -69,6 +69,16 @@ import { AssessmentGradesComponent } from './lms/assessment-grades/assessment-gr
 import { AssessmentCardComponent } from './lms/assessment-card/assessment-card.component';
 import { AppraisalPortalComponent } from './appraisals/appraisal-portal/appraisal-portal.component';
 import { AppraisalKpisComponent } from './appraisals/appraisal-kpis/appraisal-kpis.component';
+import { NoticeInfoComponent } from './notice-board/notice-info/notice-info.component';
+import { NoticeListComponent } from './notice-board/notice-list/notice-list.component';
+import { ReportsPortalComponent } from './reports/reports-portal/reports-portal.component';
+import { ReportsDashboardComponent } from './reports/reports-dashboard/reports-dashboard.component';
+import { ReportsGenerationComponent } from './reports/reports-generation/reports-generation.component';
+import { EmployeeReportsComponent } from './reports/employee-reports/employee-reports.component';
+import { AbsenceReportsComponent } from './reports/absence-reports/absence-reports.component';
+import { PayrollReportsComponent } from './reports/payroll-reports/payroll-reports.component';
+import { ExpenseReportsComponent } from './reports/expense-reports/expense-reports.component';
+import { AppraisalReportsComponent } from './reports/appraisal-reports/appraisal-reports.component';
 
 
 @NgModule({
@@ -130,7 +140,17 @@ import { AppraisalKpisComponent } from './appraisals/appraisal-kpis/appraisal-kp
     AssessmentGradesComponent,
     AssessmentCardComponent,
     AppraisalPortalComponent,
-    AppraisalKpisComponent
+    AppraisalKpisComponent,
+    NoticeInfoComponent,
+    NoticeListComponent,
+    ReportsPortalComponent,
+    ReportsDashboardComponent,
+    ReportsGenerationComponent,
+    EmployeeReportsComponent,
+    AbsenceReportsComponent,
+    PayrollReportsComponent,
+    ExpenseReportsComponent,
+    AppraisalReportsComponent
   ],
   imports: [
     CommonModule,

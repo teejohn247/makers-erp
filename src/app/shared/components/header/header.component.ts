@@ -2,6 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Icons } from '../../../core/constants/icons';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RoutesRecognized } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { SupportInfoComponent } from '../support-info/support-info.component';
+import { SharedService } from '@services/utils/shared.service';
 
 @Component({
   selector: 'app-header',
@@ -18,9 +21,13 @@ export class HeaderComponent implements OnInit {
   userRole:string;
   profilePhoto: string;
 
+  notifications:any[] = [];
+
   constructor(
     private router: Router,
-    private sanitizer: DomSanitizer, 
+    private sanitizer: DomSanitizer,
+    private sharedService: SharedService,
+    public dialog: MatDialog, 
   ) { }
 
   ngOnInit(): void {
@@ -48,9 +55,26 @@ export class HeaderComponent implements OnInit {
       this.userRole = this.userDetails.data.companyRole;
       this.profilePhoto = this.userDetails.data.profilePic;
     }
+
+    this.sharedService.pollNotifications(60000).subscribe(res => { 
+      console.log('Notifications' ,res)
+      this.notifications = res.data; 
+    });
   }
 
   public transformSvg(html: string) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  //Create a new support message
+  createMessage() {
+    console.log('Clicked')
+    this.dialog.open(SupportInfoComponent, {
+      width: '40%',
+      height: 'auto',
+      data: {
+        isExisting: false
+      },
+    });
   }
 }

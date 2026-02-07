@@ -12,6 +12,7 @@ export class LayoutComponent implements OnInit {
   private readonly TOKEN_NAME = 'user_auth';
   authDetails: any;
   userDetails: any;
+  showGeneralNotice:boolean = true;
 
   constructor(
     private router: Router, 

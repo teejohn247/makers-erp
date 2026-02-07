@@ -82,16 +82,41 @@
         display: flex;
         margin-left: auto;
         align-items: center;
-        gap: 1.1rem;
+        gap: 1.3rem;
 
         span {
+            width: fit-content;
+            height: fit-content;
+            border-radius: 50%;
+            height: fit-content;
+            display: inline-block;
+
 
             &.icon {
                 width: 1.5rem;
                 height: 1.5rem;
+                color: var(--primary);
+                pointer-events: all;
+                position: relative;
+                cursor: pointer;
 
                 svg {
                     fill: var(--primary);
+                }
+
+                .badge {
+                    width: 1rem;
+                    height: 1rem;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 0.6rem;
+                    line-height: 1;
+                    border-radius: 0.2rem;
+                    background: var(--warning);
+                    position: absolute;
+                    right: -0.2rem;
+                    top: -0.5rem;
                 }
             }
 

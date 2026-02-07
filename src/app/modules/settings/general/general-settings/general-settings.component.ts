@@ -4,6 +4,7 @@ import { NotificationService } from '../../../../shared/services/utils/notificat
 import { AuthenticationService } from 'src/app/shared/services/utils/authentication.service';
 import { HumanResourcesService } from 'src/app/shared/services/hr/human-resources.service';
 import { SettingsService } from 'src/app/shared/services/settings/settings.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-general-settings',
@@ -24,11 +25,17 @@ export class GeneralSettingsComponent implements OnInit {
 
   systemRolesForm: FormGroup;
 
+  imgFile: File;
+  imgFileName: string;
+  imgPic: string | SafeUrl;
+  imgUploadError:string;
+
   constructor(
     private notify: NotificationService,
     private hrService: HumanResourcesService,
     private settingsService: SettingsService,
     private authService: AuthenticationService, 
+    private sanitizer: DomSanitizer,
     private fb: FormBuilder
   ) {
 
@@ -142,7 +149,28 @@ export class GeneralSettingsComponent implements OnInit {
     })
   }
 
-  
+  imgFileUpload(event) {
+    this.imgFile = event.target.files[0];
+    const img = new Image();
+    let imgWidth;
+    let imgHeight;
+    let imgRatio;
+    img.src = window.URL.createObjectURL(event.target.files[0]);
+    img.onload = () => {
+      if (this.imgFile.size > 1000000) {
+        this.imgUploadError = 'Please check that your image size is not more than 1MB';
+        this.imgFileName = '';
+        this.imgFile = null
+      }
+      else {
+        this.imgUploadError = '';
+        this.imgFileName = this.imgFile.name;
+        this.imgPic = this.sanitizer.bypassSecurityTrustUrl(
+          window.URL.createObjectURL(this.imgFile)
+        );
+      }
+    }
+  }  
 
 
   // getDepartments() {

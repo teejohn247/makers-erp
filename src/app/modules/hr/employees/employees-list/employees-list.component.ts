@@ -147,17 +147,18 @@ export class EmployeesListComponent implements OnInit {
       this.page$,
       this.size$
     ]).pipe(
+      tap(() => this.apiLoading = true),
       switchMap(([search, page, size]) => this.hrService.getEmployees(page, size, search))
     );
 
     employees$.pipe(
-      tap(() => this.apiLoading = true),
       tap(res => {
         this.totalItems = res.totalRecords;
         this.employeeList = res.data;
-        //console.log(res);
+        console.log(res);
         this.dataSource = new MatTableDataSource(this.employeeList);
         this.paginator._intl.getRangeLabel = this.getRangeDisplayText;
+        this.apiLoading = false;
       }),
       finalize(() => this.apiLoading = false)
     ).subscribe()

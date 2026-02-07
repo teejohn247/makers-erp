@@ -21,11 +21,45 @@
     </div>
 
     <div class="user-actions">
-        <span class="icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.bell)" class=""></svg>
+        <span class="icon text-danger" (click)="createMessage()" >
+            <app-icon [iconName]="'shieldDoc'" [iconWidth]="24" [iconHeight]="24" title="Message Support"></app-icon>
         </span>
-        <span class="icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg" [innerHTML]="transformSvg(icons.settings)" class=""></svg>
+        <span class="icon" [matMenuTriggerFor]="notifications">
+            <app-icon [iconName]="'bell'" [iconWidth]="24" [iconHeight]="24" title="Notifications"></app-icon>
+            <div class="badge">2</div>
+        </span>
+        <mat-menu #notifications="matMenu" xPosition="before" class="xl">
+            <div class="listed-items my-3 px-3">
+                <div role='button' class="item">
+                    <div class="icon text-warning">
+                        <app-icon [iconName]="'calendarTime'" [iconWidth]="28" [iconHeight]="28"></app-icon>
+                    </div>
+                    <div class="content">
+                        <div class="det">
+                            <div class="major">You have a new absence request for approval.</div>
+                            <div class="minor d-flex align-items-center justify-content-between mt-1">Steven Maddison <span>12 mins ago </span></div>
+                            <!-- <div *ngIf="request.type == 'expense'" class="minor">NGN {{request.amount.toLocaleString()}} - {{request.expenseTypeName}}</div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div role='button' class="item">
+                    <div class="icon text-info">
+                        <app-icon [iconName]="'wallet'" [iconWidth]="28" [iconHeight]="28"></app-icon>
+                    </div>
+                    <div class="content">
+                        <div class="det w-100">
+                            <div class="major">Expense request for approval.</div>
+                            <div class="minor d-flex align-items-center justify-content-between mt-1">Rachael Bradson <span>Yesterday, 12:32 PM</span></div>
+                            <!-- <div *ngIf="request.type == 'expense'" class="minor">NGN {{request.amount.toLocaleString()}} - {{request.expenseTypeName}}</div> -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </mat-menu>
+        <span [routerLink]="['./', 'human-resources', 'general-settings']" class="icon">
+            <app-icon [iconName]="'settings'" [iconWidth]="24" [iconHeight]="24" title="Settings"></app-icon>
         </span>
         <div class="user">
             <div class="info">

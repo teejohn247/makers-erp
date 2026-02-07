@@ -26,6 +26,8 @@ import { SubscriptionHistoryComponent } from './general/subscriptions/subscripti
 import { RolesPermissionsManagementComponent } from './general/roles-permissions/roles-permissions-management/roles-permissions-management.component';
 import { RolesPermissionsOverviewComponent } from './general/roles-permissions/roles-permissions-overview/roles-permissions-overview.component';
 import { BillingOverviewComponent } from './general/billing/billing-overview/billing-overview.component';
+import { BranchesOverviewComponent } from './human-resources/branches/branches-overview/branches-overview.component';
+import { BranchInfoComponent } from './human-resources/branches/branch-info/branch-info.component';
 
 
 @NgModule({
@@ -53,7 +55,9 @@ import { BillingOverviewComponent } from './general/billing/billing-overview/bil
     SubscriptionHistoryComponent,
     RolesPermissionsManagementComponent,
     RolesPermissionsOverviewComponent,
-    BillingOverviewComponent
+    BillingOverviewComponent,
+    BranchesOverviewComponent,
+    BranchInfoComponent
   ],
   imports: [
     CommonModule,

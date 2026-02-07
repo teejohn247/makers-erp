@@ -24,6 +24,7 @@ export class CreateSingleInfoComponent implements OnInit {
 
   departmentList: any[] = [];
   designationList: any[] = [];
+  branchList: any[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dialogData: any,
@@ -155,6 +156,16 @@ export class CreateSingleInfoComponent implements OnInit {
         selectOptions: this.arrayToObject(this.departmentList, 'departmentName'),
         validators: [Validators.required],
         order: 7
+      },
+      {
+        controlName: 'branch',
+        controlType: 'select',
+        controlLabel: 'Branch',
+        controlWidth: '48%',
+        initialValue: '',
+        selectOptions: this.arrayToObject(this.branchList, 'branchName'),
+        validators: [Validators.required],
+        order: 8
       },
       {
         controlName: 'role',

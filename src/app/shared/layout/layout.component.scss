@@ -19,5 +19,32 @@
     .main-page {
         height: calc(100vh - var(--hdr-height));
         flex: 1;
+
+        .notice-strip {
+            width: 100%;
+            margin: 0 auto;
+            background: var(--grey-lighter-tint);
+
+            .inner {
+                width: 92%;
+                margin: 0 auto;
+                font-size: 0.8rem;
+                letter-spacing: 0.03rem;
+                font-family: var(--font-regular);
+                padding: 0.3rem 1rem;
+                border-radius: 0.3rem;
+                border: 1px solid rgba(#eb5757, 0.4);
+                background: rgba(#eb5757, 0.2);
+                color: var(--black-tint);
+
+                .hide {
+                    font-size: 1.1rem;
+                    display: inline-block;
+                    margin-left: auto;
+                    color: var(--warning);
+                    cursor: pointer;
+                }
+            }
+        }
     }
 }

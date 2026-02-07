@@ -7,6 +7,9 @@
             <app-header *ngIf="userDetails" [userDetails]="userDetails"></app-header>
         </div>
         <div class="main-page">
+            <div *ngIf="showGeneralNotice" class="notice-strip">
+                <div class="inner d-flex">We will be performing system maintenance on Saturday from 10:00 PM to 12:00 AM. During this time, some services may be unavailable. <span (click)="showGeneralNotice = false" class="hide">&times;</span></div>
+            </div>
             <router-outlet></router-outlet>
         </div>
     </div>

@@ -42,6 +42,10 @@ export class HumanResourcesSettingsComponent implements OnInit {
       label: 'Departments',
     },
     {
+      routeLink: 'branches',
+      label: 'Branches',
+    },
+    {
       routeLink: 'absence',
       label: 'Absence & Holidays',
     },

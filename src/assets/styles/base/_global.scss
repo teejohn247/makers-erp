@@ -52,6 +52,7 @@ a {
 }
 
 .status {
+    font-family: var(--font-regular);
     color: var(--white);
     border-radius: var(--radius-lg);
 
@@ -59,6 +60,12 @@ a {
         font-size: 0.65rem;
         letter-spacing: 0.03rem;
         padding: 0rem 0.6rem;
+    }
+
+    &.md {
+        font-size: 0.85rem;
+        letter-spacing: 0.03rem;
+        padding: 0.2rem 0.6rem;
     }
 
     &.started {
@@ -1194,6 +1201,11 @@ section p {
         width: 10rem;
     }
 
+    &.xl {
+        width: 23rem;
+        max-width: unset;
+    }
+
     .mat-menu-content {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
@@ -1345,4 +1357,173 @@ section p {
     color: var(--text-grey) !important;
     fill: var(--text-grey) !important;
     letter-spacing: 0.02rem !important;
+}
+
+// FILE UPLOAD WRAP
+.upload-wrap {
+    width: 100%;
+    height: auto;
+    display: flex;
+    padding: 1.5rem 0;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-black-lightest);
+    cursor: pointer;
+    gap: 0.3rem;
+
+    input {
+        display: none;
+    }
+
+    .icon {
+        font-size: 1.8rem;
+        color: var(--primary);
+    }
+
+    .info {
+        font-size: 0.9rem;
+        font-family: var(--font-regular);
+        letter-spacing: 0.03rem;
+        color: var(--black-tint);
+    }
+
+    .file-name {
+        font-size: 0.8rem;
+        font-family: var(--font-regular);
+        letter-spacing: 0.03rem;
+    }
+
+    .logo {
+        width: auto;
+        height: 2.7rem;
+    }
+}
+
+.select-add {
+    width: 2.8rem;
+    height: 2.9rem;
+    font-size: 1.8rem;
+    margin-top: 0.2rem;
+    outline: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    background-color: var(--primary-dark);
+    color: white;
+
+    &.disabled {
+        cursor: default;
+        color: rgba(white, 0.8);
+        background-color: rgba(black, 0.15);
+    }
+}
+
+//ANNOUNCEMENTS STYLING
+
+.notices-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+
+    .notice {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        overflow: auto;
+        align-items: flex-start;
+        cursor: pointer;
+        gap: 1rem;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .date {
+            width: 3rem;
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.3rem;
+            padding: 0.3rem;
+            border: 1px solid var(--primary-lighter);
+            background: var(--primary-light);
+
+            span {
+                font-size: 0.85rem;
+                font-family: var(--font-bold);
+                display: inline-block;
+
+                &:first-child {
+                    font-size: 1rem;
+                }
+            }
+        }
+
+        .details {
+            flex: 1;
+
+            .title {
+                font-size: 1rem;
+                letter-spacing: 0.03rem;
+                font-family: var(--font-medium);
+            }
+
+            .photo {
+                width: 100%;
+                height: 7rem;
+                background: black;
+                border-radius: 0.4rem;
+                margin-top: 0.4rem;
+            }
+
+            .content {
+                font-size: 0.8rem;
+                letter-spacing: 0.03rem;
+                font-family: var(--font-regular);
+            }
+
+            .author {
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+
+                .image {
+                    width: 2rem;
+                    height: 2rem;
+                    border-radius: 50%;
+                    background: black;
+                }
+
+                .info {
+                    flex: 1;
+                    display: inline-flex;
+                    flex-direction: column;
+                    gap: 0.2rem;
+                    
+                    span {
+                        font-size: 0.65rem;
+                        font-family: var(--font-regular);
+                        letter-spacing: 0.03rem;
+                        line-height: 1;
+                        color: var(--black-tint);
+
+                        &:first-child {
+                            font-size: 0.75rem;
+                            font-family: var(--font-medium);
+                            color: black;
+                        }
+                    }
+                }
+
+                .preview {
+                    font-size: 1.1rem;
+                    margin-left: auto;
+                    color: var(--black-tint);
+                    cursor: pointer;
+                }
+            }
+        }
+    }
 }

@@ -29,5 +29,8 @@ export class SettingsService {
   }
 
   /*************** SHARED GET ACTIONS ***************/
+  public sendComplaint(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.path}/complaints`, payload, this.requestOptions);
+  }
 
 }

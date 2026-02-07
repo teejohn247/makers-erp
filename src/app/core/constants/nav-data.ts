@@ -51,6 +51,16 @@ export const navbarData = [
                 label: 'Calendar'
             },
             {
+                routeLink: 'human-resources/notice-board',
+                icon: 'newspaper',
+                label: 'Notice Board'
+            },
+            {
+                routeLink: 'human-resources/reports',
+                icon: 'chartColumn',
+                label: 'Reports & Analytics'
+            },
+            {
                 routeLink: 'human-resources/hr-settings',
                 icon: 'controls',
                 label: 'HR Settings'
