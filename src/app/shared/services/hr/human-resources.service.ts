@@ -104,22 +104,22 @@ export class HumanResourcesService {
 
   //Create a new branch
   public createBranch(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.path}/addBranch`, payload, this.requestOptions);
+    return this.http.post<any>(`${this.path}/branches`, payload, this.requestOptions);
   }
 
   //Get the list of all Branches
   public getBranches(): Observable<any> {
-    return this.http.get<any>(`${this.path}/fetchBranches`, this.requestOptions);
+    return this.http.get<any>(`${this.path}/branches`, this.requestOptions);
   }
 
   //Update Branch
   public updateBranch(data: any, branchId: any): Observable<any> {
-    return this.http.patch<any>(`${this.path}/updateBranch/${branchId}`, data, this.requestOptions);
+    return this.http.patch<any>(`${this.path}/branches/${branchId}`, data, this.requestOptions);
   }
 
   //Delete branch
   public deleteBranch(branchId: any): Observable<any> {
-    return this.http.delete<any>(`${this.path}/deleteBranch/${branchId}`, this.requestOptions);
+    return this.http.delete<any>(`${this.path}/branches/${branchId}`, this.requestOptions);
   }
 
   /*************** COMPANY ROLES RELATED ACTIONS ***************/

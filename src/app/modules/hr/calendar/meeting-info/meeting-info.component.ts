@@ -32,7 +32,7 @@ export class MeetingInfoComponent implements OnInit {
         controlType: 'text',
         controlLabel: 'Meeting Title',
         controlWidth: '100%',
-        initialValue: null,
+        initialValue: data.isExisting ? data.modalInfo.title : null,
         validators: [Validators.required],
         order: 1
       },
@@ -41,8 +41,8 @@ export class MeetingInfoComponent implements OnInit {
         controlType: 'mutipleSelect',
         controlLabel: 'Invited Guests',
         controlWidth: '100%',
-        initialValue: '',
-        selectOptions: null,
+        initialValue: data.isExisting ? data.modalInfo.invitedGuests.map((item: any) => item.employeeId) : null,
+        selectOptions: this.arrayToObject(this.employees, 'email'),
         validators: [Validators.required],
         order: 2
       },
@@ -51,7 +51,7 @@ export class MeetingInfoComponent implements OnInit {
         controlType: 'select',
         controlLabel: 'Meeting Location',
         controlWidth: '48%',
-        initialValue: 'Online',
+        initialValue: data.isExisting ? data.modalInfo.location : 'Location',
         selectOptions: {
           Online: 'Online',
           Business: 'Business Lounge',
@@ -65,7 +65,7 @@ export class MeetingInfoComponent implements OnInit {
         controlType: 'date',
         controlLabel: 'Meeting Date',
         controlWidth: '48%',
-        initialValue: null,
+        initialValue: data.isExisting ? new Date(data.modalInfo.meetingStartTime) : null,
         validators: [Validators.required],
         order: 4
       },
@@ -74,7 +74,7 @@ export class MeetingInfoComponent implements OnInit {
         controlType: 'time',
         controlLabel: 'Start Time',
         controlWidth: '48%',
-        initialValue: null,
+        initialValue: data.isExisting ? this.formatTimeFromISO(data.modalInfo.meetingStartTime) : null,
         validators: [Validators.required],
         order: 5
       },
@@ -83,7 +83,7 @@ export class MeetingInfoComponent implements OnInit {
         controlType: 'time',
         controlLabel: 'End Time',
         controlWidth: '48%',
-        initialValue: null,
+        initialValue: data.isExisting ? this.formatTimeFromISO(data.modalInfo.meetingEndTime) : null,
         validators: [Validators.required],
         order: 6
       },
@@ -92,7 +92,7 @@ export class MeetingInfoComponent implements OnInit {
         controlType: 'text',
         controlLabel: 'Meeting Description',
         controlWidth: '100%',
-        initialValue: null,
+        initialValue: data.isExisting ? data.modalInfo.description : null,
         validators: [],
         order: 7
       },
@@ -108,11 +108,12 @@ export class MeetingInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //console.log(this.employees);
+    console.log(this.data);
   }
 
   //Converts an array to an Object of key value pairs
   arrayToObject(arrayVar, key:string) {
+    console.log(arrayVar)
     let reqObj = {}
     reqObj = arrayVar.reduce((agg, item, index) => {
       agg[item['_id']] = item[key];
@@ -201,4 +202,12 @@ export class MeetingInfoComponent implements OnInit {
     // console.log(new Date(completeDate))
     return new Date(completeDate);
   }
+
+  formatTimeFromISO(isoString: string): string {
+    const date = new Date(isoString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
 }

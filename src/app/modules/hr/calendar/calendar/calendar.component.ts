@@ -10,7 +10,7 @@ import {
   CalendarEventAction,
 } from 'angular-calendar';
 import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import {
   startOfDay,
   endOfDay,
@@ -95,18 +95,29 @@ export class CalendarComponent implements OnInit {
   }
 
   async loadCalendarData() {
-    const [employeesRes, calendarRes] = await Promise.all([ this.hr.getEmployees().toPromise(), this.hr.getCalendar().toPromise(), ]); 
-    this.employeeList = employeesRes.data; 
-    this.calendarDetails = calendarRes.data;
+    forkJoin({
+      employees: this.hr.getEmployees(),
+      calendar: this.hr.getCalendar()
+    }).subscribe({
+      next: ({ employees, calendar }: any) => {
+        // assign results
+        this.employeeList = employees.data;
+        this.calendarDetails = calendar.data;
 
-    this.allEvents = [
-      ...this.mapMeetings(this.calendarDetails.meetings),
-      ...this.mapHolidays(this.calendarDetails.holidays),
-      ...this.mapLeave(this.calendarDetails.leaveRecords),
-      ...this.mapBirthdays(this.calendarDetails.birthdays),
-    ];
+        // now it's safe to use calendarDetails
+        this.allEvents = [
+          ...this.mapMeetings(this.calendarDetails.meetings),
+          ...this.mapHolidays(this.calendarDetails.holidays),
+          ...this.mapLeave(this.calendarDetails.leaveRecords),
+          ...this.mapBirthdays(this.calendarDetails.birthdays),
+        ];
 
-    this.applyFilters();
+        this.applyFilters();
+      },
+      error: err => {
+        console.error('Failed to load calendar data', err);
+      }
+    });
   }
 
   // -----------------------------
@@ -192,7 +203,11 @@ export class CalendarComponent implements OnInit {
       case 'meeting':
         this.dialog.open(MeetingInfoComponent, {
           width: '40%',
-          data: { modalInfo: event.raw, isExisting: true },
+          data: { 
+            modalInfo: event.raw, 
+            isExisting: true,
+            employeeList: this.employeeList
+          },
         });
         break;
 
