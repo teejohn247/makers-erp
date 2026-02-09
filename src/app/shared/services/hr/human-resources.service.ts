@@ -684,5 +684,4 @@ export class HumanResourcesService {
   // public publishJobPost(info: any, jobId: any): Observable<any> {
   //   return this.http.patch<any>(`${this.path}/publishJob/${jobId}`, info, this.requestOptions);
   // }
-
 }

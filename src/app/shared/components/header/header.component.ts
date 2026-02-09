@@ -5,6 +5,7 @@ import { Router, RoutesRecognized } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SupportInfoComponent } from '../support-info/support-info.component';
 import { SharedService } from '@services/utils/shared.service';
+import { HumanResourcesService } from '@services/hr/human-resources.service';
 
 @Component({
   selector: 'app-header',
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private router: Router,
     private sanitizer: DomSanitizer,
+    private hrService: HumanResourcesService,
     private sharedService: SharedService,
     public dialog: MatDialog, 
   ) { }
@@ -105,15 +107,15 @@ export class HeaderComponent implements OnInit {
   }
 
   markAllAsRead() {
-    // const unreadIds = this.notifications.filter(n => !n.read).map(n => n._id);
-    // if (unreadIds.length === 0) return;
+    const unreadIds = this.notifications.filter(n => !n.read).map(n => n._id);
+    if (unreadIds.length === 0) return;
 
-    // this.notifications = this.notifications.map(n => {
-    //   this.sharedService.readNotification(n._id).subscribe((res) => {
-    //     if(res.success) this.notificationBadgeCount = this.notificationBadgeCount - 1;
-    //     else return
-    //   });
-    // });    
+    this.notifications = this.notifications.map(n => {
+      this.sharedService.readNotification(n._id).subscribe((res) => {
+        if(res.success) this.notificationBadgeCount = this.notificationBadgeCount - 1;
+        else return
+      });
+    });    
   }
 
 }

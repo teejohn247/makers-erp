@@ -57,10 +57,10 @@ export class HumanResourcesSettingsComponent implements OnInit {
       routeLink: 'payroll',
       label: 'Payroll',
     },
-    // {
-    //   routeLink: 'expenses',
-    //   label: 'Expenses',
-    // },
+    {
+      routeLink: 'expenses',
+      label: 'Expense Types',
+    },
     // {
     //   routeLink: 'appraisal',
     //   label: 'Appraisal',
