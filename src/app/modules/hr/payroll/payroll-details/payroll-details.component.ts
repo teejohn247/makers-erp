@@ -22,7 +22,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class PayrollDetailsComponent implements OnInit {
 
-
+  apiLoading:boolean = false;
   tableColumns: TableColumn[];
   tableData: any[] = [];
   columnsCount: number = 3;
@@ -64,7 +64,7 @@ export class PayrollDetailsComponent implements OnInit {
       isExisting: false
     }
     this.getPageData();
-    this.payrollCurrentStep = 1;
+    this.payrollCurrentStep = 0;
     this.payrollRunSteps = [
       {
         icon: 'calendarTime',

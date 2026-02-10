@@ -27,6 +27,7 @@ export class EditEmployeeComponent implements OnInit {
 
   departmentList: any[] = [];
   designationList: any[] = [];
+  branchList: any[] = [];
   employeeDetails: any;
   loggedInUser: any;
   apiLoading: boolean = false;
@@ -183,6 +184,16 @@ export class EditEmployeeComponent implements OnInit {
         order: 7
       },
       {
+        controlName: 'branch',
+        controlType: 'select',
+        controlLabel: 'Branch',
+        controlWidth: '48%',
+        initialValue: '',
+        selectOptions: this.arrayToObject(this.branchList, 'branchName'),
+        validators: [],
+        order: 8
+      },
+      {
         controlName: 'role',
         controlType: 'text',
         controlLabel: 'Role',
@@ -190,7 +201,7 @@ export class EditEmployeeComponent implements OnInit {
         readonly: !this.loggedInUser.isSuperAdmin,
         initialValue: this.employeeDetails?.companyRole,
         validators: [Validators.required],
-        order: 8
+        order: 9
       },
     ]
 
