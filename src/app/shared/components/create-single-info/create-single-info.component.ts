@@ -164,7 +164,7 @@ export class CreateSingleInfoComponent implements OnInit {
         controlWidth: '48%',
         initialValue: '',
         selectOptions: this.arrayToObject(this.branchList, 'branchName'),
-        validators: [Validators.required],
+        validators: [],
         order: 8
       },
       {
