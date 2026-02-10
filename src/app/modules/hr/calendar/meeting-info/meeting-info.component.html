@@ -15,7 +15,11 @@
                         <!-- <img src="../../../../assets/images/illustrations/user.png" /> -->
                     </div>
                     <div class="create-details">
-                        <div class="create-name">Enter meeting information</div>
+                        <div *ngIf="!data.isExisting" class="create-name">New Meeting</div>
+                        <div *ngIf="data.isExisting" class="create-name">Meeting Information</div>
+                        <div *ngIf="data.isExisting" class="link">
+                            <a target="_blank" [href]="data.modalInfo.meetLink">Join Meeting</a>
+                        </div>
                         <!-- <p>The first step is to complete your business information.</p> -->
                     </div>
                     <div (click)="closeDialog()" class="close-btn">&times;</div>

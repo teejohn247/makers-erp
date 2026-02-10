@@ -104,22 +104,22 @@ export class HumanResourcesService {
 
   //Create a new branch
   public createBranch(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.path}/addBranch`, payload, this.requestOptions);
+    return this.http.post<any>(`${this.path}/branches`, payload, this.requestOptions);
   }
 
   //Get the list of all Branches
   public getBranches(): Observable<any> {
-    return this.http.get<any>(`${this.path}/fetchBranches`, this.requestOptions);
+    return this.http.get<any>(`${this.path}/branches`, this.requestOptions);
   }
 
   //Update Branch
   public updateBranch(data: any, branchId: any): Observable<any> {
-    return this.http.patch<any>(`${this.path}/updateBranch/${branchId}`, data, this.requestOptions);
+    return this.http.patch<any>(`${this.path}/branches/${branchId}`, data, this.requestOptions);
   }
 
   //Delete branch
   public deleteBranch(branchId: any): Observable<any> {
-    return this.http.delete<any>(`${this.path}/deleteBranch/${branchId}`, this.requestOptions);
+    return this.http.delete<any>(`${this.path}/branches/${branchId}`, this.requestOptions);
   }
 
   /*************** COMPANY ROLES RELATED ACTIONS ***************/
@@ -507,13 +507,13 @@ export class HumanResourcesService {
   /*************** APPRAISAL SUBMISSION AND REVIEW RELATED ACTIONS ***************/
 
   //Submit Appraisal Entry
-  public submitAppraisalEntry(info: any): Observable<any> {
-    return this.http.post<any>(`${this.path}/employeeRequestAppraisal`, info, this.requestOptions);
+  public submitAppraisalEntry(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.path}/employeeRequestAppraisal`, payload, this.requestOptions);
   }
 
   //Submit Appraisal Review
-  public submitAppraisalReview(info: any, employeeId: any): Observable<any> {
-    return this.http.patch<any>(`${this.path}/managerRateKpi/${employeeId}`, info, this.requestOptions);
+  public submitAppraisalReview(payload: any, employeeId: any): Observable<any> {
+    return this.http.patch<any>(`${this.path}/managerRateKpi/${employeeId}`, payload, this.requestOptions);
   }
 
   //Get the list of all appraisal requests
@@ -684,5 +684,4 @@ export class HumanResourcesService {
   // public publishJobPost(info: any, jobId: any): Observable<any> {
   //   return this.http.patch<any>(`${this.path}/publishJob/${jobId}`, info, this.requestOptions);
   // }
-
 }

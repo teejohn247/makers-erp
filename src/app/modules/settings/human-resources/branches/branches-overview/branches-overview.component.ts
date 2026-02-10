@@ -163,7 +163,6 @@ export class BranchesOverviewComponent implements OnInit {
           },
           error: err => {
             console.log(err)
-            this.notifyService.showError(err.error.error);
           } 
         })
       }
