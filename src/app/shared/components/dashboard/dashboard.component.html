@@ -585,81 +585,37 @@
                     </div>
                 </div>
 
-                <div class="cont card-xmd">
-                    <div class="card-title clr">Upcoming Events</div>
-                    <div class="listed-items mt-lg-3">
+                <div class="cont card-xmd bkg-primary-light">
+                    <div class="card-title text-danger">Notice Board</div>
+                    <div class="notices-wrap mt-3">
+                        <div (click)="viewNotice(notice)" *ngFor="let notice of notices | slice: 0 : 2" class="notice">
+                            <div class="date">
+                                <span>{{notice.createdAt | date: 'dd'}}</span> <span>{{notice.createdAt | date: 'MMM'}}</span>
+                            </div>
+                            <div class="details">
+                                <div class="title">{{notice.title}}</div>
+                                <div class="content mt-2" [innerHTML]="notice.content | truncateWords:10"></div>
+                                <div class="author mt-2">
+                                    <div class="image"></div>
+                                    <div class="info">
+                                        <span>{{notice.createdByName}}</span>
+                                        <span>{{notice.createdAt | date: 'hh:mm a'}}</span>
+                                    </div>
+                                    <div class="preview"><i class="bi bi-arrow-up-right-square"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf class="listed-items mt-lg-3">
                         <app-no-data 
                             [height]="'15rem'"
                             [icon]="'calendar'"
                             [message]="'There are no upcoming meetings'"
                         >
                         </app-no-data>
-                        <!-- <div class="item">
-                            <div class="content">
-                                <div class="det">
-                                    <div class="major bd">Senior Frontend Engineer</div>
-                                    <div class="minor">Ibrahim Babatunde</div>
-                                </div>
-                                <div class="det right">
-                                    <div class="major">Apr 20</div>
-                                    <div class="minor sm">12:30pm - 12:45pm</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="item">
-                            <div class="content">
-                                <div class="det">
-                                    <div class="major bd">Marketing Manager</div>
-                                    <div class="minor">Remi Olubode</div>
-                                </div>
-                                <div class="det right">
-                                    <div class="major">May 21</div>
-                                    <div class="minor sm">1:10pm - 2:45pm</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="content">
-                                <div class="det">
-                                    <div class="major bd">Finance Analyst</div>
-                                    <div class="minor">Matt Greg</div>
-                                </div>
-                                <div class="det right">
-                                    <div class="major">May 26</div>
-                                    <div class="minor sm">4:10pm - 4:25pm</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="content">
-                                <div class="det">
-                                    <div class="major bd">Technology Consultant</div>
-                                    <div class="minor">Rita Mreace</div>
-                                </div>
-                                <div class="det right">
-                                    <div class="major">May 30</div>
-                                    <div class="minor sm">9:30am - 10:45am</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="content">
-                                <div class="det">
-                                    <div class="major bd">HR Consultant</div>
-                                    <div class="minor">Spence Holderyne</div>
-                                </div>
-                                <div class="det right">
-                                    <div class="major">Jun 4</div>
-                                    <div class="minor sm">10:30am - 10:45am</div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
+
             </div>
 
             <div class="row-card w-100 ecard-ymd d-flex justify-content-between align-items-start">
@@ -737,13 +693,13 @@
                     
                 </div>
 
-                <div class="cont card-xmd card-ymd bkg-primary-light">
-                    <div class="card-title clr">Notifications</div>
+                <div class="cont card-xmd card-ymd">
+                    <div class="card-title clr">Upcoming Events</div>
                     <div class="listed-items">
                         <app-no-data 
-                            [height]="'21.5rem'"
-                            [icon]="'bell'"
-                            [message]="'You currently have no notifications'"
+                            [height]="'15rem'"
+                            [icon]="'calendar'"
+                            [message]="'There are no upcoming meetings'"
                         >
                         </app-no-data>
                         
@@ -799,155 +755,5 @@
             
         </div>
     </div>
-
-    <!-- <div *ngIf="!userDetails?.isSuperAdmin" class="row-section my-lg-4">
-        <div class="inner-row-hld d-flex align-items-start justify-content-between">
-            <div class="col-card w-100 card-yxl d-flex justify-content-between align-items-start">
-                <div class="row-card d-flex flex-wrap align-items-start justify-content-between card-xmlg">
-                    <div class="cont card-xmmd pg-cover" style="height: 20rem;">
-                        <div class="top">
-                            <div class="major">Welcome</div>
-                            <div class="minor">{{userDetails.fullName}}</div>
-                        </div>
-                        <div class="btm">
-                            <div class="date">
-                                <span>{{dateTime | date: 'hh:mm a'}}</span>
-                                <span>{{dateTime | date: 'EEEE, MMM d'}}</span>
-                            </div>
-
-                            <div class="image">
-                                <img class="" src="https://silo-inc.com/wp-content/themes/wp-silo/dist/img/waving_hand.gif" alt="">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-card card-xmmd d-flex flex-column justify-content-between align-items-center" style="height: 20rem;">
-                        <div *ngFor="let item of dashboardSummary" class="cont status-card d-flex flex-column justify-content-center card-xxl card-ymmd px-lg-4">
-                            <div class="card-det d-flex align-items-center">
-                                <div class="icon lg" [ngStyle]="{'color': item.colorDark}">
-                                    <span class="icon">
-                                        <app-icon [iconName]="item.symbol" [iconWidth]="55" [iconHeight]="55"></app-icon>
-                                    </span>
-                                </div>
-                                <div class="card-title thin">{{item.name}}</div>
-                                <div class="fraction"><span class="md">{{item.value}}</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="cont card-xxl mt-lg-4">
-                        <div class="hdr d-flex justify-content-between align-items-center mt-lg-1 mb-lg-3">
-                            <div class="title">
-                                <div class="card-title clr">Payroll Monthly</div>
-                                <div class="preamble">Similar graph when data is available</div>
-                            </div>
-    
-                            <div class="actions-info">
-                                <div class="dropdown-trigger"> Select Year <i class="bi bi-chevron-down"></i></div>
-                            </div>
-                        </div>
-                        <div class="col-card card-xxl">
-                            <highcharts-chart
-                                [Highcharts]="AreaHighcharts"
-                                [options]="areaChartOptions"
-                                style="width: 100%; max-width: 100%; height: 250px; display: block;"
-                            >
-                            </highcharts-chart>
-                        </div>
-                    </div>
-
-                    <div class="cont card-xmmd card-ymd mt-lg-4">
-                        <div class="card-title clr">Recent Approval Requests</div>
-                        <div class="listed-items mt-lg-3">
-                            <app-no-data 
-                                [height]="'20.5rem'"
-                                [icon]="'folderOpen'"
-                                [message]="'No approval requests sent'"
-                            >
-                            </app-no-data>
-                        </div>
-                    </div>
-                    <div class="cont card-xmmd mt-lg-4">
-                        <div class="hdr d-flex justify-content-between align-items-center mt-lg-1 mb-lg-3">
-                            <div class="title">
-                                <div class="card-title clr">Expense Requests by Status</div>
-                            </div>
-                        </div>
-                        <div class="col-card card-xxl d-flex justify-content-center align-items-center">
-                            <app-no-data 
-                                [height]="'20.5rem'"
-                                [icon]="'wallet'"
-                                [message]="'There are no expense requests yet'"
-                            >
-                            </app-no-data>
-                        </div>
-                    </div>
-
-                    <div class="cont card-xxl mt-lg-4">
-                        <div class="hdr d-flex justify-content-between align-items-center mt-lg-1 mb-lg-3">
-                            <div class="title">
-                                <div class="card-title clr">Payroll Earnings vs Expenses </div>
-                                <div class="preamble">Similar graph when data is available</div>                                
-                            </div>
-                            <div class="actions-info">
-                                <ul class="legend general d-flex mt-2">
-                                    <li [class]="item.status" *ngFor="let item of contactsVsLeads">{{item.name}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-card card-xxl">
-                            <ngx-charts-bar-vertical-2d
-                                [view]="[620, 300]"
-                                [scheme]="contactsVsLeadsScheme"
-                                [results]="contactsVsLeadsData"
-                                [gradient]="false"
-                                [xAxis]="true"
-                                [yAxis]="true"
-                                [legend]="false"
-                                [showXAxisLabel]="false"
-                                [showYAxisLabel]="false"
-                                [xAxisLabel]="'Months'"
-                                [yAxisLabel]="'Sales'"
-                            >
-                            </ngx-charts-bar-vertical-2d>
-                        </div>
-                    </div>
-
-                    <div class="cont card-xmmd card-ymd mt-lg-4 bkg-primary-light">
-                        <div class="card-title clr">Notifications</div>
-                        <div class="listed-items mt-lg-3">
-                            <app-no-data 
-                                [height]="'15rem'"
-                                [icon]="'bell'"
-                                [message]="'You currently have no notifications'"
-                            >
-                            </app-no-data>
-                            
-                        </div>
-                    </div>
-
-                    <div class="cont card-xmmd mt-lg-4">
-                        <div class="card-title clr">Upcoming Meetings</div>
-                        <div class="listed-items mt-lg-3">
-                            <app-no-data 
-                                [height]="'15rem'"
-                                [icon]="'calendar'"
-                                [message]="'You have no upcoming meetings'"
-                            >
-                            </app-no-data>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row-card card-xmd card-yxl">
-                    <div class="cont card-yxl bkg-pending-light">
-                        <div class="card-title clr">Media Feed</div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </div> -->
 
 </div>

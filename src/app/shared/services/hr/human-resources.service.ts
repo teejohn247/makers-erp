@@ -507,13 +507,13 @@ export class HumanResourcesService {
   /*************** APPRAISAL SUBMISSION AND REVIEW RELATED ACTIONS ***************/
 
   //Submit Appraisal Entry
-  public submitAppraisalEntry(info: any): Observable<any> {
-    return this.http.post<any>(`${this.path}/employeeRequestAppraisal`, info, this.requestOptions);
+  public submitAppraisalEntry(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.path}/employeeRequestAppraisal`, payload, this.requestOptions);
   }
 
   //Submit Appraisal Review
-  public submitAppraisalReview(info: any, employeeId: any): Observable<any> {
-    return this.http.patch<any>(`${this.path}/managerRateKpi/${employeeId}`, info, this.requestOptions);
+  public submitAppraisalReview(payload: any, employeeId: any): Observable<any> {
+    return this.http.patch<any>(`${this.path}/managerRateKpi/${employeeId}`, payload, this.requestOptions);
   }
 
   //Get the list of all appraisal requests
