@@ -25,6 +25,11 @@
             }
         }
 
+        &.filter-wrap {
+            padding: 0 2.5%;
+            transition: all 0.4s ease;
+        }
+
         .table-icon {
             font-size: 0.75rem;
             cursor: pointer;

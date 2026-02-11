@@ -42,6 +42,7 @@ import { TruncateWordsPipe } from './pipes/truncate-words.pipe';
 import { TimeDurationPipe } from './pipes/time-duration.pipe';
 import { LocaleStringPipe } from './pipes/locale-string.pipe';
 import { LocaleDatePipe } from './pipes/locale-date.pipe';
+import { TableFilterComponent } from './components/table-filter/table-filter.component';
 
 const SHARED_COMP = [
   MatIconModule,
@@ -80,7 +81,8 @@ const SHARED_COMP = [
     TruncateWordsPipe,
     TimeDurationPipe,
     LocaleStringPipe,
-    LocaleDatePipe
+    LocaleDatePipe,
+    TableFilterComponent
   ],
 
   exports: [
@@ -93,6 +95,7 @@ const SHARED_COMP = [
     QuillEditorComponent,
     InfoDialogComponent,
     LoadingDataComponent,
+    TableFilterComponent,
     TruncateWordsPipe,
     TimeDurationPipe,
     LocaleStringPipe,

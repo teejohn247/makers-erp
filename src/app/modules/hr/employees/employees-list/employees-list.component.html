@@ -33,8 +33,15 @@
                     <input (input)="updateSearch($event.target.value)" type="text" placeholder="Search for an employee">
                 </div>
 
-                <div class="filter-options">
+                <!-- <div (click)="showFilters = !showFilters" class="filter-options" role="button">
                     <div class="filter-trigger"><i class="bi bi-filter"></i> Filter</div>
+                </div> -->
+
+                <div (click)="showFilters = !showFilters" class="cta trans-bkg icon md ms-lg-3">
+                    <span class="icon pe-1">
+                        <app-icon [iconName]="'funnel'" [iconWidth]="24" [iconHeight]="24"></app-icon>
+                    </span>
+                    Filter
                 </div>
 
                 <div class="bulk-actions d-flex justify-content-between align-items-center">
@@ -46,6 +53,17 @@
                     </mat-menu>
                     <div class="cta primary-bkg sm ms-lg-2">Apply</div>
                 </div>
+            </div>
+
+            <div *ngIf="showFilters" class="inner-row d-flex justify-content-start align-items-center filter-wrap">
+                <!-- parent.component.html -->
+                <app-table-filter
+                    [filters]="employeeFilters"
+                    [initialState]="{}"
+                    (filtersChange)="onFiltersChange($event)"
+                    [fWidth]="160"
+                ></app-table-filter>
+
             </div>
 
             <div class="inner-row">
@@ -97,7 +115,7 @@
 
                         <ng-container *ngIf="column.key == 'employmentStartDate'">
                             <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
-                            <td mat-cell *matCellDef="let row">{{ row.employmentStartDate | date : 'd MMM, y'}}</td>
+                            <td mat-cell *matCellDef="let row">{{ row.employmentStartDate | localeDate: 'd MMM, y' }}</td>
                         </ng-container>
 
                         <ng-container *ngIf="column.key == 'department'">
