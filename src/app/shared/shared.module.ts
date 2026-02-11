@@ -41,6 +41,7 @@ import { SupportInfoComponent } from './components/support-info/support-info.com
 import { TruncateWordsPipe } from './pipes/truncate-words.pipe';
 import { TimeDurationPipe } from './pipes/time-duration.pipe';
 import { LocaleStringPipe } from './pipes/locale-string.pipe';
+import { LocaleDatePipe } from './pipes/locale-date.pipe';
 
 const SHARED_COMP = [
   MatIconModule,
@@ -78,7 +79,8 @@ const SHARED_COMP = [
     SupportInfoComponent,
     TruncateWordsPipe,
     TimeDurationPipe,
-    LocaleStringPipe
+    LocaleStringPipe,
+    LocaleDatePipe
   ],
 
   exports: [
@@ -93,7 +95,8 @@ const SHARED_COMP = [
     LoadingDataComponent,
     TruncateWordsPipe,
     TimeDurationPipe,
-    LocaleStringPipe
+    LocaleStringPipe,
+    LocaleDatePipe
   ],
 
   imports: [

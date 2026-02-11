@@ -189,7 +189,7 @@ export class ExpenseRequestReviewComponent implements OnInit {
       const formData = new FormData();
 
       formData.append('expenseTypeId', this.expenseForm.value.expenseType);
-      formData.append('expenseDate', this.datePipe.transform(this.expenseForm.value.expenseDate, 'dd-MM-yyyy'));
+      formData.append('expenseDate', this.expenseForm.value.expenseDate);
       formData.append('amount', this.expenseForm.value.amount);
       formData.append('description', this.expenseForm.value.description);
       formData.append('attachment', this.attachmentFile);

@@ -74,7 +74,7 @@
                                     <div class="minor">{{request.department}}</div>
                                 </div>
                                 <div class="det right">
-                                    <div class="major">{{ request.leaveStartDate | date : 'MMM d'}} - {{ request.leaveEndDate | date : 'MMM d'}}</div>
+                                    <div class="major">{{ request.leaveStartDate | localeDate: 'MMM d'}} - {{ request.leaveEndDate | localeDate: 'MMM d'}}</div>
                                     <!-- <div class="minor sm">Apr 20 -28</div> -->
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
 
                         <ng-container *ngIf="column.key == 'leaveStartDate' || column.key == 'leaveEndDate' || column.key == 'requestDate'">
                             <th [style.width]="column.columnWidth" mat-header-cell *matHeaderCellDef>{{ column.label }}</th>
-                            <td mat-cell *matCellDef="let row">{{ strToDate(row[column.key]) | date : 'd MMM, y'}}</td>
+                            <td mat-cell *matCellDef="let row">{{ row[column.key] | localeDate: 'd MMM, y'}}</td>
                         </ng-container>
 
                         
