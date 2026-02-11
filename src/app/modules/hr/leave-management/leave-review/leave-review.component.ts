@@ -183,8 +183,8 @@ export class LeaveReviewComponent implements OnInit {
     if(this.leaveForm.valid) {
       let data = {
         leaveTypeId: this.leaveForm.value.leaveType,
-        leaveStartDate: this.datePipe.transform(this.leaveForm.value.startDate, 'dd-MM-yyyy'),
-        leaveEndDate: this.datePipe.transform(this.leaveForm.value.endDate, 'dd-MM-yyyy'),
+        leaveStartDate: this.leaveForm.value.startDate,
+        leaveEndDate: this.leaveForm.value.endDate,
         requestMessage: this.leaveForm.value.message
       }
       console.log(data);
