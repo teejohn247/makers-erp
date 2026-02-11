@@ -55,3 +55,27 @@
         }
     }
 }
+
+// .compact-field { 
+//     --field-height: 36px; 
+
+//     .mat-form-field-flex { 
+//         height: var(--field-height); 
+//         padding: 0 8px !important; 
+//     } 
+    
+//     .mat-form-field-infix { 
+//         padding: 0 !important; 
+//         border-top: 0 !important; 
+//     } 
+    
+//     /* Fix floating label position */ 
+//     .mat-form-field-label { 
+//         //top: -8px !important; // adjust until it looks right 
+//     } 
+    
+//     /* Fix label when floating */ 
+//     .mat-form-field-should-float .mat-form-field-label { 
+//         transform: translateY(-1.2em) scale(0.75) !important; 
+//     } 
+// }

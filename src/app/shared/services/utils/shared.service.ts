@@ -71,4 +71,19 @@ export class SharedService {
     return this.http.patch<any>(`${this.path}/notifications/markAsRead/${notificationId}`, undefined, this.requestOptions);
   }
 
+  //Converts an array to an Object of key value pairs
+  arrayToObject(arrayVar, key:string) {
+    console.log(arrayVar)
+    if(arrayVar && arrayVar.length > 0) {
+      let reqObj = {}
+      reqObj = arrayVar.reduce((agg, item, index) => {
+        agg[item['_id']] = item[key];
+        return agg;
+      }, {})
+      //console.log(reqObj);
+      return reqObj;
+    }
+    else return {}    
+  }
+
 }

@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { AuthenticationService } from '../utils/authentication.service';
+import { buildUrlWithParams } from '../utils/query-params.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +35,12 @@ export class HumanResourcesService {
   }
 
   //Get the list of all employees
-  public getEmployees(pageNo?:number, pageSize?:number, searchParam?:string): Observable<any> {
-    return this.http.get<any>(`${this.path}/fetchEmployees?page=${pageNo}&limit=${pageSize}&search=${searchParam}`, this.requestOptions);
+  public getEmployees(pageNo?:number, pageSize?:number, searchParam?:string, filters?:any): Observable<any> {
+    const params: { [k: string]: any } = { page: pageNo ?? 1, limit: pageSize ?? 10 }; 
+    if (searchParam) params.search = searchParam; 
+    Object.assign(params, filters || {});
+    const url = buildUrlWithParams(`${this.path}/fetchEmployees`, params);
+    return this.http.get<any>(url, this.requestOptions);
   }
 
   //Get an employee details

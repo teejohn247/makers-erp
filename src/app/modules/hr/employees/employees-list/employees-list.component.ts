@@ -17,6 +17,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AssignSalaryScalesComponent } from '../assign-salary-scales/assign-salary-scales.component';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
+import { FilterConfig } from '@shared/models/table-filter';
+import { SharedService } from '@services/utils/shared.service';
 
 
 @Component({
@@ -121,15 +123,23 @@ export class EmployeesListComponent implements OnInit {
   ]
 
   employeeData : any = [];
+  employeeFilters: FilterConfig[];
+  showFilters:boolean = false;
+
+  // in parent component
+  
+
 
   public search$ = new BehaviorSubject<string>('');
   public page$ = new BehaviorSubject<number>(1);
   public size$ = new BehaviorSubject<number>(10);
+  public filters$ = new BehaviorSubject<{[k:string]: any}>({});
 
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private sanitizer: DomSanitizer,
+    private sharedService: SharedService,
     private hrService: HumanResourcesService,     
     private notifyService: NotificationService,
   ) {
@@ -145,10 +155,11 @@ export class EmployeesListComponent implements OnInit {
     const employees$ = combineLatest([
       this.search$.pipe(debounceTime(300), distinctUntilChanged()),
       this.page$,
-      this.size$
+      this.size$,
+      this.filters$.pipe(debounceTime(250))
     ]).pipe(
       tap(() => this.apiLoading = true),
-      switchMap(([search, page, size]) => this.hrService.getEmployees(page, size, search))
+      switchMap(([search, page, size, filters]) => this.hrService.getEmployees(page, size, search, filters))
     );
 
     employees$.pipe(
@@ -266,6 +277,49 @@ export class EmployeesListComponent implements OnInit {
     this.departmentList = await this.hrService.getDepartments().toPromise();
     this.designationList = await this.hrService.getDesignations().toPromise();
     const salaryScales$ = this.hrService.getSalaryScales().subscribe(res => this.salaryScales = res.data);    
+
+    this.employeeFilters = [
+      { 
+        key: 'department', 
+        label: 'Department', 
+        type: 'select', 
+        options: this.sharedService.arrayToObject(this.departmentList['data'], 'departmentName') || {}, 
+        includeIfEmpty: false 
+      },
+      { 
+        key: 'designation', 
+        label: 'Designation', 
+        type: 'select', 
+        options: this.sharedService.arrayToObject(this.designationList['data'], 'designationName') || {}, 
+        includeIfEmpty: false 
+      },
+      { 
+        key: 'employmentStatus', 
+        label: 'Employment Status', 
+        type: 'select', 
+        options: {
+          Active: 'Active',
+          Inactive: 'Inactive'
+        }, 
+        includeIfEmpty: false 
+      },
+      { 
+        key: 'employmentType', 
+        label: 'Employment Type', 
+        type: 'select', 
+        options: {
+          Contract: 'Contract',
+          Permanent: 'Permanent'
+        }, 
+        includeIfEmpty: false 
+      },
+      // { 
+      //   key: 'hire', 
+      //   label: 'Hire Date', 
+      //   type: 'daterange', 
+      //   includeIfEmpty: false 
+      // }
+    ];
   }
 
   updateSearch(term: string) {
@@ -280,6 +334,11 @@ export class EmployeesListComponent implements OnInit {
   updateSize(size: number) {
     this.apiLoading = true
     this.size$.next(size);
+  }
+
+  onFiltersChange(newFilters: {[k:string]: any}) {
+    console.log(newFilters);
+    this.filters$.next(newFilters);
   }
 
   assignManager(assignType: string, count: string, row?: any) {
@@ -316,16 +375,6 @@ export class EmployeesListComponent implements OnInit {
       this.selection.clear()
       //this.getPageData();
     }); 
-  }
-
-  strToDate(dateVal: string) {
-    let reqDate:any = new Date(dateVal)
-    if(reqDate == 'Invalid Date') {
-      const [day, month, year] = dateVal.split('-');
-      let newFormat = new Date(+year, +month - 1, +day);
-      reqDate = newFormat;
-    }
-    return reqDate;
   }
 
 }
